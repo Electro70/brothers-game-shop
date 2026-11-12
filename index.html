@@ -338,14 +338,18 @@
 
         .product-img-box {
             width: 100%;
-            height: 110px;
-            position: relative;
+            height: 130px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         .product-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* ছবি জুম বা কেটে যাওয়া রোধ করবে */
         }
 
         .product-details {
@@ -638,7 +642,7 @@
             <!-- Weekly Membership Card -->
             <div class="product-card">
                 <div class="product-img-box">
-                    <img src="weekly.png" alt="Weekly Membership">
+                    <img src="weekly.jpg" alt="Weekly Membership">
                 </div>
                 <div class="product-details">
                     <div>
@@ -655,7 +659,7 @@
             <!-- Monthly Membership Card -->
             <div class="product-card">
                 <div class="product-img-box">
-                    <img src="monthly.png" alt="Monthly Membership">
+                    <img src="monthly.jpg" alt="Monthly Membership">
                 </div>
                 <div class="product-details">
                     <div>
@@ -857,9 +861,7 @@
             const day = now.getDay(); // 0: Sun, 5: Fri, 6: Sat
             const hour = now.getHours();
             const minute = now.getMinutes();
-            const second = now.getSeconds();
 
-            // Check if today is Friday (5) and time is between 10:00 AM (10) and 12:00 Midnight (24)
             if (day === 5 && hour >= 10 && hour < 24) {
                 isSaleActive = true;
             } else {
@@ -881,7 +883,6 @@
                 weeklyBtn.innerText = currentLang === 'bn' ? 'অর্ডার করুন' : 'Order Now';
                 monthlyBtn.innerText = currentLang === 'bn' ? 'অর্ডার করুন' : 'Order Now';
 
-                // Countdown until Friday Midnight
                 const target = new Date(now);
                 target.setHours(24, 0, 0, 0);
                 const diff = target - now;
@@ -894,7 +895,6 @@
                 weeklyBtn.innerText = currentLang === 'bn' ? 'বন্ধ আছে' : 'Locked';
                 monthlyBtn.innerText = currentLang === 'bn' ? 'বন্ধ আছে' : 'Locked';
 
-                // Countdown to next Friday 10:00 AM
                 const nextFriday = new Date(now);
                 const dayOffset = (5 - day + 7) % 7;
                 if (dayOffset === 0 && (hour > 23 || (hour === 23 && minute === 59))) {
@@ -904,7 +904,6 @@
                 }
                 nextFriday.setHours(10, 0, 0, 0);
 
-                // If it's already past Friday 10 AM in the current week, target next Friday
                 if (day === 5 && hour >= 24) {
                     nextFriday.setDate(now.getDate() + 7);
                 }
