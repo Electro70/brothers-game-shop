@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Game Vault - Login</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #1f2937;
+            --header-bg: #ffffff;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --accent-color: #eab308; /* Yellow accent for Game Vault */
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --header-bg: #1e293b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 90px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container img {
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .logo-container a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Language Button */
+        .lang-trigger {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--border-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 450px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        /* Login Card Box */
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Google Sign-in Button */
+        .google-btn {
+            width: 100%;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 20px;
+            text-decoration: none;
+        }
+
+        .google-btn:hover {
+            background: rgba(0,0,0,0.03);
+        }
+
+        .google-btn img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider::before {
+            margin-right: 10px;
+        }
+
+        .divider::after {
+            margin-left: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-input-box i {
+            position: absolute;
+            left: 15px;
+            color: #94a3b8;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text-color);
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--accent-color);
+            color: #000;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .auth-footer a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-home a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* Modal Overlay for Language & Dark Mode */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--header-bg);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Dark Mode Toggle Row inside Modal */
+        .dark-mode-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: var(--bg-color);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-round {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider-round:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider-round {
+            background-color: #22c55e;
+        }
+
+        input:checked + .slider-round:before {
+            transform: translateX(22px);
+        }
+
+        /* Language Options List */
+        .lang-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: var(--bg-color);
+        }
+
+        .lang-option.selected {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .lang-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--header-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Game Vault Logo -->
+    <header>
+        <div class="logo-container">
+            <a href="/">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+                <span id="fallback-logo" style="display:none; font-weight:800; font-size:20px; color:var(--accent-color);">GAME VAULT</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="lang-trigger" onclick="openModal()">
+                <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content (Login Box) -->
+    <div class="container">
+        <div class="login-card">
+            <h2 class="login-title" data-i18n="login_heading">Welcome to Game Vault</h2>
+            <p class="login-subtitle" data-i18n="login_sub">Sign in using your Google account or Gmail</p>
+            
+            <!-- Continue with Google Button -->
+            <a href="#" class="google-btn" onclick="googleLogin(event)">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                <span data-i18n="google_btn">Continue with Google</span>
+            </a>
+
+            <div class="divider" data-i18n="or_text">OR</div>
+
+            <!-- Gmail Login Form -->
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" data-i18n="email_label">Gmail Address</label>
+                    <div class="form-input-box">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" class="form-input" placeholder="example@gmail.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" data-i18n="pass_label">Password</label>
+                    <div class="form-input-box">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" data-i18n="signin_btn">Sign In</button>
+            </form>
+
+            <!-- Don't have an account? Create Account -->
+            <div class="auth-footer">
+                <span data-i18n="no_account">Don't have an account?</span> <a href="/register" data-i18n="create_account">Create Account</a>
+            </div>
+
+            <div class="back-home">
+                <a href="/" data-i18n="back_home"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language & Dark Mode Modal -->
+    <div class="modal-overlay" id="langModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span data-i18n="modal_title">Language & Theme</span>
+                <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Dark Mode Toggle -->
+            <div class="dark-mode-row">
+                <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                    <i class="fa-solid fa-moon"></i> <span data-i18n="dark_mode">Dark Mode</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                    <span class="slider-round"></span>
+                </label>
+            </div>
+
+            <!-- Languages -->
+            <div class="lang-option selected" id="lang-en-option" onclick="selectLang('en')">
+                <div class="lang-left">
+                    <span>🇺🇸</span> English
+                </div>
+                <i class="fa-solid fa-check" id="check-en" style="color: #22c55e;"></i>
+            </div>
+
+            <div class="lang-option" id="lang-bn-option" onclick="selectLang('bn')">
+                <div class="lang-left">
+                    <span>🇧🇩</span> বাংলা
+                </div>
+                <i class="fa-solid fa-check" id="check-bn" style="color: #22c55e; display: none;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span data-i18n="nav_home">Home</span>
+        </a>
+        <a href="/transaction-history" class="nav-item">
+            <i class="fa-solid fa-file-lines"></i>
+            <span data-i18n="nav_orders">Orders</span>
+        </a>
+        <a href="/support" class="nav-item">
+            <i class="fa-solid fa-headset"></i>
+            <span data-i18n="nav_support">Support</span>
+        </a>
+        <a href="/profile" class="nav-item active">
+            <i class="fa-solid fa-user"></i>
+            <span data-i18n="nav_profile">Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // Translations Dictionary
+        const translations = {
+            en: {
+                title: "Game Vault - Login",
+                login_heading: "Welcome to Game Vault",
+                login_sub: "Sign in using your Google account or Gmail",
+                google_btn: "Continue with Google",
+                or_text: "OR",
+                email_label: "Gmail Address",
+                pass_label: "Password",
+                signin_btn: "Sign In",
+                no_account: "Don't have an account?",
+                create_account: "Create Account",
+                back_home: "Back to Home",
+                modal_title: "Language & Theme",
+                dark_mode: "Dark Mode",
+                nav_home: "Home",
+                nav_orders: "Orders",
+                nav_support: "Support",
+                nav_profile: "Profile"
+            },
+            bn: {
+                title: "গেম ভল্ট - লগইন",
+                login_heading: "গেম ভল্টে স্বাগতম",
+                login_sub: "আপনার গুগল অ্যাকাউন্ট অথবা জিমেইল দিয়ে সাইন ইন করুন",
+                google_btn: "গুগল দিয়ে চালিয়ে যান",
+                or_text: "অথবা",
+                email_label: "জিমেইল ঠিকানা",
+                pass_label: "পাসওয়ার্ড",
+                signin_btn: "সাইন ইন",
+                no_account: "কোনো অ্যাকাউন্ট নেই?",
+                create_account: "অ্যাকাউন্ট তৈরি করুন",
+                back_home: "হোমে ফিরে যান",
+                modal_title: "ভাষা এবং থিম",
+                dark_mode: "ডার্ক মোড",
+                nav_home: "হোম",
+                nav_orders: "অর্ডার",
+                nav_support: "সাপোর্ট",
+                nav_profile: "প্রোফাইল"
+            }
+        };
+
+        // Modal Open/Close Logic
+        function openModal() {
+            document.getElementById('langModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('langModal').style.display = 'none';
+        }
+
+        // Dark Mode Toggle Logic
+        function toggleDarkMode() {
+            if (document.getElementById('darkModeToggle').checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check saved theme on load
+        if (localStorage.getItem('theme') === 'dark') {
+            document.getElementById('darkModeToggle').checked = true;
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // Language Switching Logic
+        function selectLang(lang) {
+            localStorage.setItem('language', lang);
+            applyLanguage(lang);
+            closeModal();
+        }
+
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('page-title').innerText = t.title;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.innerText = t[key];
+                }
+            });
+
+            if (lang === 'bn') {
+                document.getElementById('current-lang-flag').innerText = '🇧🇩';
+                document.getElementById('current-lang-text').innerText = 'BN';
+                document.getElementById('lang-bn-option').classList.add('selected');
+                document.getElementById('check-bn').style.display = 'block';
+                document.getElementById('lang-en-option').classList.remove('selected');
+                document.getElementById('check-en').style.display = 'none';
+            } else {
+                document.getElementById('current-lang-flag').innerText = '🇺🇸';
+                document.getElementById('current-lang-text').innerText = 'EN';
+                document.getElementById('lang-en-option').classList.add('selected');
+                document.getElementById('check-en').style.display = 'block';
+                document.getElementById('lang-bn-option').classList.remove('selected');
+                document.getElementById('check-bn').style.display = 'none';
+            }
+        }
+
+        const savedLang = localStorage.getItem('language') || 'en';
+        applyLanguage(savedLang);
+
+        function handleLogin(event) {
+            event.preventDefault();
+            alert(localStorage.getItem('language') === 'bn' ? 'লগইন সফল হয়েছে!' : 'Login successful!');
+            window.location.href = '/';
+        }
+
+        function googleLogin(event) {
+            event.preventDefault();
+            alert(localStorage.getItem('language') === 'bn' ? 'গুগল দিয়ে লগইন করার প্রক্রিয়া চলছে...' : 'Redirecting to Google Sign-In...');
+        }
+    </script>
+</body>
+</html>
