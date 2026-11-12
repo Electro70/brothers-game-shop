@@ -109,14 +109,14 @@
             font-weight: 600;
         }
 
-        /* Image Slider Section */
+        /* Image Slider Section (2 Banners) */
         .slider-container {
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 190px;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             margin-bottom: 25px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -278,4 +278,148 @@
         }
 
         .nav-item {
-            text-align: center
+            text-align: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <!-- আপনার লোগো ফাইলটি logo.png নামে গিটহাবে রাখতে হবে -->
+            <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+            <span id="fallback-logo" style="display:none; font-weight:800; font-size:20px; color:var(--accent-color);">GAME VAULT</span>
+        </div>
+        <div class="header-right">
+            <div class="lang-trigger" onclick="openModal()">
+                <span>🇺🇸 EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+            </div>
+            <a href="/login" class="signin-btn"><i class="fa-regular fa-user"></i> Sign In</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Slogan -->
+        <div class="hero-banner">
+            <p>Topup in seconds - available 24/7!</p>
+        </div>
+
+        <!-- Image Slider (2 Banners looping) -->
+        <div class="slider-container">
+            <div class="slide active"><img src="slide1.png" alt="Banner 1"></div>
+            <div class="slide"><img src="slide2.png" alt="Banner 2"></div>
+        </div>
+    </div>
+
+    <!-- Language & Dark Mode Modal -->
+    <div class="modal-overlay" id="langModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Language & Theme</span>
+                <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Dark Mode Toggle -->
+            <div class="dark-mode-row">
+                <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                    <i class="fa-solid fa-moon"></i> Dark Mode
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                    <span class="slider-round"></span>
+                </label>
+            </div>
+
+            <!-- Languages -->
+            <div class="lang-option selected" onclick="selectLang('en')">
+                <div class="lang-left">
+                    <span>🇺🇸</span> English
+                </div>
+                <i class="fa-solid fa-check" style="color: #22c55e;"></i>
+            </div>
+
+            <div class="lang-option" onclick="selectLang('bn')">
+                <div class="lang-left">
+                    <span>🇧🇩</span> বাংলা
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="/transaction-history" class="nav-item">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Orders</span>
+        </a>
+        <a href="/support" class="nav-item">
+            <i class="fa-solid fa-headset"></i>
+            <span>Support</span>
+        </a>
+        <a href="/profile" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // Modal Open/Close Logic
+        function openModal() {
+            document.getElementById('langModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('langModal').style.display = 'none';
+        }
+
+        // Dark Mode Toggle Logic
+        function toggleDarkMode() {
+            if (document.getElementById('darkModeToggle').checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check saved theme on load
+        if (localStorage.getItem('theme') === 'dark') {
+            document.getElementById('darkModeToggle').checked = true;
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // Language Select dummy function
+        function selectLang(lang) {
+            alert('Language switched to: ' + (lang === 'bn' ? 'বাংলা' : 'English'));
+            closeModal();
+        }
+
+        // Banner Slider Auto-Loop (Changes every 3.5 seconds)
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 3500);
+    </script>
+</body>
+</html>
