@@ -338,7 +338,7 @@
 
         .product-img-box {
             width: 100%;
-            height: 165px; /* স্কয়ার ব্যানার সুন্দরভাবে ফিট করার জন্য হাইট বাড়ানো হয়েছে */
+            height: 165px;
             position: relative;
             overflow: hidden;
         }
@@ -346,7 +346,7 @@
         .product-img-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* কোনো ফাঁকা ছাড়াই পুরো বক্স জুড়ে ছবি ফিট থাকবে */
+            object-fit: cover;
         }
 
         .product-details {
@@ -403,6 +403,75 @@
             background: #cbd5e1;
             color: #64748b;
             cursor: not-allowed;
+        }
+
+        /* FreeFire Topup Section Styles */
+        .section-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .section-title-dot {
+            width: 12px;
+            height: 12px;
+            background: #059669;
+            border-radius: 3px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .ff-topup-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 480px) {
+            .ff-topup-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .ff-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            padding-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .ff-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .ff-card-img {
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            background: #111;
+        }
+
+        .ff-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ff-card-name {
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 10px;
+            color: var(--text-color);
         }
 
         /* Modal Overlay for Language & Dark Mode */
@@ -670,6 +739,54 @@
                 </div>
             </div>
         </div>
+
+        <!-- FreeFire Topup Section -->
+        <div class="section-title-wrapper">
+            <div class="section-title-dot"></div>
+            <div class="section-title" data-i18n="ff_topup_title">FreeFire Topup</div>
+        </div>
+
+        <div class="ff-topup-grid">
+            <!-- Diamonds -->
+            <div class="ff-card">
+                <div class="ff-card-img">
+                    <img src="img1.jpg" alt="Diamonds">
+                </div>
+                <div class="ff-card-name" data-i18n="diamonds">Diamonds</div>
+            </div>
+
+            <!-- Likes -->
+            <div class="ff-card">
+                <div class="ff-card-img">
+                    <img src="img2.jpg" alt="Likes">
+                </div>
+                <div class="ff-card-name" data-i18n="likes">Likes</div>
+            </div>
+
+            <!-- Indonesia -->
+            <div class="ff-card">
+                <div class="ff-card-img">
+                    <img src="img3.jpg" alt="Indonesia">
+                </div>
+                <div class="ff-card-name" data-i18n="indonesia">Indonesia</div>
+            </div>
+
+            <!-- Guild Glory -->
+            <div class="ff-card">
+                <div class="ff-card-img">
+                    <img src="img4.jpg" alt="Guild Glory">
+                </div>
+                <div class="ff-card-name" data-i18n="guild_glory">Guild Glory</div>
+            </div>
+
+            <!-- Levelup Pass -->
+            <div class="ff-card">
+                <div class="ff-card-img">
+                    <img src="img5.jpg" alt="Levelup Pass">
+                </div>
+                <div class="ff-card-name" data-i18n="levelup_pass">Levelup Pass</div>
+            </div>
+        </div>
     </div>
 
     <!-- Language & Dark Mode Modal -->
@@ -746,6 +863,12 @@
                 view_all: "View All",
                 weekly_title: "Weekly Membership",
                 monthly_title: "Monthly Membership",
+                ff_topup_title: "FreeFire Topup",
+                diamonds: "Diamonds",
+                likes: "Likes",
+                indonesia: "Indonesia",
+                guild_glory: "Guild Glory",
+                levelup_pass: "Levelup Pass",
                 modal_title: "Language & Theme",
                 dark_mode: "Dark Mode",
                 nav_home: "Home",
@@ -768,6 +891,12 @@
                 view_all: "সব দেখুন",
                 weekly_title: "সাপ্তাহিক মেম্বারশিপ",
                 monthly_title: "মাসিক মেম্বারশিপ",
+                ff_topup_title: "ফ্রি ফায়ার টপআপ",
+                diamonds: "ডায়মন্ডস",
+                likes: "লাইকস",
+                indonesia: "ইন্দোনেশিয়া",
+                guild_glory: "গিল্ড গ্লোরি",
+                levelup_pass: "লেভেলআপ পাস",
                 modal_title: "ভাষা এবং থিম",
                 dark_mode: "ডার্ক মোড",
                 nav_home: "হোম",
