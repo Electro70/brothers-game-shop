@@ -1,103 +1,431 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leak Studio BD - Demo</title>
+    <title>Game Vault - Top Up Center</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a;
-            color: #ffffff;
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #1f2937;
+            --header-bg: #ffffff;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --accent-color: #eab308; /* Yellow accent for Game Vault */
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --header-bg: #1e293b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+        }
+
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 90px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container img {
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Language Button */
+        .lang-trigger {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--border-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Sign In Button */
+        .signin-btn {
+            background: var(--accent-color);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Container */
         .container {
-            max-width: 450px;
-            margin: 30px auto;
-            background: #1e293b;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
-        h2 {
+
+        /* Hero Banner Slogan */
+        .hero-banner {
             text-align: center;
-            color: #38bdf8;
             margin-bottom: 20px;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: #fff;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #0284c7;
-            border: none;
-            color: white;
+        .hero-banner p {
             font-size: 16px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 10px;
+            color: #38bdf8;
+            font-weight: 600;
         }
-        button:hover {
-            background: #0369a1;
+
+        /* Image Slider Section */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        /* Sample banner backgrounds */
+        .slide:nth-child(1) { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .slide:nth-child(2) { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .slide:nth-child(3) { background: linear-gradient(135deg, #10b981, #047857); }
+
+        /* Modal Overlay for Language & Dark Mode */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--header-bg);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Dark Mode Toggle Row inside Modal */
+        .dark-mode-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: var(--bg-color);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-round {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider-round:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider-round {
+            background-color: #22c55e;
+        }
+
+        input:checked + .slider-round:before {
+            transform: translateX(22px);
+        }
+
+        /* Language Options List */
+        .lang-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: var(--bg-color);
+        }
+
+        .lang-option.selected {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .lang-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--header-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>🎮 Auto Top-Up BD</h2>
-    <form id="orderForm">
-        <div class="form-group">
-            <label>গেম সিলেক্ট করুন</label>
-            <select id="game">
-                <option value="freefire">Free Fire (Diamonds)</option>
-                <option value="pubg">PUBG Mobile (UC)</option>
-            </select>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <!-- আপনার লোগো ফাইলটি রিপোজিটরিতে logo.png নামে রাখলে এখানে দেখাবে -->
+            <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+            <span id="fallback-logo" style="display:none; font-weight:800; font-size:20px; color:var(--accent-color);">GAME VAULT</span>
         </div>
-        
-        <div class="form-group">
-            <label>প্লেয়ার ইউআইডি (UID)</label>
-            <input type="text" id="uid" placeholder="আপনার গেম ইউআইডি লিখুন" required>
+        <div class="header-right">
+            <div class="lang-trigger" onclick="openModal()">
+                <span>🇺🇸 EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+            </div>
+            <a href="/login" class="signin-btn"><i class="fa-regular fa-user"></i> Sign In</a>
         </div>
+    </header>
 
-        <div class="form-group">
-            <label>প্যাকেজ নির্বাচন করুন</label>
-            <select id="package">
-                <option value="100">100 Diamonds - 85 BDT</option>
-                <option value="310">310 Diamonds - 250 BDT</option>
-            </select>
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Slogan -->
+        <div class="hero-banner">
+            <p>Topup in seconds - available 24/7!</p>
         </div>
 
-        <button type="submit">অর্ডার নিশ্চিত করুন</button>
-    </form>
-</div>
+        <!-- Image Slider (3 Banners looping) -->
+        <div class="slider-container">
+            <div class="slide active">🔥 Special Free Fire Diamond Offer!</div>
+            <div class="slide">⚡ PUBG Mobile UC Instant Delivery</div>
+            <div class="slide">🛡️ 100% Trusted & Secure Top-Up</div>
+        </div>
+    </div>
 
-<script>
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const uid = document.getElementById('uid').value;
-        const pkg = document.getElementById('package').value;
-        alert(`সফল! UID: ${uid} এর জন্য ${pkg} ডায়মন্ডের অর্ডার সাবমিট হয়েছে।`);
-    });
-</script>
+    <!-- Language & Dark Mode Modal -->
+    <div class="modal-overlay" id="langModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Language & Theme</span>
+                <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
 
+            <!-- Dark Mode Toggle -->
+            <div class="dark-mode-row">
+                <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                    <i class="fa-solid fa-moon"></i> Dark Mode
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                    <span class="slider-round"></span>
+                </label>
+            </div>
+
+            <!-- Languages -->
+            <div class="lang-option selected" onclick="selectLang('en')">
+                <div class="lang-left">
+                    <span>🇺🇸</span> English
+                </div>
+                <i class="fa-solid fa-check" style="color: #22c55e;"></i>
+            </div>
+
+            <div class="lang-option" onclick="selectLang('bn')">
+                <div class="lang-left">
+                    <span>🇧🇩</span> বাংলা
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="/transaction-history" class="nav-item">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Orders</span>
+        </a>
+        <a href="/support" class="nav-item">
+            <i class="fa-solid fa-headset"></i>
+            <span>Support</span>
+        </a>
+        <a href="/profile" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // Modal Open/Close Logic
+        function openModal() {
+            document.getElementById('langModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('langModal').style.display = 'none';
+        }
+
+        // Dark Mode Toggle Logic
+        function toggleDarkMode() {
+            if (document.getElementById('darkModeToggle').checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check saved theme on load
+        if (localStorage.getItem('theme') === 'dark') {
+            document.getElementById('darkModeToggle').checked = true;
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // Language Select dummy function
+        function selectLang(lang) {
+            alert('Language switched to: ' + (lang === 'bn' ? 'বাংলা' : 'English'));
+            closeModal();
+        }
+
+        // Banner Slider Auto-Loop
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 3500); // Changes every 3.5 seconds
+    </script>
 </body>
 </html>
