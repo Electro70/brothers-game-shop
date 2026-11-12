@@ -521,6 +521,40 @@
         </a>
     </nav>
 
+    <!-- Firebase SDK & Google Login Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUJKE1sFE7JIFdy43cBZc_-U6TgT1-J48",
+            authDomain: "gamevault-f38b3.firebaseapp.com",
+            projectId: "gamevault-f38b3",
+            storageBucket: "gamevault-f38b3.firebasestorage.app",
+            messagingSenderId: "115821325968",
+            appId: "1:115821325968:web:a8a9ae30e11e3fb7f73215",
+            measurementId: "G-GBTQMRJS9J"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        window.googleLogin = function(event) {
+            event.preventDefault();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const user = result.user;
+                    alert(localStorage.getItem('language') === 'bn' ? 'গুগল লগইন সফল হয়েছে!' : 'Google Login Successful!');
+                    window.location.href = '/';
+                })
+                .catch((error) => {
+                    console.error("Login Error:", error.message);
+                    alert("Login failed: " + error.message);
+                });
+        }
+    </script>
+
     <script>
         // Translations Dictionary
         const translations = {
@@ -631,11 +665,6 @@
             event.preventDefault();
             alert(localStorage.getItem('language') === 'bn' ? 'লগইন সফল হয়েছে!' : 'Login successful!');
             window.location.href = '/';
-        }
-
-        function googleLogin(event) {
-            event.preventDefault();
-            alert(localStorage.getItem('language') === 'bn' ? 'গুগল দিয়ে লগইন করার প্রক্রিয়া চলছে...' : 'Redirecting to Google Sign-In...');
         }
     </script>
 </body>
