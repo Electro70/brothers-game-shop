@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Vault - Top Up Center</title>
+    <title id="page-title">Game Vault - Top Up Center</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -474,15 +474,14 @@
     <!-- Header -->
     <header>
         <div class="logo-container">
-            <!-- আপনার লোগো ফাইলটি logo.png নামে গিটহাবে রাখতে হবে -->
             <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
             <span id="fallback-logo" style="display:none; font-weight:800; font-size:20px; color:var(--accent-color);">GAME VAULT</span>
         </div>
         <div class="header-right">
             <div class="lang-trigger" onclick="openModal()">
-                <span>🇺🇸 EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
-            <a href="/login" class="signin-btn"><i class="fa-regular fa-user"></i> Sign In</a>
+            <a href="/login" class="signin-btn"><i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span></a>
         </div>
     </header>
 
@@ -490,7 +489,7 @@
     <div class="container">
         <!-- Hero Slogan -->
         <div class="hero-banner">
-            <p>Topup in seconds - available 24/7!</p>
+            <p data-i18n="slogan">Topup in seconds - available 24/7!</p>
         </div>
 
         <!-- Image Slider (2 Banners looping) -->
@@ -506,7 +505,7 @@
                     <div class="coin-logo-circle">G</div>
                     <div class="coin-titles">
                         <div class="brand-name">Game Vault</div>
-                        <div class="coin-name">Game Vault Coin</div>
+                        <div class="coin-name" data-i18n="coin_title">Game Vault Coin</div>
                     </div>
                 </div>
                 <div class="coin-arrow-btn">
@@ -515,8 +514,8 @@
             </div>
             <div class="coin-bottom-row">
                 <div>
-                    <div class="my-coins-title">My Coins</div>
-                    <div class="my-coins-count">0 Coins</div>
+                    <div class="my-coins-title" data-i18n="my_coins">My Coins</div>
+                    <div class="my-coins-count" data-i18n="zero_coins">0 Coins</div>
                 </div>
                 <div class="coin-gift-icon">
                     <i class="fa-solid fa-gift"></i>
@@ -532,11 +531,11 @@
                 </div>
                 <div class="flash-info">
                     <div class="flash-title-row">
-                        <span class="flash-title">Flash Sale</span>
-                        <span class="status-badge"><span style="width:6px; height:6px; background:#dc2626; border-radius:50%; display:inline-block;"></span> Upcoming</span>
+                        <span class="flash-title" data-i18n="flash_sale">Flash Sale</span>
+                        <span class="status-badge"><span style="width:6px; height:6px; background:#dc2626; border-radius:50%; display:inline-block;"></span> <span data-i18n="upcoming">Upcoming</span></span>
                     </div>
                     <div class="countdown-row">
-                        <span>Start In</span>
+                        <span data-i18n="start_in">Start In</span>
                         <div class="timer-boxes">
                             <span class="time-box" id="hours">02</span> :
                             <span class="time-box" id="minutes">50</span> :
@@ -545,7 +544,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#" class="view-all-btn">View All</a>
+            <a href="#" class="view-all-btn" data-i18n="view_all">View All</a>
         </div>
     </div>
 
@@ -553,14 +552,14 @@
     <div class="modal-overlay" id="langModal">
         <div class="modal-box">
             <div class="modal-header">
-                <span>Language & Theme</span>
+                <span data-i18n="modal_title">Language & Theme</span>
                 <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- Dark Mode Toggle -->
             <div class="dark-mode-row">
                 <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
-                    <i class="fa-solid fa-moon"></i> Dark Mode
+                    <i class="fa-solid fa-moon"></i> <span data-i18n="dark_mode">Dark Mode</span>
                 </div>
                 <label class="switch">
                     <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
@@ -569,17 +568,18 @@
             </div>
 
             <!-- Languages -->
-            <div class="lang-option selected" onclick="selectLang('en')">
+            <div class="lang-option selected" id="lang-en-option" onclick="selectLang('en')">
                 <div class="lang-left">
                     <span>🇺🇸</span> English
                 </div>
-                <i class="fa-solid fa-check" style="color: #22c55e;"></i>
+                <i class="fa-solid fa-check" id="check-en" style="color: #22c55e;"></i>
             </div>
 
-            <div class="lang-option" onclick="selectLang('bn')">
+            <div class="lang-option" id="lang-bn-option" onclick="selectLang('bn')">
                 <div class="lang-left">
                     <span>🇧🇩</span> বাংলা
                 </div>
+                <i class="fa-solid fa-check" id="check-bn" style="color: #22c55e; display: none;"></i>
             </div>
         </div>
     </div>
@@ -588,23 +588,63 @@
     <nav class="bottom-nav">
         <a href="/" class="nav-item active">
             <i class="fa-solid fa-house"></i>
-            <span>Home</span>
+            <span data-i18n="nav_home">Home</span>
         </a>
         <a href="/transaction-history" class="nav-item">
             <i class="fa-solid fa-file-lines"></i>
-            <span>Orders</span>
+            <span data-i18n="nav_orders">Orders</span>
         </a>
         <a href="/support" class="nav-item">
             <i class="fa-solid fa-headset"></i>
-            <span>Support</span>
+            <span data-i18n="nav_support">Support</span>
         </a>
         <a href="/profile" class="nav-item">
             <i class="fa-solid fa-user"></i>
-            <span>Profile</span>
+            <span data-i18n="nav_profile">Profile</span>
         </a>
     </nav>
 
     <script>
+        // Translations Dictionary
+        const translations = {
+            en: {
+                title: "Game Vault - Top Up Center",
+                signin: "Sign In",
+                slogan: "Topup in seconds - available 24/7!",
+                coin_title: "Game Vault Coin",
+                my_coins: "My Coins",
+                zero_coins: "0 Coins",
+                flash_sale: "Flash Sale",
+                upcoming: "Upcoming",
+                start_in: "Start In",
+                view_all: "View All",
+                modal_title: "Language & Theme",
+                dark_mode: "Dark Mode",
+                nav_home: "Home",
+                nav_orders: "Orders",
+                nav_support: "Support",
+                nav_profile: "Profile"
+            },
+            bn: {
+                title: "গেম ভল্ট - টপ আপ সেন্টার",
+                signin: "সাইন ইন",
+                slogan: "নিমিষেই টপ-আপ করুন - ২৪/৭ উপলব্ধ!",
+                coin_title: "গেম ভল্ট কয়েন",
+                my_coins: "আমার কয়েন",
+                zero_coins: "০ কয়েন",
+                flash_sale: "ফ্ল্যাশ সেল",
+                upcoming: "আসন্ন",
+                start_in: "শুরু হবে",
+                view_all: "সব দেখুন",
+                modal_title: "ভাষা এবং থিম",
+                dark_mode: "ডার্ক মোড",
+                nav_home: "হোম",
+                nav_orders: "অর্ডার",
+                nav_support: "সাপোর্ট",
+                nav_profile: "প্রোফাইল"
+            }
+        };
+
         // Modal Open/Close Logic
         function openModal() {
             document.getElementById('langModal').style.display = 'flex';
@@ -630,11 +670,46 @@
             document.documentElement.setAttribute('data-theme', 'dark');
         }
 
-        // Language Select dummy function
+        // Language Switching Logic
         function selectLang(lang) {
-            alert('Language switched to: ' + (lang === 'bn' ? 'বাংলা' : 'English'));
+            localStorage.setItem('language', lang);
+            applyLanguage(lang);
             closeModal();
         }
+
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('page-title').innerText = t.title;
+            
+            // Update UI texts based on data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.innerText = t[key];
+                }
+            });
+
+            // Update Header Trigger flag and text
+            if (lang === 'bn') {
+                document.getElementById('current-lang-flag').innerText = '🇧🇩';
+                document.getElementById('current-lang-text').innerText = 'BN';
+                document.getElementById('lang-bn-option').classList.add('selected');
+                document.getElementById('check-bn').style.display = 'block';
+                document.getElementById('lang-en-option').classList.remove('selected');
+                document.getElementById('check-en').style.display = 'none';
+            } else {
+                document.getElementById('current-lang-flag').innerText = '🇺🇸';
+                document.getElementById('current-lang-text').innerText = 'EN';
+                document.getElementById('lang-en-option').classList.add('selected');
+                document.getElementById('check-en').style.display = 'block';
+                document.getElementById('lang-bn-option').classList.remove('selected');
+                document.getElementById('check-bn').style.display = 'none';
+            }
+        }
+
+        // Load saved language on startup
+        const savedLang = localStorage.getItem('language') || 'en';
+        applyLanguage(savedLang);
 
         // Banner Slider Auto-Loop (Changes every 3.5 seconds)
         let currentSlide = 0;
@@ -654,11 +729,6 @@
             
             nextFriday.setDate(now.getDate() + (D => (D + 7 - now.getDay()) % 7)(resultDay));
             nextFriday.setHours(10, 0, 0, 0);
-
-            // If today is Friday and past 10 AM, target next week's Friday
-            if (now.getDay() === 5 && now.getHours() >= 24) { // or wrap up logic
-                // Keep default countdown simulation if needed
-            }
 
             const diff = nextFriday - now;
             if (diff > 0) {
