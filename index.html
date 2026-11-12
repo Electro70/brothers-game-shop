@@ -101,7 +101,7 @@
         /* Hero Banner Slogan */
         .hero-banner {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .hero-banner p {
             font-size: 16px;
@@ -113,11 +113,11 @@
         .slider-container {
             position: relative;
             width: 100%;
-            height: 190px;
+            height: 180px;
             border-radius: 14px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
         }
@@ -140,6 +140,182 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* Coin Box Section */
+        .coin-box {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25);
+            position: relative;
+        }
+
+        .coin-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .coin-branding {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .coin-logo-circle {
+            width: 35px;
+            height: 35px;
+            background: #facc15;
+            color: #000;
+            font-weight: 800;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .coin-titles .brand-name {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            font-weight: 600;
+        }
+
+        .coin-titles .coin-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .coin-arrow-btn {
+            background: rgba(255, 255, 255, 0.2);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .coin-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .my-coins-title {
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .my-coins-count {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .coin-gift-icon {
+            font-size: 28px;
+            color: #facc15;
+        }
+
+        /* Flash Sale Section */
+        .flash-sale-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .flash-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .flash-icon {
+            background: #10b981;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .flash-info .flash-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .flash-title {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .status-badge {
+            background: #fee2e2;
+            color: #dc2626;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .countdown-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .timer-boxes {
+            display: flex;
+            gap: 4px;
+        }
+
+        .time-box {
+            background: #1e293b;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .view-all-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
         }
 
         /* Modal Overlay for Language & Dark Mode */
@@ -322,6 +498,55 @@
             <div class="slide active"><img src="slide1.png" alt="Banner 1"></div>
             <div class="slide"><img src="slide2.png" alt="Banner 2"></div>
         </div>
+
+        <!-- Game Vault Coin Box -->
+        <div class="coin-box">
+            <div class="coin-header-row">
+                <div class="coin-branding">
+                    <div class="coin-logo-circle">G</div>
+                    <div class="coin-titles">
+                        <div class="brand-name">Game Vault</div>
+                        <div class="coin-name">Game Vault Coin</div>
+                    </div>
+                </div>
+                <div class="coin-arrow-btn">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+            <div class="coin-bottom-row">
+                <div>
+                    <div class="my-coins-title">My Coins</div>
+                    <div class="my-coins-count">0 Coins</div>
+                </div>
+                <div class="coin-gift-icon">
+                    <i class="fa-solid fa-gift"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flash Sale Section -->
+        <div class="flash-sale-box">
+            <div class="flash-left">
+                <div class="flash-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div class="flash-info">
+                    <div class="flash-title-row">
+                        <span class="flash-title">Flash Sale</span>
+                        <span class="status-badge"><span style="width:6px; height:6px; background:#dc2626; border-radius:50%; display:inline-block;"></span> Upcoming</span>
+                    </div>
+                    <div class="countdown-row">
+                        <span>Start In</span>
+                        <div class="timer-boxes">
+                            <span class="time-box" id="hours">02</span> :
+                            <span class="time-box" id="minutes">50</span> :
+                            <span class="time-box" id="seconds">31</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="view-all-btn">View All</a>
+        </div>
     </div>
 
     <!-- Language & Dark Mode Modal -->
@@ -420,6 +645,34 @@
             slides[currentSlide].classList.add('active');
         }
         setInterval(nextSlide, 3500);
+
+        // Flash Sale Countdown to next Friday 10:00 AM
+        function updateCountdown() {
+            const now = new Date();
+            const resultDay = 5; // Friday is 5
+            const nextFriday = new Date(now);
+            
+            nextFriday.setDate(now.getDate() + (D => (D + 7 - now.getDay()) % 7)(resultDay));
+            nextFriday.setHours(10, 0, 0, 0);
+
+            // If today is Friday and past 10 AM, target next week's Friday
+            if (now.getDay() === 5 && now.getHours() >= 24) { // or wrap up logic
+                // Keep default countdown simulation if needed
+            }
+
+            const diff = nextFriday - now;
+            if (diff > 0) {
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 </body>
 </html>
