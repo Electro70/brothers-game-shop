@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Game Vault - Customer Support</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --header-bg: #1e293b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --accent-color: #eab308; /* Game Vault Yellow Accent */
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8f9fa;
+            --text-color: #1f2937;
+            --header-bg: #ffffff;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 90px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container img {
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-trigger {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--border-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Main Container */
+        container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: block;
+        }
+
+        /* Support Main Green Banner Box */
+        .support-banner {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+            position: relative;
+        }
+
+        .support-banner-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .support-icon-box {
+            background: rgba(255, 255, 255, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .support-titles h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .support-titles p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .response-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .response-badge span {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Support Links List Card */
+        .support-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+        .support-card:hover {
+            transform: translateY(-2px);
+            border-color: #059669;
+        }
+
+        .support-card-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .app-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .app-icon.telegram {
+            background: #229ED9;
+        }
+
+        .app-icon.whatsapp {
+            background: #25D366;
+        }
+
+        .app-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .app-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .status-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .status-pill.active {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .status-pill.online {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .app-sub {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .app-handle {
+            font-size: 12px;
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .arrow-icon {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* Bottom Grid Info Boxes */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .info-box-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin: 0 auto 10px auto;
+        }
+
+        .info-box.time .info-box-icon {
+            background: rgba(5, 150, 105, 0.15);
+            color: #059669;
+        }
+
+        .info-box-title {
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .info-box-value {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        /* Footer Branding Section */
+        .site-footer {
+            text-align: center;
+            padding: 20px 15px;
+            color: #94a3b8;
+            font-size: 12px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+
+        .footer-logo img {
+            height: 28px;
+            object-fit: contain;
+            margin-bottom: 8px;
+        }
+
+        .made-by {
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .made-by a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .made-by a:hover {
+            text-decoration: underline;
+        }
+
+        /* Bottom Navigation Bar (5 Items) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--header-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+                <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:var(--accent-color);">GAME VAULT</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="lang-trigger" onclick="openModal()">
+                <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <container>
+        
+        <!-- Customer Support Top Banner -->
+        <div class="support-banner">
+            <div class="support-banner-top">
+                <div class="support-icon-box">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <div class="support-titles">
+                    <h2>Customer Support</h2>
+                    <p>We're here to assist you (12 AM - 9 PM)</p>
+                </div>
+            </div>
+            <div class="response-badge">
+                <span></span> &lt; 30 minutes response time
+            </div>
+        </div>
+
+        <!-- Option 1: Telegram Direct Admin -->
+        <a href="https://t.me/zunayed_islam00" target="_blank" class="support-card">
+            <div class="support-card-left">
+                <div class="app-icon telegram">
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+                <div class="app-details">
+                    <div class="app-title-row">
+                        <span class="app-name">Telegram Direct Admin</span>
+                        <span class="status-pill active">Active</span>
+                    </div>
+                    <div class="app-sub">Message Admin Directly</div>
+                    <div class="app-handle">@zunayed_islam00</div>
+                </div>
+            </div>
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </a>
+
+        <!-- Option 2: Whatsapp Support -->
+        <a href="https://wa.me/Ben_Suspend" target="_blank" class="support-card">
+            <div class="support-card-left">
+                <div class="app-icon whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div class="app-details">
+                    <div class="app-title-row">
+                        <span class="app-name">Whatsapp Support</span>
+                        <span class="status-pill online">Online</span>
+                    </div>
+                    <div class="app-sub">Message Admin</div>
+                    <div class="app-handle">@Ben_Suspend</div>
+                </div>
+            </div>
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </a>
+
+        <!-- Option 3: Telegram Community Page -->
+        <a href="https://t.me/brothersgameshopgroupbd" target="_blank" class="support-card">
+            <div class="support-card-left">
+                <div class="app-icon telegram">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <div class="app-details">
+                    <div class="app-title-row">
+                        <span class="app-name">Telegram Page</span>
+                        <span class="status-pill active">Community</span>
+                    </div>
+                    <div class="app-sub">Join our Telegram Group</div>
+                </div>
+            </div>
+            <div class="arrow-icon">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </a>
+
+        <!-- Bottom Grid Boxes (Response Time & Support Hours) -->
+        <div class="info-grid">
+            <div class="info-box time">
+                <div class="info-box-icon">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div class="info-box-title">Response Time</div>
+                <div class="info-box-value">&lt; 30 minutes</div>
+            </div>
+
+            <div class="info-box hours">
+                <div class="info-box-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <div class="info-box-title">Support Hours</div>
+                <div class="info-box-value">12 AM - 9 PM</div>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="site-footer">
+            <div class="footer-logo">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
+                <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
+            </div>
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">Instant game top-ups, likes and guild glory – trusted by gamers worldwide.</p>
+            <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2019 - 2026 Game Vault Bangladesh.</p>
+            
+            <div class="made-by">
+                <a href="https://t.me/zunayed_islam00" target="_blank">Made by Game Vault 👾</a>
+            </div>
+        </div>
+
+    </container>
+
+    <!-- Bottom Navigation Bar (5 Items) -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house" style="font-size: 18px;"></i>
+            <span>Home</span>
+        </a>
+        <a href="orders.html" class="nav-item">
+            <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
+            <span>Orders</span>
+        </a>
+        <a href="add-money.html" class="nav-item">
+            <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
+            <span>Add Money</span>
+        </a>
+        <a href="support.html" class="nav-item active">
+            <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
+            <span>Support</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fa-solid fa-user" style="font-size: 18px;"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Language & Dark Mode Modal Placeholder -->
+    <div class="modal-overlay" id="langModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+        <div class="modal-box" style="background:var(--header-bg); width:100%; max-width:400px; border-radius:16px; padding:20px; border:1px solid var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold;">
+                <span>Language & Theme</span>
+                <button onclick="closeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div onclick="selectLang('en')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:8px; cursor:pointer;">🇺🇸 English</div>
+            <div onclick="selectLang('bn')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; cursor:pointer;">🇧🇩 বাংলা</div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('langModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('langModal').style.display = 'none'; }
+        function selectLang(lang) {
+            localStorage.setItem('language', lang);
+            location.reload();
+        }
+
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</body>
+</html>
