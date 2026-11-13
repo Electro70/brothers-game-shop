@@ -272,10 +272,9 @@
             margin-top: 30px;
         }
 
-        .footer-logo {
-            font-weight: 800;
-            font-size: 16px;
-            color: var(--accent-color);
+        .footer-logo img {
+            height: 28px;
+            object-fit: contain;
             margin-bottom: 8px;
         }
 
@@ -294,7 +293,23 @@
             font-size: 11px;
         }
 
-        /* Bottom Navigation Bar */
+        .made-by {
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .made-by a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .made-by a:hover {
+            text-decoration: underline;
+        }
+
+        /* Bottom Navigation Bar (5 Items) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -318,6 +333,7 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            cursor: pointer;
         }
 
         .nav-item.active {
@@ -390,7 +406,10 @@
 
         <!-- Footer Info -->
         <div class="site-footer">
-            <div class="footer-logo">GAME VAULT</div>
+            <div class="footer-logo">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
+                <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
+            </div>
             <p style="font-size: 11px; color: #64748b; margin-bottom: 10px;">Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.</p>
             <div class="footer-links">
                 <a href="#">Terms of Service</a>
@@ -398,7 +417,11 @@
                 <a href="#">Refund Policy</a>
                 <a href="#">API Docs</a>
             </div>
-            <p style="font-size: 10px; color: #94a3b8; margin-top: 15px;">© 2019 - 2026 Game Vault Bangladesh, All trademarks and copyrights belong to their respective owners.</p>
+            <p style="font-size: 10px; color: #94a3b8; margin-top: 10px;">© 2019 - 2026 Game Vault Bangladesh, All trademarks and copyrights belong to their respective owners.</p>
+            
+            <div class="made-by">
+                <a href="https://t.me/zunayed_islam00" target="_blank">Made by Game Vault 👾</a>
+            </div>
         </div>
 
     </div>
@@ -427,7 +450,7 @@
         </a>
     </nav>
 
-    <!-- Language & Dark Mode Modal Placeholder (Consistent with Home) -->
+    <!-- Language & Dark Mode Modal Placeholder -->
     <div class="modal-overlay" id="langModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
         <div class="modal-box" style="background:var(--header-bg); width:100%; max-width:400px; border-radius:16px; padding:20px; border:1px solid var(--border-color);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold;">
@@ -440,7 +463,6 @@
     </div>
 
     <script>
-        // Modal functions
         function openModal() { document.getElementById('langModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('langModal').style.display = 'none'; }
         function selectLang(lang) {
@@ -448,7 +470,6 @@
             location.reload();
         }
 
-        // Check theme
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
         }
