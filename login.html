@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Vault - Login</title>
+    <title>Game Vault - Sign In</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -35,32 +35,168 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            padding-bottom: 90px;
+            transition: background 0.3s, color 0.3s;
         }
 
-        .login-card {
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-container img {
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-trigger {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--border-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .balance-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--border-color);
+            padding: 4px 10px 4px 6px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .balance-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #334155;
+            overflow: hidden;
+        }
+
+        .add-balance-btn {
+            background: #10b981;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            text-decoration: none;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Top Yellow Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, #eab308, #ca8a04);
+            color: #1f2937;
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(234, 179, 8, 0.3);
+        }
+
+        .welcome-banner h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .welcome-banner p {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        /* Social Auth Buttons */
+        .social-btn {
+            width: 100%;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: 0.2s;
+        }
+
+        .social-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 18px 0;
+            position: relative;
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        /* Form Card Box */
+        .card-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .login-logo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .login-logo h1 {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--accent-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .form-group {
@@ -68,11 +204,17 @@
         }
 
         .form-group label {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             font-size: 13px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: var(--text-color);
+        }
+
+        .form-group label i {
+            color: #94a3b8;
         }
 
         .form-control {
@@ -90,97 +232,271 @@
             border-color: var(--accent-color);
         }
 
-        .auth-btn {
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .forgot-link {
+            font-size: 12px;
+            color: #059669;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Sign In Button */
+        .signin-btn {
             width: 100%;
             background: var(--accent-color);
             color: #1f2937;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
+            padding: 14px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 800;
             cursor: pointer;
-            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
             transition: 0.2s;
+            margin-top: 10px;
         }
 
-        .auth-btn:hover {
+        .signin-btn:hover {
             opacity: 0.9;
         }
 
-        .divider {
+        .bottom-links-text {
             text-align: center;
-            margin: 20px 0;
-            position: relative;
-            font-size: 12px;
-            color: #94a3b8;
-            font-weight: 600;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 15px;
         }
 
-        .google-btn {
-            width: 100%;
-            background: #ffffff;
-            color: #334155;
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
+        .bottom-links-text a {
+            color: #059669;
+            text-decoration: none;
             font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: 0.2s;
         }
 
-        .google-btn:hover {
-            background: #f1f5f9;
+        .terms-note {
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .terms-note a {
+            color: var(--text-color);
+            text-decoration: underline;
         }
 
         #error-msg {
             color: #ef4444;
             font-size: 12px;
-            margin-top: 10px;
+            margin-bottom: 10px;
             text-align: center;
             font-weight: 600;
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 20px 15px;
+            color: #94a3b8;
+            font-size: 12px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+
+        .footer-logo img {
+            height: 28px;
+            object-fit: contain;
+            margin-bottom: 8px;
+        }
+
+        .made-by {
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .made-by a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--header-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
-        <div class="login-logo">
-            <h1>GAME VAULT</h1>
-            <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Sign in to your account</p>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+                <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:var(--accent-color);">GAME VAULT</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="lang-trigger" onclick="openModal()">
+                <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+            </div>
+            <div class="balance-pill">
+                <div class="balance-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span>৳ <span id="user-balance">0.0</span></span>
+                <a href="add-money.html" class="add-balance-btn"><i class="fa-solid fa-plus"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Top Yellow Welcome Banner -->
+        <div class="welcome-banner">
+            <h2>Welcome Back, Commander!</h2>
+            <p>Sign in to continue your epic journey!</p>
         </div>
 
-        <form id="login-form">
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="password" class="form-control" placeholder="••••••••" required>
-            </div>
-
-            <div id="error-msg"></div>
-
-            <button type="submit" class="auth-btn">Sign In</button>
-        </form>
-
-        <div class="divider">OR</div>
-
-        <button type="button" id="google-login-btn" class="google-btn">
+        <!-- Social Login Buttons -->
+        <button type="button" id="google-login-btn" class="social-btn">
             <i class="fa-brands fa-google" style="color: #ea4335;"></i> Continue with Google
         </button>
+        
+        <button type="button" class="social-btn">
+            <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Continue with Discord
+        </button>
+
+        <div class="divider">or</div>
+
+        <!-- Login Form Box -->
+        <div class="card-box">
+            <form id="login-form">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-row">
+                        <label><i class="fa-solid fa-lock"></i> Password</label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+                    <input type="password" id="password" class="form-control" placeholder="********" required>
+                </div>
+
+                <div id="error-msg"></div>
+
+                <button type="submit" class="signin-btn">Sign In</button>
+            </form>
+
+            <div class="bottom-links-text">
+                Don't have an account? <a href="#">Create Account</a>
+            </div>
+        </div>
+
+        <div class="terms-note">
+            By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="site-footer">
+            <div class="footer-logo">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
+                <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
+            </div>
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.</p>
+            <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2019 - 2026 Game Vault Bangladesh, All trademarks belong to their respective owners.</p>
+            
+            <div class="made-by">
+                <a href="https://t.me/zunayed_islam00" target="_blank">Made by Game Vault 👾</a>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Firebase Auth Logic Script -->
+    <!-- Bottom Navigation Bar (5 Items) -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house" style="font-size: 18px;"></i>
+            <span>Home</span>
+        </a>
+        <a href="orders.html" class="nav-item">
+            <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
+            <span>Orders</span>
+        </a>
+        <a href="add-money.html" class="nav-item">
+            <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
+            <span>Add Money</span>
+        </a>
+        <a href="support.html" class="nav-item">
+            <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
+            <span>Support</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fa-solid fa-user" style="font-size: 18px;"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Language & Modal -->
+    <div class="modal-overlay" id="langModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
+        <div class="modal-box" style="background:var(--header-bg); width:100%; max-width:400px; border-radius:16px; padding:20px; border:1px solid var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
+                <span>Language & Theme</span>
+                <button onclick="closeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div onclick="selectLang('en')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:8px; cursor:pointer; color:var(--text-color);">🇺🇸 English</div>
+            <div onclick="selectLang('bn')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; cursor:pointer; color:var(--text-color);">🇧🇩 বাংলা</div>
+        </div>
+    </div>
+
+    <!-- Firebase Auth Integration Script -->
     <script type="module">
         import { auth, googleProvider, signInWithEmailAndPassword, signInWithPopup } from "./firebase.js";
+
+        function openModal() { document.getElementById('langModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('langModal').style.display = 'none'; }
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+
+        window.selectLang = function(lang) {
+            localStorage.setItem('language', lang);
+            location.reload();
+        }
 
         const loginForm = document.getElementById('login-form');
         const googleBtn = document.getElementById('google-login-btn');
@@ -194,7 +510,7 @@
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = "index.html"; // সফলভাবে লগইন হলে হোমপেজে চলে যাবে
+                window.location.href = "index.html";
             } catch (error) {
                 errorMsg.innerText = "Invalid email or password. Please try again.";
             }
@@ -204,11 +520,15 @@
         googleBtn.addEventListener('click', async () => {
             try {
                 await signInWithPopup(auth, googleProvider);
-                window.location.href = "index.html"; // সফলভাবে লগইন হলে হোমপেজে চলে যাবে
+                window.location.href = "index.html";
             } catch (error) {
                 errorMsg.innerText = "Google Sign-In failed. Please try again.";
             }
         });
+
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
     </script>
 </body>
 </html>
