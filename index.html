@@ -6,6 +6,11 @@
     <title id="page-title">Game Vault - Top Up Center</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
     <style>
         :root {
             --bg-color: #f8f9fa;
@@ -13,7 +18,7 @@
             --header-bg: #ffffff;
             --card-bg: #ffffff;
             --border-color: #e5e7eb;
-            --accent-color: #eab308; /* Yellow accent for Game Vault */
+            --accent-color: #eab308;
         }
 
         [data-theme="dark"] {
@@ -38,7 +43,6 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -63,7 +67,6 @@
             gap: 12px;
         }
 
-        /* Language Button */
         .lang-trigger {
             display: flex;
             align-items: center;
@@ -77,7 +80,6 @@
             color: var(--text-color);
         }
 
-        /* Sign In Button */
         .signin-btn {
             background: var(--accent-color);
             color: #000;
@@ -91,14 +93,12 @@
             gap: 6px;
         }
 
-        /* Main Container */
         .container {
             max-width: 600px;
             margin: 20px auto;
             padding: 0 15px;
         }
 
-        /* Hero Banner Slogan */
         .hero-banner {
             text-align: center;
             margin-bottom: 15px;
@@ -109,7 +109,6 @@
             font-weight: 600;
         }
 
-        /* Image Slider Section (2 Banners) */
         .slider-container {
             position: relative;
             width: 100%;
@@ -142,7 +141,6 @@
             object-fit: cover;
         }
 
-        /* Coin Box Section */
         .coin-box {
             background: linear-gradient(135deg, #059669, #047857);
             color: white;
@@ -151,6 +149,7 @@
             margin-bottom: 15px;
             box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25);
             position: relative;
+            cursor: pointer;
         }
 
         .coin-header-row {
@@ -224,12 +223,6 @@
             font-weight: 800;
         }
 
-        .coin-gift-icon {
-            font-size: 28px;
-            color: #facc15;
-        }
-
-        /* Flash Sale Section */
         .flash-sale-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -318,7 +311,6 @@
             text-decoration: none;
         }
 
-        /* Products Grid (Weekly & Monthly Membership Cards) */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -334,6 +326,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .product-img-box {
@@ -396,7 +389,6 @@
             text-align: center;
             text-decoration: none;
             display: block;
-            transition: 0.2s;
         }
 
         .buy-btn.locked {
@@ -405,7 +397,6 @@
             cursor: not-allowed;
         }
 
-        /* FreeFire Topup Section Styles */
         .section-title-wrapper {
             display: flex;
             align-items: center;
@@ -447,11 +438,6 @@
             text-align: center;
             padding-bottom: 12px;
             cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .ff-card:hover {
-            transform: translateY(-3px);
         }
 
         .ff-card-img {
@@ -474,7 +460,6 @@
             color: var(--text-color);
         }
 
-        /* Modal Overlay for Language & Dark Mode */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -516,7 +501,6 @@
             color: var(--text-color);
         }
 
-        /* Dark Mode Toggle Row inside Modal */
         .dark-mode-row {
             display: flex;
             justify-content: space-between;
@@ -570,7 +554,6 @@
             transform: translateX(22px);
         }
 
-        /* Language Options List */
         .lang-option {
             display: flex;
             align-items: center;
@@ -595,7 +578,6 @@
             font-weight: 600;
         }
 
-        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -637,7 +619,7 @@
             <div class="lang-trigger" onclick="openModal()">
                 <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
-            <a href="/login" class="signin-btn"><i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span></a>
+            <a href="login.html" class="signin-btn"><i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span></a>
         </div>
     </header>
 
@@ -648,14 +630,14 @@
             <p data-i18n="slogan">Topup in seconds - available 24/7!</p>
         </div>
 
-        <!-- Image Slider (2 Banners looping) -->
+        <!-- Image Slider (Excluded from auth check) -->
         <div class="slider-container">
             <div class="slide active"><img src="slide1.png" alt="Banner 1"></div>
             <div class="slide"><img src="slide2.png" alt="Banner 2"></div>
         </div>
 
-        <!-- Game Vault Coin Box -->
-        <div class="coin-box">
+        <!-- Game Vault Coin Box (Protected) -->
+        <div class="coin-box" onclick="handleProtectedAction('order.html?product=coins')">
             <div class="coin-header-row">
                 <div class="coin-branding">
                     <div class="coin-logo-circle">G</div>
@@ -703,10 +685,10 @@
             <a href="#" class="view-all-btn" data-i18n="view_all">View All</a>
         </div>
 
-        <!-- Products Grid (Weekly & Monthly Membership) -->
+        <!-- Products Grid (Weekly & Monthly Membership - Protected) -->
         <div class="products-grid">
             <!-- Weekly Membership Card -->
-            <div class="product-card">
+            <div class="product-card" onclick="handleProtectedAction('order.html?product=weekly')">
                 <div class="product-img-box">
                     <img src="weekly.jpg" alt="Weekly Membership">
                 </div>
@@ -718,12 +700,12 @@
                             <span class="old-price">৳ 158</span>
                         </div>
                     </div>
-                    <a href="#" class="buy-btn" id="buy-weekly" onclick="return checkSaleActive(event)">Order Now</a>
+                    <button class="buy-btn" id="buy-weekly" onclick="event.stopPropagation(); handleProtectedAction('order.html?product=weekly')">Order Now</button>
                 </div>
             </div>
 
             <!-- Monthly Membership Card -->
-            <div class="product-card">
+            <div class="product-card" onclick="handleProtectedAction('order.html?product=monthly')">
                 <div class="product-img-box">
                     <img src="monthly.jpg" alt="Monthly Membership">
                 </div>
@@ -735,7 +717,7 @@
                             <span class="old-price">৳ 790</span>
                         </div>
                     </div>
-                    <a href="#" class="buy-btn" id="buy-monthly" onclick="return checkSaleActive(event)">Order Now</a>
+                    <button class="buy-btn" id="buy-monthly" onclick="event.stopPropagation(); handleProtectedAction('order.html?product=monthly')">Order Now</button>
                 </div>
             </div>
         </div>
@@ -748,7 +730,7 @@
 
         <div class="ff-topup-grid">
             <!-- Diamonds -->
-            <div class="ff-card">
+            <div class="ff-card" onclick="handleProtectedAction('order.html?product=diamond')">
                 <div class="ff-card-img">
                     <img src="diamond.png" alt="Diamonds">
                 </div>
@@ -756,7 +738,7 @@
             </div>
 
             <!-- Likes -->
-            <div class="ff-card">
+            <div class="ff-card" onclick="handleProtectedAction('order.html?product=likes')">
                 <div class="ff-card-img">
                     <img src="likes.png" alt="Likes">
                 </div>
@@ -764,7 +746,7 @@
             </div>
 
             <!-- Indonesia -->
-            <div class="ff-card">
+            <div class="ff-card" onclick="handleProtectedAction('order.html?product=indonesia')">
                 <div class="ff-card-img">
                     <img src="indonesia.png" alt="Indonesia">
                 </div>
@@ -772,7 +754,7 @@
             </div>
 
             <!-- Guild Glory -->
-            <div class="ff-card">
+            <div class="ff-card" onclick="handleProtectedAction('order.html?product=guild')">
                 <div class="ff-card-img">
                     <img src="guild.png" alt="Guild Glory">
                 </div>
@@ -780,7 +762,7 @@
             </div>
 
             <!-- Levelup Pass -->
-            <div class="ff-card">
+            <div class="ff-card" onclick="handleProtectedAction('order.html?product=levelpass')">
                 <div class="ff-card-img">
                     <img src="levelpass.png" alt="Levelup Pass">
                 </div>
@@ -797,7 +779,6 @@
                 <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Dark Mode Toggle -->
             <div class="dark-mode-row">
                 <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
                     <i class="fa-solid fa-moon"></i> <span data-i18n="dark_mode">Dark Mode</span>
@@ -808,7 +789,6 @@
                 </label>
             </div>
 
-            <!-- Languages -->
             <div class="lang-option selected" id="lang-en-option" onclick="selectLang('en')">
                 <div class="lang-left">
                     <span>🇺🇸</span> English
@@ -827,25 +807,50 @@
 
     <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a href="/" class="nav-item active">
+        <a href="index.html" class="nav-item active">
             <i class="fa-solid fa-house"></i>
             <span data-i18n="nav_home">Home</span>
         </a>
-        <a href="/transaction-history" class="nav-item">
+        <a href="#" onclick="handleProtectedAction('orders.html')" class="nav-item">
             <i class="fa-solid fa-file-lines"></i>
             <span data-i18n="nav_orders">Orders</span>
         </a>
-        <a href="/support" class="nav-item">
+        <a href="support.html" class="nav-item">
             <i class="fa-solid fa-headset"></i>
             <span data-i18n="nav_support">Support</span>
         </a>
-        <a href="/profile" class="nav-item">
+        <a href="#" onclick="handleProtectedAction('profile.html')" class="nav-item">
             <i class="fa-solid fa-user"></i>
             <span data-i18n="nav_profile">Profile</span>
         </a>
     </nav>
 
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "gamevault-f38b3.firebaseapp.com",
+            projectId: "gamevault-f38b3",
+            storageBucket: "gamevault-f38b3.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // --- AUTH CHECK FUNCTION (LeakStudio BD Style) ---
+        function handleProtectedAction(targetUrl) {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // ইউজার সাইন-ইন করা আছে, সরাসরি কাঙ্ক্ষিত পেজে নিয়ে যাবে
+                    window.location.href = targetUrl;
+                } else {
+                    // ইউজার সাইন-ইন করা নেই, লগইন পেজে পাঠিয়ে দেবে এবং কোথায় যেতে চেয়েছিল তা সেভ রাখবে
+                    localStorage.setItem('redirectUrl', targetUrl);
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+
         // Translations Dictionary
         const translations = {
             en: {
@@ -906,7 +911,6 @@
             }
         };
 
-        // Modal Open/Close Logic
         function openModal() {
             document.getElementById('langModal').style.display = 'flex';
         }
@@ -914,7 +918,6 @@
             document.getElementById('langModal').style.display = 'none';
         }
 
-        // Dark Mode Toggle Logic
         function toggleDarkMode() {
             if (document.getElementById('darkModeToggle').checked) {
                 document.documentElement.setAttribute('data-theme', 'dark');
@@ -925,13 +928,11 @@
             }
         }
 
-        // Check saved theme on load
         if (localStorage.getItem('theme') === 'dark') {
             document.getElementById('darkModeToggle').checked = true;
             document.documentElement.setAttribute('data-theme', 'dark');
         }
 
-        // Language Switching Logic
         function selectLang(lang) {
             localStorage.setItem('language', lang);
             applyLanguage(lang);
@@ -969,7 +970,6 @@
         const savedLang = localStorage.getItem('language') || 'en';
         applyLanguage(savedLang);
 
-        // Banner Slider Auto-Loop
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         function nextSlide() {
@@ -979,12 +979,11 @@
         }
         setInterval(nextSlide, 3500);
 
-        // Flash Sale Logic: Active every Friday from 10:00 AM to 12:00 Midnight (24:00)
         let isSaleActive = false;
 
         function updateSaleStatus() {
             const now = new Date();
-            const day = now.getDay(); // 0: Sun, 5: Fri, 6: Sat
+            const day = now.getDay();
             const hour = now.getHours();
             const minute = now.getMinutes();
 
