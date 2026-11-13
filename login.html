@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+প<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -545,15 +545,24 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
+        // Helper function to handle redirect after successful login
+        function handleSuccessfulRedirect() {
+            const redirectUrl = localStorage.getItem('redirectUrl');
+            if (redirectUrl) {
+                localStorage.removeItem('redirectUrl'); // ক্লিয়ার করে দেওয়া
+                window.location.href = redirectUrl;     // ইউজার যেখানে যেতে চেয়েছিল সেখানে পাঠানো
+            } else {
+                window.location.href = 'index.html';    // না থাকলে হোমে পাঠানো
+            }
+        }
+
         // Google Login with Redirect Support
         window.googleLogin = function(event) {
             event.preventDefault();
             signInWithPopup(auth, provider)
                 .then((result) => {
                     alert(localStorage.getItem('language') === 'bn' ? 'গুগল লগইন সফল হয়েছে!' : 'Google Login Successful!');
-                    const redirectUrl = localStorage.getItem('redirectUrl') || '/';
-                    window.location.href = redirectUrl;
-                    localStorage.removeItem('redirectUrl');
+                    handleSuccessfulRedirect();
                 })
                 .catch((error) => {
                     console.error("Login Error:", error.message);
@@ -571,9 +580,7 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     alert(isBn ? 'লগইন সফল হয়েছে!' : 'Login successful!');
-                    const redirectUrl = localStorage.getItem('redirectUrl') || '/';
-                    window.location.href = redirectUrl;
-                    localStorage.removeItem('redirectUrl');
+                    handleSuccessfulRedirect();
                 })
                 .catch((error) => {
                     console.error("Login Error:", error.message);
