@@ -9,20 +9,20 @@
     
     <style>
         :root {
-            --bg-color: #0f172a;
-            --text-color: #f8fafc;
-            --header-bg: #1e293b;
-            --card-bg: #1e293b;
-            --border-color: #334155;
-            --accent-color: #eab308; /* Game Vault Yellow Accent */
-        }
-
-        [data-theme="light"] {
             --bg-color: #f8f9fa;
             --text-color: #1f2937;
             --header-bg: #ffffff;
             --card-bg: #ffffff;
             --border-color: #e5e7eb;
+            --accent-color: #eab308; /* Game Vault Yellow Accent */
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --header-bg: #1e293b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
         }
 
         * {
@@ -78,7 +78,7 @@
         }
 
         /* Main Container */
-        container {
+        .container {
             max-width: 500px;
             margin: 20px auto;
             padding: 0 15px;
@@ -373,7 +373,7 @@
     </header>
 
     <!-- Main Container -->
-    <container>
+    <div class="container">
         
         <!-- Customer Support Top Banner -->
         <div class="support-banner">
@@ -382,12 +382,12 @@
                     <i class="fa-solid fa-headset"></i>
                 </div>
                 <div class="support-titles">
-                    <h2>Customer Support</h2>
-                    <p>We're here to assist you (12 AM - 9 PM)</p>
+                    <h2 data-i18n="support_title">Customer Support</h2>
+                    <p data-i18n="support_sub">We're here to assist you (12 AM - 9 PM)</p>
                 </div>
             </div>
             <div class="response-badge">
-                <span></span> &lt; 30 minutes response time
+                <span></span> <span data-i18n="response_badge">&lt; 30 minutes response time</span>
             </div>
         </div>
 
@@ -399,10 +399,10 @@
                 </div>
                 <div class="app-details">
                     <div class="app-title-row">
-                        <span class="app-name">Telegram Direct Admin</span>
-                        <span class="status-pill active">Active</span>
+                        <span class="app-name" data-i18n="tg_admin_title">Telegram Direct Admin</span>
+                        <span class="status-pill active" data-i18n="active">Active</span>
                     </div>
-                    <div class="app-sub">Message Admin Directly</div>
+                    <div class="app-sub" data-i18n="tg_admin_sub">Message Admin Directly</div>
                     <div class="app-handle">@zunayed_islam00</div>
                 </div>
             </div>
@@ -419,10 +419,10 @@
                 </div>
                 <div class="app-details">
                     <div class="app-title-row">
-                        <span class="app-name">Whatsapp Support</span>
-                        <span class="status-pill online">Online</span>
+                        <span class="app-name" data-i18n="wa_title">Whatsapp Support</span>
+                        <span class="status-pill online" data-i18n="online">Online</span>
                     </div>
-                    <div class="app-sub">Message Admin</div>
+                    <div class="app-sub" data-i18n="wa_sub">Message Admin</div>
                     <div class="app-handle">@Ben_Suspend</div>
                 </div>
             </div>
@@ -439,10 +439,10 @@
                 </div>
                 <div class="app-details">
                     <div class="app-title-row">
-                        <span class="app-name">Telegram Page</span>
-                        <span class="status-pill active">Community</span>
+                        <span class="app-name" data-i18n="tg_comm_title">Telegram Page</span>
+                        <span class="status-pill active" data-i18n="community">Community</span>
                     </div>
-                    <div class="app-sub">Join our Telegram Group</div>
+                    <div class="app-sub" data-i18n="tg_comm_sub">Join our Telegram Group</div>
                 </div>
             </div>
             <div class="arrow-icon">
@@ -456,15 +456,15 @@
                 <div class="info-box-icon">
                     <i class="fa-solid fa-clock"></i>
                 </div>
-                <div class="info-box-title">Response Time</div>
-                <div class="info-box-value">&lt; 30 minutes</div>
+                <div class="info-box-title" data-i18n="box_resp_title">Response Time</div>
+                <div class="info-box-value" data-i18n="box_resp_val">&lt; 30 minutes</div>
             </div>
 
             <div class="info-box hours">
                 <div class="info-box-icon">
                     <i class="fa-solid fa-calendar-days"></i>
                 </div>
-                <div class="info-box-title">Support Hours</div>
+                <div class="info-box-title" data-i18n="box_hours_title">Support Hours</div>
                 <div class="info-box-value">12 AM - 9 PM</div>
             </div>
         </div>
@@ -475,7 +475,7 @@
                 <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
                 <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
             </div>
-            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">Instant game top-ups, likes and guild glory – trusted by gamers worldwide.</p>
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;" data-i18n="footer_desc">Instant game top-ups, likes and guild glory – trusted by gamers worldwide.</p>
             <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2019 - 2026 Game Vault Bangladesh.</p>
             
             <div class="made-by">
@@ -483,55 +483,149 @@
             </div>
         </div>
 
-    </container>
+    </div>
 
     <!-- Bottom Navigation Bar (5 Items) -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item">
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
-            <span>Home</span>
+            <span data-i18n="nav_home">Home</span>
         </a>
         <a href="orders.html" class="nav-item">
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
-            <span>Orders</span>
+            <span data-i18n="nav_orders">Orders</span>
         </a>
         <a href="add-money.html" class="nav-item">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
-            <span>Add Money</span>
+            <span data-i18n="nav_add_money">Add Money</span>
         </a>
         <a href="support.html" class="nav-item active">
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
-            <span>Support</span>
+            <span data-i18n="nav_support">Support</span>
         </a>
         <a href="profile.html" class="nav-item">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
-            <span>Profile</span>
+            <span data-i18n="nav_profile">Profile</span>
         </a>
     </nav>
 
-    <!-- Language & Dark Mode Modal Placeholder -->
+    <!-- Language & Dark Mode Modal -->
     <div class="modal-overlay" id="langModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
         <div class="modal-box" style="background:var(--header-bg); width:100%; max-width:400px; border-radius:16px; padding:20px; border:1px solid var(--border-color);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
                 <span>Language & Theme</span>
                 <button onclick="closeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div onclick="selectLang('en')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:8px; cursor:pointer;">🇺🇸 English</div>
-            <div onclick="selectLang('bn')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; cursor:pointer;">🇧🇩 বাংলা</div>
+            <div onclick="selectLang('en')" id="lang-en-option" style="padding:12px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:8px; cursor:pointer; font-weight:600; color:var(--text-color); display:flex; justify-content:space-between; align-items:center;">
+                <span>🇺🇸 English</span>
+                <i class="fa-solid fa-check" id="check-en" style="color: #22c55e;"></i>
+            </div>
+            <div onclick="selectLang('bn')" id="lang-bn-option" style="padding:12px; border:1px solid var(--border-color); border-radius:8px; cursor:pointer; font-weight:600; color:var(--text-color); display:flex; justify-content:space-between; align-items:center;">
+                <span>🇧🇩 বাংলা</span>
+                <i class="fa-solid fa-check" id="check-bn" style="color: #22c55e; display: none;"></i>
+            </div>
         </div>
     </div>
 
     <script>
+        // Translations Dictionary for Support Page
+        const translations = {
+            en: {
+                title: "Game Vault - Customer Support",
+                support_title: "Customer Support",
+                support_sub: "We're here to assist you (12 AM - 9 PM)",
+                response_badge: "< 30 minutes response time",
+                tg_admin_title: "Telegram Direct Admin",
+                active: "Active",
+                tg_admin_sub: "Message Admin Directly",
+                wa_title: "Whatsapp Support",
+                online: "Online",
+                wa_sub: "Message Admin",
+                tg_comm_title: "Telegram Page",
+                community: "Community",
+                tg_comm_sub: "Join our Telegram Group",
+                box_resp_title: "Response Time",
+                box_resp_val: "< 30 minutes",
+                box_hours_title: "Support Hours",
+                footer_desc: "Instant game top-ups, likes and guild glory – trusted by gamers worldwide.",
+                nav_home: "Home",
+                nav_orders: "Orders",
+                nav_add_money: "Add Money",
+                nav_support: "Support",
+                nav_profile: "Profile"
+            },
+            bn: {
+                title: "গেম ভল্ট - কাস্টমার সাপোর্ট",
+                support_title: "কাস্টমার সাপোর্ট",
+                support_sub: "আমরা আপনাকে সহায়তা করতে প্রস্তুত (রাত ১২টা - রাত ৯টা)",
+                response_badge: "< ৩০ মিনিটের মধ্যে রেসপন্স টাইম",
+                tg_admin_title: "টেলিগ্রাম ডিরেক্ট অ্যাডমিন",
+                active: "অ্যাক্টিভ",
+                tg_admin_sub: "সরাসরি অ্যাডমিনকে মেসেজ করুন",
+                wa_title: "হোয়াটসঅ্যাপ সাপোর্ট",
+                online: "অনলাইন",
+                wa_sub: "অ্যাডমিনকে মেসেজ করুন",
+                tg_comm_title: "টেলিগ্রাম পেজ",
+                community: "কমিউনিটি",
+                tg_comm_sub: "আমাদের টেলিগ্রাম গ্রুপে যোগ দিন",
+                box_resp_title: "রেসপন্স টাইম",
+                box_resp_val: "< ৩০ মিনিট",
+                box_hours_title: "সাপোর্ট আওয়ার",
+                footer_desc: "ইনস্ট্যান্ট গেম টপ-আপ, লাইক এবং গিল্ড গ্লোরি – বিশ্বব্যাপী গেমারদের বিশ্বস্ত মাধ্যম।",
+                nav_home: "হোম",
+                nav_orders: "অর্ডার",
+                nav_add_money: "ব্যালেন্স যোগ",
+                nav_support: "সাপোর্ট",
+                nav_profile: "প্রোফাইল"
+            }
+        };
+
         function openModal() { document.getElementById('langModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('langModal').style.display = 'none'; }
+
         function selectLang(lang) {
             localStorage.setItem('language', lang);
-            location.reload();
+            applyLanguage(lang);
+            closeModal();
         }
 
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('page-title').innerText = t.title;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.innerText = t[key];
+                }
+            });
+
+            if (lang === 'bn') {
+                document.getElementById('current-lang-flag').innerText = '🇧🇩';
+                document.getElementById('current-lang-text').innerText = 'BN';
+                document.getElementById('lang-bn-option').classList.add('selected');
+                document.getElementById('check-bn').style.display = 'block';
+                document.getElementById('lang-en-option').classList.remove('selected');
+                document.getElementById('check-en').style.display = 'none';
+            } else {
+                document.getElementById('current-lang-flag').innerText = '🇺🇸';
+                document.getElementById('current-lang-text').innerText = 'EN';
+                document.getElementById('lang-en-option').classList.add('selected');
+                document.getElementById('check-en').style.display = 'block';
+                document.getElementById('lang-bn-option').classList.remove('selected');
+                document.getElementById('check-bn').style.display = 'none';
+            }
+        }
+
+        // Always default to Light Mode unless user explicitly toggled dark mode globally
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
         }
+
+        const savedLang = localStorage.getItem('language') || 'en';
+        applyLanguage(savedLang);
     </script>
 </body>
 </html>
