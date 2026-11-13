@@ -1,4 +1,4 @@
-প<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -545,18 +545,18 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // Helper function to handle redirect after successful login
+        // Helper function for safe redirect after login
         function handleSuccessfulRedirect() {
             const redirectUrl = localStorage.getItem('redirectUrl');
             if (redirectUrl) {
-                localStorage.removeItem('redirectUrl'); // ক্লিয়ার করে দেওয়া
-                window.location.href = redirectUrl;     // ইউজার যেখানে যেতে চেয়েছিল সেখানে পাঠানো
+                localStorage.removeItem('redirectUrl');
+                window.location.href = redirectUrl;
             } else {
-                window.location.href = 'index.html';    // না থাকলে হোমে পাঠানো
+                window.location.href = '/';
             }
         }
 
-        // Google Login with Redirect Support
+        // Google Login
         window.googleLogin = function(event) {
             event.preventDefault();
             signInWithPopup(auth, provider)
@@ -570,7 +570,7 @@
                 });
         }
 
-        // Email/Password Login with Redirect Support
+        // Email/Password Login (Gmail Login)
         window.handleLogin = function(event) {
             event.preventDefault();
             const email = document.getElementById('login-email').value.trim();
@@ -714,7 +714,7 @@
                 document.getElementById('lang-en-option').classList.add('selected');
                 document.getElementById('check-en').style.display = 'block';
                 document.getElementById('lang-bn-option').classList.remove('selected');
-                document.getElementById('check-bn').style.display = 'none';
+                document.getElementById('check-en').style.display = 'none';
             }
         }
 
