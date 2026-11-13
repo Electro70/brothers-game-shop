@@ -85,47 +85,39 @@
             display: block;
         }
 
-        /* Support Main Green Banner Box - Fixed Layout */
+        /* Support Main Green Banner Box (Original Layout Matched) */
         .support-banner {
             background: linear-gradient(135deg, #059669, #047857);
             color: white;
             border-radius: 20px;
-            padding: 20px;
+            padding: 22px 20px;
             margin-bottom: 20px;
             box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            position: relative;
         }
 
         .support-icon-box {
             background: rgba(255, 255, 255, 0.2);
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
-            flex-shrink: 0;
-        }
-
-        .support-banner-content {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex-grow: 1;
+            font-size: 22px;
+            margin-bottom: 12px;
         }
 
         .support-titles h2 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .support-titles p {
-            font-size: 12px;
+            font-size: 13px;
             opacity: 0.9;
+            margin-bottom: 14px;
         }
 
         .response-badge {
@@ -133,12 +125,11 @@
             align-items: center;
             gap: 6px;
             background: rgba(0, 0, 0, 0.25);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
             width: fit-content;
-            white-space: nowrap;
         }
 
         .response-badge span {
@@ -386,14 +377,12 @@
             <div class="support-icon-box">
                 <i class="fa-solid fa-headset"></i>
             </div>
-            <div class="support-banner-content">
-                <div class="support-titles">
-                    <h2 data-i18n="support_title">Customer Support</h2>
-                    <p data-i18n="support_sub">We're here to assist you (12 AM - 9 PM)</p>
-                </div>
-                <div class="response-badge">
-                    <span></span> <span data-i18n="response_badge">&lt; 30 minutes response time</span>
-                </div>
+            <div class="support-titles">
+                <h2 data-i18n="support_title">Customer Support</h2>
+                <p data-i18n="support_sub">We're here to assist you (12 AM - 9 PM)</p>
+            </div>
+            <div class="response-badge">
+                <span></span> <span data-i18n="response_badge">&lt; 30 minutes response time</span>
             </div>
         </div>
 
@@ -534,7 +523,6 @@
     </div>
 
     <script>
-        // Translations Dictionary for Support Page
         const translations = {
             en: {
                 title: "Game Vault - Customer Support",
@@ -623,7 +611,6 @@
             }
         }
 
-        // Always default to Light Mode unless user explicitly toggled dark mode globally
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
         } else {
