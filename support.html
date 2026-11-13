@@ -85,34 +85,36 @@
             display: block;
         }
 
-        /* Support Main Green Banner Box */
+        /* Support Main Green Banner Box - Fixed Layout */
         .support-banner {
             background: linear-gradient(135deg, #059669, #047857);
             color: white;
             border-radius: 20px;
-            padding: 22px 20px;
+            padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
-            position: relative;
-        }
-
-        .support-banner-top {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 12px;
         }
 
         .support-icon-box {
             background: rgba(255, 255, 255, 0.2);
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 26px;
             flex-shrink: 0;
+        }
+
+        .support-banner-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
         }
 
         .support-titles h2 {
@@ -131,10 +133,11 @@
             align-items: center;
             gap: 6px;
             background: rgba(0, 0, 0, 0.25);
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
+            width: fit-content;
             white-space: nowrap;
         }
 
@@ -380,17 +383,17 @@
         
         <!-- Customer Support Top Banner -->
         <div class="support-banner">
-            <div class="support-banner-top">
-                <div class="support-icon-box">
-                    <i class="fa-solid fa-headset"></i>
-                </div>
+            <div class="support-icon-box">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+            <div class="support-banner-content">
                 <div class="support-titles">
                     <h2 data-i18n="support_title">Customer Support</h2>
                     <p data-i18n="support_sub">We're here to assist you (12 AM - 9 PM)</p>
                 </div>
-            </div>
-            <div class="response-badge">
-                <span></span> <span data-i18n="response_badge">&lt; 30 minutes response time</span>
+                <div class="response-badge">
+                    <span></span> <span data-i18n="response_badge">&lt; 30 minutes response time</span>
+                </div>
             </div>
         </div>
 
@@ -616,7 +619,7 @@
                 document.getElementById('lang-en-option').classList.add('selected');
                 document.getElementById('check-en').style.display = 'block';
                 document.getElementById('lang-bn-option').classList.remove('selected');
-                document.getElementById('check-bn').style.display = 'none';
+                document.getElementById('check-en').style.display = 'none';
             }
         }
 
