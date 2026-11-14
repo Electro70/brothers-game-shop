@@ -31,11 +31,22 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html:not(.page-ready) #addMoneyMainContent {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        html.page-ready #addMoneyMainContent {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.16s ease;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 95px;
-            transition: background 0.3s, color 0.3s;
+            padding-bottom: 105px;
+            transition: background 0.25s ease, color 0.25s ease;
         }
 
         header {
@@ -74,7 +85,11 @@
             justify-content: center;
             cursor: pointer;
             font-size: 15px;
-            transition: 0.2s;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+        }
+
+        .theme-icon-btn:active {
+            transform: scale(0.93);
         }
 
         .lang-trigger {
@@ -88,6 +103,11 @@
             font-weight: 700;
             cursor: pointer;
             color: var(--text-color);
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lang-trigger:active {
+            transform: scale(0.95);
         }
 
         .balance-pill {
@@ -140,13 +160,17 @@
         }
 
         .green-header-card {
-            background: linear-gradient(135deg, #16a34a, #15803d);
+            background:
+                radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 28%, transparent 29%),
+                radial-gradient(circle at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 48%, transparent 49%),
+                radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 68%, transparent 69%),
+                linear-gradient(135deg, #05a86b 0%, #028a58 100%);
             color: #ffffff;
-            border: 1px solid #15803d;
-            border-radius: 16px;
+            border: 1px solid #05a86b;
+            border-radius: 20px;
             padding: 20px;
             margin-bottom: 18px;
-            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.25);
+            box-shadow: 0 8px 25px rgba(5, 168, 107, 0.25);
         }
 
         .green-header-card h1 {
@@ -208,7 +232,11 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .pay-method-box:active {
+            transform: scale(0.97);
         }
 
         .pay-method-box.bkash-box.active {
@@ -267,7 +295,7 @@
 
         .receiver-number-box {
             background: var(--bg-color);
-            border: 1.5px dashed #16a34a;
+            border: 1.5px dashed #05a86b;
             border-radius: 12px;
             padding: 12px 14px;
             margin-bottom: 18px;
@@ -296,7 +324,7 @@
         }
 
         .copy-num-btn {
-            background: #16a34a;
+            background: #05a86b;
             color: #ffffff;
             border: none;
             padding: 8px 12px;
@@ -308,6 +336,11 @@
             align-items: center;
             gap: 5px;
             flex-shrink: 0;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .copy-num-btn:active {
+            transform: scale(0.94);
         }
 
         .preset-grid {
@@ -326,13 +359,17 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .preset-btn:active {
+            transform: scale(0.95);
         }
 
         .preset-btn.active {
-            border-color: #16a34a;
-            background: rgba(22, 163, 74, 0.12);
-            color: #16a34a;
+            border-color: #05a86b;
+            background: rgba(5, 168, 107, 0.12);
+            color: #05a86b;
         }
 
         .form-group {
@@ -359,7 +396,7 @@
         }
 
         .form-control:focus {
-            border-color: #16a34a;
+            border-color: #05a86b;
         }
 
         .form-control[readonly] {
@@ -395,7 +432,11 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: 0.2s;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+        }
+
+        .social-action-btn:active {
+            transform: scale(0.98);
         }
 
         .whatsapp-btn {
@@ -439,26 +480,49 @@
         }
 
         .made-by a {
-            color: #22c55e;
+            color: #05a86b;
             text-decoration: none;
             font-weight: 800;
         }
 
+        /* Persistent Sliding Pill Bottom Navigation Bar (Matching orders.html) */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 24px);
+            max-width: 600px;
             background: var(--header-bg);
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            border-top: 1px solid var(--border-color);
+            align-items: center;
+            padding: 6px;
+            border-radius: 24px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+            border: 1px solid var(--border-color);
             z-index: 100;
         }
 
+        .nav-indicator {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            height: calc(100% - 12px);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(5, 168, 107, 0.2), rgba(5, 168, 107, 0.07));
+            border: 1px solid rgba(5, 168, 107, 0.32);
+            box-shadow: 0 4px 14px rgba(5, 168, 107, 0.14);
+            will-change: transform, width;
+            transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.44s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .nav-item {
+            position: relative;
+            z-index: 1;
+            flex: 1;
             text-align: center;
             color: #94a3b8;
             text-decoration: none;
@@ -467,10 +531,20 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            padding: 8px 4px;
+            border-radius: 18px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: color 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-item:active {
+            transform: scale(0.94);
         }
 
         .nav-item.active {
-            color: var(--accent-color);
+            color: #05a86b;
             font-weight: 700;
         }
 
@@ -508,11 +582,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: transform 0.15s ease, border-color 0.2s ease;
+        }
+
+        .modal-option:active {
+            transform: scale(0.98);
         }
 
         .modal-option.selected-lang {
-            border-color: #16a34a;
-            background: rgba(22, 163, 74, 0.1);
+            border-color: #05a86b;
+            background: rgba(5, 168, 107, 0.1);
         }
     </style>
 </head>
@@ -685,24 +764,26 @@
         </div>
     </div>
 
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
+    <!-- Persistent Bottom Navigation Bar with Smooth Sliding Pill Indicator -->
+    <nav class="bottom-nav" id="persistent-bottom-nav">
+        <span class="nav-indicator" id="nav-indicator"></span>
+        <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item">
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
             <span id="nav-home">Home</span>
         </a>
-        <a href="orders.html" class="nav-item">
+        <a href="orders.html" data-nav-target="orders.html" onclick="navigateWithoutBarRefresh(event, 'orders.html', true)" class="nav-item">
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span id="nav-orders">Orders</span>
         </a>
-        <a href="add-money.html" class="nav-item active" id="nav-add-money-link" style="display: none;">
+        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item active" id="nav-add-money-link" style="display: none;">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span id="nav-add">Add Money</span>
         </a>
-        <a href="support.html" class="nav-item">
+        <a href="support.html" data-nav-target="support.html" onclick="navigateWithoutBarRefresh(event, 'support.html', false)" class="nav-item">
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
             <span id="nav-support">Support</span>
         </a>
-        <a href="profile.html" class="nav-item">
+        <a href="profile.html" data-nav-target="profile.html" onclick="navigateWithoutBarRefresh(event, 'profile.html', true)" class="nav-item">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
             <span id="nav-profile">Profile</span>
         </a>
@@ -716,11 +797,11 @@
             </div>
             <div class="modal-option" id="opt-lang-bn" onclick="selectLang('bn')">
                 <span>🇧🇩 বাংলা</span>
-                <i class="fa-solid fa-check" id="check-bn" style="color:#16a34a; display:none;"></i>
+                <i class="fa-solid fa-check" id="check-bn" style="color:#05a86b; display:none;"></i>
             </div>
             <div class="modal-option" id="opt-lang-en" onclick="selectLang('en')">
                 <span>🇺🇸 English</span>
-                <i class="fa-solid fa-check" id="check-en" style="color:#16a34a; display:none;"></i>
+                <i class="fa-solid fa-check" id="check-en" style="color:#05a86b; display:none;"></i>
             </div>
         </div>
     </div>
@@ -729,7 +810,10 @@
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
+        let currentUser = null;
+
         function syncUserToAddMoneyUI(user) {
+            currentUser = user;
             const accountInput = document.getElementById("account-no");
             const headerBalance = document.getElementById("user-balance");
             const balanceAvatar = document.querySelector(".balance-avatar");
@@ -756,7 +840,13 @@
                     accountInput.value = "";
                 }
             }
+
+            if (window.updateNavIndicator) {
+                requestAnimationFrame(() => window.updateNavIndicator(false));
+            }
         }
+
+        window.getCurrentAuthUser = () => currentUser;
 
         if (auth.currentUser) {
             syncUserToAddMoneyUI(auth.currentUser);
@@ -827,6 +917,74 @@
                 modalHeading: "Language"
             }
         };
+
+        function setActiveNavItem(targetUrl) {
+            const nav = document.getElementById('persistent-bottom-nav');
+            if (!nav) return;
+            nav.querySelectorAll('.nav-item').forEach(item => {
+                const isMatch = item.getAttribute('data-nav-target') === targetUrl;
+                item.classList.toggle('active', isMatch);
+            });
+            updateNavIndicator(false);
+        }
+
+        function updateNavIndicator(instant = false) {
+            const nav = document.getElementById('persistent-bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const visibleItems = Array.from(nav.querySelectorAll('.nav-item')).filter(
+                el => getComputedStyle(el).display !== 'none'
+            );
+            const activeItem = visibleItems.find(el => el.classList.contains('active'));
+            if (!activeItem) return;
+
+            if (instant) {
+                indicator.style.transition = 'none';
+            }
+
+            const navRect = nav.getBoundingClientRect();
+            const itemRect = activeItem.getBoundingClientRect();
+            indicator.style.width = `${itemRect.width}px`;
+            indicator.style.transform = `translate3d(${itemRect.left - navRect.left - 6}px, 0, 0)`;
+
+            if (instant) {
+                indicator.getBoundingClientRect();
+                indicator.style.transition = '';
+            }
+        }
+        window.updateNavIndicator = updateNavIndicator;
+
+        async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
+            if (event) event.preventDefault();
+
+            const currentFile = window.location.pathname.split('/').pop() || 'add-money.html';
+            if (currentFile === targetUrl) {
+                setActiveNavItem(targetUrl);
+                return;
+            }
+
+            if (requiresAuth) {
+                const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
+                localStorage.removeItem("redirectUrl");
+                if (!user || !user.email) {
+                    localStorage.setItem("redirectUrl", targetUrl);
+                    setActiveNavItem('profile.html');
+                    sessionStorage.setItem('prevNavTarget', currentFile);
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 140);
+                    return;
+                }
+            }
+
+            setActiveNavItem(targetUrl);
+            sessionStorage.setItem('prevNavTarget', currentFile);
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 150);
+        }
+        window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
         function applyAdminConfigs() {
             const savedImages = JSON.parse(localStorage.getItem("gv_admin_images") || "{}");
@@ -946,6 +1104,8 @@
             enOpt.classList.toggle("selected-lang", savedLang === "en");
             bnCheck.style.display = savedLang === "bn" ? "inline-block" : "none";
             enCheck.style.display = savedLang === "en" ? "inline-block" : "none";
+
+            requestAnimationFrame(() => updateNavIndicator(false));
         }
         window.applyLanguage = applyLanguage;
 
@@ -1072,9 +1232,49 @@ Thank you for choose Game Vault BD `;
             closeModal();
         }
 
+        function initSmoothNav() {
+            const nav = document.getElementById('persistent-bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const prevTarget = sessionStorage.getItem('prevNavTarget');
+            sessionStorage.removeItem('prevNavTarget');
+
+            if (prevTarget) {
+                const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
+                if (prevItem && getComputedStyle(prevItem).display !== 'none') {
+                    indicator.style.transition = 'none';
+                    const navRect = nav.getBoundingClientRect();
+                    const prevRect = prevItem.getBoundingClientRect();
+                    indicator.style.width = `${prevRect.width}px`;
+                    indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
+                    indicator.getBoundingClientRect();
+                    indicator.style.transition = '';
+                }
+                requestAnimationFrame(() => updateNavIndicator(false));
+            } else {
+                updateNavIndicator(true);
+            }
+
+            document.documentElement.classList.add('page-ready');
+        }
+
         applyTheme();
         applyLanguage();
         applyAdminConfigs();
+
+        if (document.readyState === 'complete') {
+            initSmoothNav();
+        } else {
+            window.addEventListener('load', initSmoothNav, { once: true });
+            setTimeout(() => {
+                if (!document.documentElement.classList.contains('page-ready')) {
+                    initSmoothNav();
+                }
+            }, 300);
+        }
+
+        window.addEventListener('resize', () => updateNavIndicator(true));
     </script>
 </body>
 </html>
