@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Game Vault - Orders & History</title>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -50,7 +49,6 @@
             transition: background 0.25s ease, color 0.25s ease;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -75,7 +73,6 @@
             gap: 10px;
         }
 
-        /* Icon-only Dark / Bright Theme Button */
         .theme-icon-btn {
             width: 36px;
             height: 36px;
@@ -95,7 +92,6 @@
             transform: scale(0.93);
         }
 
-        /* Language Trigger */
         .lang-trigger {
             display: flex;
             align-items: center;
@@ -114,7 +110,6 @@
             transform: scale(0.95);
         }
 
-        /* User Balance Pill */
         .balance-pill {
             display: flex;
             align-items: center;
@@ -158,14 +153,12 @@
             text-decoration: none;
         }
 
-        /* Main Container */
         .container {
             max-width: 600px;
             margin: 20px auto;
             padding: 0 15px;
         }
 
-        /* Top Banner Card */
         .history-banner {
             background:
                 radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 28%, transparent 29%),
@@ -206,7 +199,6 @@
             opacity: 0.92;
         }
 
-        /* Filter Section Box */
         .filter-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -276,7 +268,6 @@
             opacity: 0.92;
         }
 
-        /* Empty Results Card */
         .empty-result-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -307,7 +298,6 @@
             font-weight: 600;
         }
 
-        /* Footer Branding Section */
         .site-footer {
             text-align: center;
             padding: 20px 15px;
@@ -374,6 +364,11 @@
             z-index: 100;
         }
 
+        .bottom-nav.hide-add-money #nav-add-money {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
         .nav-indicator {
             position: absolute;
             top: 6px;
@@ -419,7 +414,6 @@
             font-weight: 700;
         }
 
-        /* Language Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -464,7 +458,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo-container">
             <a href="index.html">
@@ -481,7 +474,6 @@
                 <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
 
-            <!-- User Balance Pill -->
             <div class="balance-pill">
                 <div class="balance-avatar">
                     <i class="fa-solid fa-user"></i>
@@ -492,10 +484,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <div class="container" id="main-container">
-        
-        <!-- Transaction History Banner -->
         <div class="history-banner">
             <div class="banner-icon-box">
                 <i class="fa-solid fa-file-lines"></i>
@@ -506,7 +495,6 @@
             </div>
         </div>
 
-        <!-- Filter Select Box -->
         <div class="filter-box">
             <label class="filter-label" data-i18n="select_service">Select Service</label>
             <div class="select-wrapper">
@@ -521,7 +509,6 @@
             <button type="button" class="search-btn" onclick="filterOrders()" data-i18n="search_btn">Search</button>
         </div>
 
-        <!-- No Transactions Found Box -->
         <div class="empty-result-box" id="orders-result-box">
             <div class="empty-icon-circle">
                 <i class="fa-solid fa-file-lines"></i>
@@ -529,7 +516,6 @@
             <div class="empty-text" data-i18n="no_transactions">No transactions found</div>
         </div>
 
-        <!-- Footer Info -->
         <div class="site-footer">
             <div class="footer-logo">
                 <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
@@ -547,10 +533,8 @@
                 Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault 👾</a>
             </div>
         </div>
-
     </div>
 
-    <!-- Persistent Bottom Navigation Bar with Smooth Sliding Pill Indicator -->
     <nav class="bottom-nav" id="persistent-bottom-nav">
         <span class="nav-indicator" id="nav-indicator"></span>
         <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item">
@@ -575,7 +559,6 @@
         </a>
     </nav>
 
-    <!-- Language Modal -->
     <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
         <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
@@ -593,7 +576,6 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard & User Data Display -->
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
@@ -601,14 +583,18 @@
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
+            const nav = document.getElementById("persistent-bottom-nav");
+
             if (!user || !user.email) {
+                if (nav) nav.classList.add("hide-add-money");
                 localStorage.setItem("redirectUrl", "orders.html");
                 setTimeout(() => {
                     window.location.href = "login.html";
-                }, 140);
+                }, 180);
                 return;
             }
 
+            if (nav) nav.classList.remove("hide-add-money");
             const data = getUserProfileData(user);
             const headerBalance = document.getElementById("user-balance");
             const balanceAvatar = document.querySelector(".balance-avatar");
@@ -693,10 +679,7 @@
             const indicator = document.getElementById('nav-indicator');
             if (!nav || !indicator) return;
 
-            const visibleItems = Array.from(nav.querySelectorAll('.nav-item')).filter(
-                el => getComputedStyle(el).display !== 'none'
-            );
-            const activeItem = visibleItems.find(el => el.classList.contains('active'));
+            const activeItem = nav.querySelector('.nav-item.active');
             if (!activeItem) return;
 
             if (instant) {
@@ -733,7 +716,7 @@
                     sessionStorage.setItem('prevNavTarget', currentFile);
                     setTimeout(() => {
                         window.location.href = "login.html";
-                    }, 140);
+                    }, 180);
                     return;
                 }
             }
@@ -742,7 +725,7 @@
             sessionStorage.setItem('prevNavTarget', currentFile);
             setTimeout(() => {
                 window.location.href = targetUrl;
-            }, 150);
+            }, 220);
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
@@ -822,7 +805,7 @@
 
             if (prevTarget) {
                 const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
-                if (prevItem && getComputedStyle(prevItem).display !== 'none') {
+                if (prevItem) {
                     indicator.style.transition = 'none';
                     const navRect = nav.getBoundingClientRect();
                     const prevRect = prevItem.getBoundingClientRect();
