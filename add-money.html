@@ -44,7 +44,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 15px 16px;
             background: var(--header-bg);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             position: sticky;
@@ -54,14 +54,29 @@
         }
 
         .logo-container img {
-            height: 32px;
+            height: 30px;
             object-fit: contain;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .theme-icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
         }
 
         .lang-trigger {
@@ -69,7 +84,7 @@
             align-items: center;
             gap: 6px;
             background: var(--border-color);
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: 700;
@@ -80,7 +95,7 @@
         .balance-pill {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
             background: var(--border-color);
             padding: 4px 10px 4px 6px;
             border-radius: 20px;
@@ -490,14 +505,14 @@
         .modal-box {
             background: var(--header-bg);
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             border-radius: 16px;
             padding: 20px;
             border: 1px solid var(--border-color);
         }
 
         .modal-option {
-            padding: 11px 12px;
+            padding: 12px 14px;
             border: 1px solid var(--border-color);
             border-radius: 10px;
             margin-bottom: 8px;
@@ -508,6 +523,11 @@
             justify-content: space-between;
             align-items: center;
         }
+
+        .modal-option.selected-lang {
+            border-color: #16a34a;
+            background: rgba(22, 163, 74, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -516,16 +536,22 @@
     <header>
         <div class="logo-container">
             <a href="index.html">
-                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+                <img src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fallback-logo').style.display='block';};">
                 <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:var(--accent-color);">GAME VAULT</span>
             </a>
         </div>
         <div class="header-right">
+            <!-- Day / Night Icon Only Button (Outside Modal) -->
+            <button type="button" class="theme-icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Theme">
+                <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+
             <div class="lang-trigger" onclick="openModal()">
                 <span id="current-lang-flag">🇧🇩</span>
                 <span id="current-lang-text">বাংলা</span>
                 <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
+
             <div class="balance-pill">
                 <div class="balance-avatar">
                     <i class="fa-solid fa-user"></i>
@@ -558,14 +584,22 @@
             <div class="method-grid">
                 <div class="pay-method-box bkash-box active" data-method="BKash" data-number="01857659802" onclick="selectPayMethod(this)">
                     <div class="method-badge bkash-badge">
-                        <img src="bkash.png" alt="BKash" onerror="this.style.display='none'; this.parentElement.textContent='bK';">
+                        <img
+                            src="bkash.jpg"
+                            alt="BKash"
+                            onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='bkash.png';}else{this.style.display='none'; this.parentElement.textContent='bK';}"
+                        >
                     </div>
                     <span class="method-name">BKash</span>
                 </div>
 
                 <div class="pay-method-box nagad-box" data-method="Nagad" data-number="01572921586" onclick="selectPayMethod(this)">
                     <div class="method-badge nagad-badge">
-                        <img src="nagad.png" alt="Nagad" onerror="this.style.display='none'; this.parentElement.textContent='N';">
+                        <img
+                            src="nagad.jpg"
+                            alt="Nagad"
+                            onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='nagad.png';}else{this.style.display='none'; this.parentElement.textContent='N';}"
+                        >
                     </div>
                     <span class="method-name">Nagad</span>
                 </div>
@@ -662,7 +696,7 @@
         <!-- Footer Info -->
         <div class="site-footer">
             <div class="footer-logo">
-                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
+                <img src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('footer-fallback').style.display='block';};">
                 <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
             </div>
             <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;" id="t-footer-desc">Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.</p>
@@ -698,27 +732,20 @@
         </a>
     </nav>
 
-    <!-- Language & Theme Modal -->
-    <div class="modal-overlay" id="langModal">
+    <!-- Language Only Modal -->
+    <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
         <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
-                <span id="modal-heading">Language & Theme</span>
+                <span id="modal-heading">Language</span>
                 <button onclick="closeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="modal-option" onclick="selectLang('bn')">
-                <span>🇧🇩 বাংলা (Auto)</span>
-                <i class="fa-solid fa-check" style="color:#16a34a;"></i>
+            <div class="modal-option" id="opt-lang-bn" onclick="selectLang('bn')">
+                <span>🇧🇩 বাংলা</span>
+                <i class="fa-solid fa-check" id="check-bn" style="color:#16a34a; display:none;"></i>
             </div>
-            <div class="modal-option" onclick="selectLang('en')">
+            <div class="modal-option" id="opt-lang-en" onclick="selectLang('en')">
                 <span>🇺🇸 English</span>
-            </div>
-            <div class="modal-option" onclick="selectTheme('light')">
-                <span>☀️ Bright Theme</span>
-                <span id="light-badge">Active</span>
-            </div>
-            <div class="modal-option" onclick="selectTheme('dark')">
-                <span>🌙 Dark Theme</span>
-                <span id="dark-badge"></span>
+                <i class="fa-solid fa-check" id="check-en" style="color:#16a34a; display:none;"></i>
             </div>
         </div>
     </div>
@@ -777,14 +804,14 @@
                 navAdd: "অ্যাড মানি",
                 navSupport: "সাপোর্ট",
                 navProfile: "প্রোফাইল",
-                modalHeading: "ভাষা ও থিম"
+                modalHeading: "ভাষা"
             },
             en: {
                 flag: "🇺🇸",
                 langText: "EN",
                 title: "Add Balance",
                 subtext: "Top up your Game Vault wallet quickly and securely.",
-                warning: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়",
+                warning: "Send Money only, Cash In is not accepted",
                 chooseAmount: "Choose Amount",
                 amountLabel: "Amount (BDT)",
                 senderLabel: "Sender Phone Number",
@@ -799,7 +826,7 @@
                 navAdd: "Add Money",
                 navSupport: "Support",
                 navProfile: "Profile",
-                modalHeading: "Language & Theme"
+                modalHeading: "Language"
             }
         };
 
@@ -831,25 +858,37 @@
             document.getElementById("nav-support").textContent = t.navSupport;
             document.getElementById("nav-profile").textContent = t.navProfile;
             document.getElementById("modal-heading").textContent = t.modalHeading;
+
+            const bnOpt = document.getElementById("opt-lang-bn");
+            const enOpt = document.getElementById("opt-lang-en");
+            const bnCheck = document.getElementById("check-bn");
+            const enCheck = document.getElementById("check-en");
+
+            bnOpt.classList.toggle("selected-lang", savedLang === "bn");
+            enOpt.classList.toggle("selected-lang", savedLang === "en");
+            bnCheck.style.display = savedLang === "bn" ? "inline-block" : "none";
+            enCheck.style.display = savedLang === "en" ? "inline-block" : "none";
         }
 
         function applyTheme() {
             const theme = localStorage.getItem("theme") || "light";
+            const icon = document.getElementById("theme-icon");
             if (theme === "dark") {
                 document.documentElement.setAttribute("data-theme", "dark");
-                document.getElementById("dark-badge").textContent = "Active";
-                document.getElementById("light-badge").textContent = "";
+                icon.className = "fa-solid fa-sun";
+                icon.style.color = "#eab308";
             } else {
                 document.documentElement.removeAttribute("data-theme");
-                document.getElementById("light-badge").textContent = "Active";
-                document.getElementById("dark-badge").textContent = "";
+                icon.className = "fa-solid fa-moon";
+                icon.style.color = "";
             }
         }
 
-        function selectTheme(theme) {
-            localStorage.setItem("theme", theme);
+        function toggleTheme() {
+            const current = localStorage.getItem("theme") || "light";
+            const next = current === "dark" ? "light" : "dark";
+            localStorage.setItem("theme", next);
             applyTheme();
-            closeModal();
         }
 
         function handleNumericInput(input, checkRange) {
@@ -939,7 +978,10 @@ Thank you for choose Game Vault BD https://game-vault-bd.theummah234.workers.dev
             }
         }
 
-        function openModal() { document.getElementById("langModal").style.display = "flex"; }
+        function openModal() {
+            applyLanguage();
+            document.getElementById("langModal").style.display = "flex";
+        }
         function closeModal() { document.getElementById("langModal").style.display = "none"; }
         function selectLang(lang) {
             localStorage.setItem("language", lang);
