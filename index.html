@@ -641,7 +641,7 @@
             <div class="lang-trigger" onclick="openModal()">
                 <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
-            <a href="login.html" class="signin-btn"><i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span></a>
+            <a href="login.html" class="signin-btn" id="header-signin-btn"><i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span></a>
         </div>
     </header>
 
@@ -849,36 +849,33 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK & Authentication Logic (Compatible Module Version) -->
+    <!-- Firebase SDK & Authentication Logic (Connected to firebase.js) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { auth, onAuthStateChanged } from "./firebase.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBUJKE1sFE7JIFdy43cBZc_-U6TgT1-J48",
-            authDomain: "gamevault-f38b3.firebaseapp.com",
-            projectId: "gamevault-f38b3",
-            storageBucket: "gamevault-f38b3.firebasestorage.app",
-            messagingSenderId: "115821325968",
-            appId: "1:115821325968:web:a8a9ae30e11e3fb7f73215",
-            measurementId: "G-GBTQMRJS9J"
-        };
+        let currentUser = null;
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // LeakStudio BD Style: Check login on click anywhere (except sliders)
-        window.handleProtectedAction = function(targetUrl) {
-            onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            const headerSigninBtn = document.getElementById("header-signin-btn");
+            if (headerSigninBtn) {
                 if (user) {
-                    // Logged in -> Go to target destination
-                    window.location.href = targetUrl;
+                    headerSigninBtn.href = "profile.html";
+                    headerSigninBtn.innerHTML = `<i class="fa-regular fa-user"></i> <span>${user.displayName || user.email.split("@")[0]}</span>`;
                 } else {
-                    // Not logged in -> Save target and go to login page
-                    localStorage.setItem('redirectUrl', targetUrl);
-                    window.location.href = 'login.html';
+                    headerSigninBtn.href = "login.html";
+                    headerSigninBtn.innerHTML = `<i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span>`;
                 }
-            });
+            }
+        });
+
+        window.handleProtectedAction = function(targetUrl) {
+            if (currentUser) {
+                window.location.href = targetUrl;
+            } else {
+                localStorage.setItem('redirectUrl', targetUrl);
+                window.location.href = 'login.html';
+            }
         }
     </script>
 
