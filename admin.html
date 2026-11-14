@@ -677,29 +677,17 @@
         loadSavedConfigs();
     </script>
 
-    <!-- Isolated Admin Auth Instance (Does NOT share session with User Website) -->
     <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import {
-            getAuth,
+            auth,
             onAuthStateChanged,
             signInWithEmailAndPassword,
             signOut
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { app as defaultApp } from "./firebase.js";
+        } from "./firebase.js";
 
         const ADMIN_EMAILS = [
             "theummah234@gmail.com"
         ];
-
-        const baseApp = defaultApp || (getApps().length ? getApp() : null);
-        const firebaseConfig = baseApp ? baseApp.options : null;
-
-        const adminApp = getApps().some((a) => a.name === "AdminVaultApp")
-            ? getApps().find((a) => a.name === "AdminVaultApp")
-            : initializeApp(firebaseConfig, "AdminVaultApp");
-
-        const adminAuth = getAuth(adminApp);
 
         const loginGate = document.getElementById("loginGate");
         const adminPanel = document.getElementById("adminPanel");
@@ -733,7 +721,7 @@
             return ADMIN_EMAILS.includes(user.email.trim().toLowerCase());
         }
 
-        onAuthStateChanged(adminAuth, async (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user && isAuthorizedAdmin(user)) {
                 hideError();
                 loginGate.style.display = "none";
@@ -746,7 +734,7 @@
             }
 
             if (user && !isAuthorizedAdmin(user)) {
-                await signOut(adminAuth);
+                await signOut(auth);
                 showError("এই জিমেইলের অ্যাডমিন প্যানেলে প্রবেশের অনুমতি নেই।");
             }
 
@@ -770,13 +758,13 @@
             loginSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
 
             try {
-                const cred = await signInWithEmailAndPassword(adminAuth, email, password);
+                const cred = await signInWithEmailAndPassword(auth, email, password);
                 if (!isAuthorizedAdmin(cred.user)) {
-                    await signOut(adminAuth);
+                    await signOut(auth);
                     showError("এই অ্যাকাউন্টটি অ্যাডমিন হিসেবে অনুমোদিত নয়।");
                 }
             } catch (err) {
-                showError("জিমেইল বা পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করো।");
+                showError(`লগইন ব্যর্থ (${err.code || "auth-error"})। জিমেইল বা পাসওয়ার্ড যাচাই করো।`);
             } finally {
                 loginSubmitBtn.disabled = false;
                 loginSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Log in to Admin Panel';
@@ -784,7 +772,7 @@
         });
 
         logoutBtn.addEventListener("click", async () => {
-            await signOut(adminAuth);
+            await signOut(auth);
         });
     </script>
 </body>
