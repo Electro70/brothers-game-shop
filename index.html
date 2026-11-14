@@ -941,11 +941,12 @@
         });
 
         window.handleProtectedAction = function(targetUrl) {
+            localStorage.removeItem("redirectUrl");
             if (currentUser && currentUser.email) {
                 window.location.href = targetUrl;
             } else {
-                localStorage.setItem('redirectUrl', targetUrl);
-                window.location.href = 'login.html';
+                localStorage.setItem("redirectUrl", targetUrl);
+                window.location.href = "login.html";
             }
         };
     </script>
