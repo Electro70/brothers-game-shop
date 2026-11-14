@@ -6,6 +6,8 @@
     <title id="page-title">Game Vault - Sign In</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     
     <style>
         :root {
@@ -148,23 +150,35 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 28px 22px;
+            padding: 0 22px 26px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.06);
             text-align: center;
+            overflow: hidden;
+        }
+
+        /* Green Header Banner matching screenshot */
+        .login-green-banner {
+            margin: 0 -22px 24px;
+            padding: 28px 20px;
+            background:
+                radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 28%, transparent 29%),
+                radial-gradient(circle at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 48%, transparent 49%),
+                radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 68%, transparent 69%),
+                linear-gradient(135deg, #05a86b 0%, #028a58 100%);
+            color: #ffffff;
         }
 
         .login-heading {
             font-size: 22px;
             font-weight: 800;
-            color: var(--text-color);
+            color: #ffffff;
             margin-bottom: 8px;
         }
 
         .login-subtext {
             font-size: 13px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
-            margin-bottom: 24px;
             line-height: 1.5;
         }
 
@@ -186,20 +200,29 @@
         }
 
         .google-signin-btn:hover {
-            border-color: var(--accent-color);
+            border-color: #05a86b;
             transform: translateY(-1px);
+        }
+
+        /* Cloudflare Turnstile Container below Google button */
+        .turnstile-wrapper {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 65px;
         }
 
         #error-msg {
             color: #ef4444;
             font-size: 12px;
-            margin-top: 12px;
+            margin-top: 10px;
             font-weight: 600;
             min-height: 16px;
         }
 
         .support-row {
-            margin-top: 22px;
+            margin-top: 18px;
             padding-top: 16px;
             border-top: 1px solid var(--border-color);
             font-size: 13px;
@@ -402,10 +425,12 @@
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Single Card Box (Options 3, 4, 5, 6) -->
+        <!-- Single Card Box -->
         <div class="login-card-box">
-            <h2 class="login-heading" id="t-heading">Welcome Back, Gamers !</h2>
-            <p class="login-subtext" id="t-subtext">Sign in to continue your epic journey</p>
+            <div class="login-green-banner">
+                <h2 class="login-heading" id="t-heading">Welcome Back Gamers!</h2>
+                <p class="login-subtext" id="t-subtext">Sign in to continue your epic journey</p>
+            </div>
 
             <button type="button" id="google-login-btn" class="google-signin-btn">
                 <!-- Official Google Logo SVG -->
@@ -418,6 +443,11 @@
                 </svg>
                 <span id="t-google-btn">Sign With Google</span>
             </button>
+
+            <!-- Cloudflare Turnstile below Sign With Google -->
+            <div class="turnstile-wrapper">
+                <div class="cf-turnstile" id="cf-turnstile-widget" data-sitekey="0x4AAAAAAGA66QNLvqxGVLvR" data-theme="auto"></div>
+            </div>
 
             <div id="error-msg"></div>
 
@@ -557,10 +587,22 @@
         googleBtn.addEventListener('click', async () => {
             const lang = localStorage.getItem('language') || 'en';
             errorMsg.innerText = "";
+
+            const token = window.turnstile ? window.turnstile.getResponse('#cf-turnstile-widget') : "";
+            if (!token) {
+                errorMsg.innerText = lang === 'bn'
+                    ? "আগে Cloudflare ভেরিফিকেশন সম্পন্ন করুন।"
+                    : "Please complete Cloudflare verification first.";
+                return;
+            }
+
             try {
                 await signInWithPopup(auth, googleProvider);
                 completeLoginRedirect();
             } catch (error) {
+                if (window.turnstile) {
+                    window.turnstile.reset('#cf-turnstile-widget');
+                }
                 errorMsg.innerText = lang === 'bn'
                     ? "গুগল সাইন-ইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
                     : "Google Sign-In failed. Please try again.";
@@ -574,7 +616,7 @@
                 flag: "🇺🇸",
                 langText: "EN",
                 title: "Game Vault - Sign In",
-                heading: "Welcome Back, Gamers !",
+                heading: "Welcome Back Gamers!",
                 subtext: "Sign in to continue your epic journey",
                 googleBtn: "Sign With Google",
                 needHelp: "Need Help?",
@@ -598,8 +640,8 @@
                 flag: "🇧🇩",
                 langText: "বাংলা",
                 title: "গেম ভল্ট - সাইন ইন",
-                heading: "স্বাগতম, গেমার্স !",
-                subtext: "আপনার যাত্রা চালিয়ে যেতে জিমেইল দিয়ে সাইন ইন করুন",
+                heading: "Welcome Back Gamers!",
+                subtext: "Sign in to continue your epic journey",
                 googleBtn: "Sign With Google",
                 needHelp: "সাহায্য প্রয়োজন?",
                 contactSupport: "Contact Support",
