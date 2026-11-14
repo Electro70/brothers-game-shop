@@ -32,11 +32,22 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html:not(.page-ready) #homeMainContent {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        html.page-ready #homeMainContent {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.16s ease;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 90px;
-            transition: background 0.3s, color 0.3s;
+            padding-bottom: 105px;
+            transition: background 0.25s ease, color 0.25s ease;
         }
 
         header {
@@ -74,6 +85,11 @@
             font-weight: 600;
             cursor: pointer;
             color: var(--text-color);
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lang-trigger:active {
+            transform: scale(0.95);
         }
 
         .signin-btn {
@@ -87,6 +103,11 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .signin-btn:active {
+            transform: scale(0.95);
         }
 
         .header-wallet-pill {
@@ -153,6 +174,11 @@
             font-size: 11px;
             text-decoration: none;
             flex-shrink: 0;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .header-wallet-plus:active {
+            transform: scale(0.9);
         }
 
         .container {
@@ -212,6 +238,11 @@
             box-shadow: 0 6px 20px rgba(5, 150, 105, 0.25);
             position: relative;
             cursor: pointer;
+            transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+        }
+
+        .coin-box:active {
+            transform: scale(0.98);
         }
 
         .coin-header-row {
@@ -376,6 +407,11 @@
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .view-all-btn:active {
+            transform: scale(0.95);
         }
 
         .products-grid {
@@ -394,6 +430,11 @@
             display: flex;
             flex-direction: column;
             cursor: pointer;
+            transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+        }
+
+        .product-card:active {
+            transform: scale(0.97);
         }
 
         .product-img-box {
@@ -456,7 +497,11 @@
             text-align: center;
             text-decoration: none;
             display: block;
-            transition: 0.2s;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+        }
+
+        .buy-btn:active {
+            transform: scale(0.95);
         }
 
         .buy-btn.locked {
@@ -506,11 +551,15 @@
             text-align: center;
             padding-bottom: 12px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .ff-card:hover {
             transform: translateY(-3px);
+        }
+
+        .ff-card:active {
+            transform: scale(0.96);
         }
 
         .ff-card-img {
@@ -637,6 +686,11 @@
             margin-bottom: 10px;
             cursor: pointer;
             background: var(--bg-color);
+            transition: transform 0.15s ease, border-color 0.2s ease;
+        }
+
+        .lang-option:active {
+            transform: scale(0.98);
         }
 
         .lang-option.selected {
@@ -651,20 +705,44 @@
             font-weight: 600;
         }
 
+        /* Persistent Sliding Pill Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 24px);
+            max-width: 600px;
             background: var(--header-bg);
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            border-top: 1px solid var(--border-color);
+            align-items: center;
+            padding: 6px;
+            border-radius: 24px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+            border: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            height: calc(100% - 12px);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.24), rgba(234, 179, 8, 0.08));
+            border: 1px solid rgba(234, 179, 8, 0.36);
+            box-shadow: 0 4px 14px rgba(234, 179, 8, 0.14);
+            will-change: transform, width;
+            transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.44s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .nav-item {
+            position: relative;
+            z-index: 1;
+            flex: 1;
             text-align: center;
             color: #94a3b8;
             text-decoration: none;
@@ -673,11 +751,21 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            padding: 8px 4px;
+            border-radius: 18px;
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: color 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-item:active {
+            transform: scale(0.94);
         }
 
         .nav-item.active {
             color: var(--accent-color);
+            font-weight: 700;
         }
     </style>
 </head>
@@ -708,7 +796,7 @@
     </header>
 
     <!-- Main Content -->
-    <div class="container">
+    <div class="container" id="homeMainContent">
         <div class="hero-banner">
             <p data-i18n="slogan">Topup in seconds - available 24/7!</p>
         </div>
@@ -843,7 +931,7 @@
     </div>
 
     <!-- Language & Dark Mode Modal -->
-    <div class="modal-overlay" id="langModal">
+    <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
         <div class="modal-box">
             <div class="modal-header">
                 <span data-i18n="modal_title">Language & Theme</span>
@@ -876,25 +964,26 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active">
+    <!-- Persistent Bottom Navigation Bar with Smooth Sliding Pill Indicator -->
+    <nav class="bottom-nav" id="persistent-bottom-nav">
+        <span class="nav-indicator" id="nav-indicator"></span>
+        <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item active">
             <i class="fa-solid fa-house"></i>
             <span data-i18n="nav_home">Home</span>
         </a>
-        <a onclick="handleProtectedAction('orders.html')" class="nav-item">
+        <a href="orders.html" data-nav-target="orders.html" onclick="navigateWithoutBarRefresh(event, 'orders.html', true)" class="nav-item">
             <i class="fa-solid fa-file-lines"></i>
             <span data-i18n="nav_orders">Orders</span>
         </a>
-        <a onclick="handleProtectedAction('add-money.html')" class="nav-item" id="nav-add-money" style="display: none;">
+        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item" id="nav-add-money" style="display: none;">
             <i class="fa-solid fa-circle-plus"></i>
             <span data-i18n="nav_add_money">Add Money</span>
         </a>
-        <a href="support.html" class="nav-item">
+        <a href="support.html" data-nav-target="support.html" onclick="navigateWithoutBarRefresh(event, 'support.html', false)" class="nav-item">
             <i class="fa-solid fa-headset"></i>
             <span data-i18n="nav_support">Support</span>
         </a>
-        <a onclick="handleProtectedAction('profile.html')" class="nav-item">
+        <a href="profile.html" data-nav-target="profile.html" onclick="navigateWithoutBarRefresh(event, 'profile.html', true)" class="nav-item">
             <i class="fa-solid fa-user"></i>
             <span data-i18n="nav_profile">Profile</span>
         </a>
@@ -938,12 +1027,20 @@
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
                 if (navAddMoney) navAddMoney.style.display = "none";
             }
+
+            if (window.updateNavIndicator) {
+                requestAnimationFrame(() => window.updateNavIndicator(false));
+            }
         });
 
         window.handleProtectedAction = function(targetUrl) {
             localStorage.removeItem("redirectUrl");
             if (currentUser && currentUser.email) {
-                window.location.href = targetUrl;
+                if (window.navigateWithoutBarRefresh) {
+                    window.navigateWithoutBarRefresh(null, targetUrl, true);
+                } else {
+                    window.location.href = targetUrl;
+                }
             } else {
                 localStorage.setItem("redirectUrl", targetUrl);
                 window.location.href = "login.html";
@@ -1013,6 +1110,74 @@
             }
         };
 
+        function setActiveNavItem(targetUrl) {
+            const nav = document.getElementById('persistent-bottom-nav');
+            if (!nav) return;
+            nav.querySelectorAll('.nav-item').forEach(item => {
+                const isMatch = item.getAttribute('data-nav-target') === targetUrl;
+                item.classList.toggle('active', isMatch);
+            });
+            updateNavIndicator(false);
+        }
+
+        function updateNavIndicator(instant = false) {
+            const nav = document.getElementById('persistent-bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const visibleItems = Array.from(nav.querySelectorAll('.nav-item')).filter(
+                el => getComputedStyle(el).display !== 'none'
+            );
+            const activeItem = visibleItems.find(el => el.classList.contains('active'));
+            if (!activeItem) return;
+
+            if (instant) {
+                indicator.style.transition = 'none';
+            }
+
+            const navRect = nav.getBoundingClientRect();
+            const itemRect = activeItem.getBoundingClientRect();
+            indicator.style.width = `${itemRect.width}px`;
+            indicator.style.transform = `translate3d(${itemRect.left - navRect.left - 6}px, 0, 0)`;
+
+            if (instant) {
+                indicator.getBoundingClientRect();
+                indicator.style.transition = '';
+            }
+        }
+        window.updateNavIndicator = updateNavIndicator;
+
+        async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
+            if (event) event.preventDefault();
+
+            const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentFile === targetUrl) {
+                setActiveNavItem(targetUrl);
+                return;
+            }
+
+            if (requiresAuth) {
+                const isSignedIn = Boolean(document.getElementById('header-wallet-pill')?.style.display === 'flex');
+                localStorage.removeItem("redirectUrl");
+                if (!isSignedIn) {
+                    localStorage.setItem("redirectUrl", targetUrl);
+                    setActiveNavItem('profile.html');
+                    sessionStorage.setItem('prevNavTarget', currentFile);
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 140);
+                    return;
+                }
+            }
+
+            setActiveNavItem(targetUrl);
+            sessionStorage.setItem('prevNavTarget', currentFile);
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 150);
+        }
+        window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
+
         function openModal() {
             document.getElementById('langModal').style.display = 'flex';
         }
@@ -1067,6 +1232,8 @@
                 document.getElementById('lang-bn-option').classList.remove('selected');
                 document.getElementById('check-bn').style.display = 'none';
             }
+
+            requestAnimationFrame(() => updateNavIndicator(false));
         }
 
         const savedLang = localStorage.getItem('language') || 'en';
@@ -1160,8 +1327,48 @@
             return true;
         }
 
+        function initSmoothNav() {
+            const nav = document.getElementById('persistent-bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const prevTarget = sessionStorage.getItem('prevNavTarget');
+            sessionStorage.removeItem('prevNavTarget');
+
+            if (prevTarget) {
+                const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
+                if (prevItem && getComputedStyle(prevItem).display !== 'none') {
+                    indicator.style.transition = 'none';
+                    const navRect = nav.getBoundingClientRect();
+                    const prevRect = prevItem.getBoundingClientRect();
+                    indicator.style.width = `${prevRect.width}px`;
+                    indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
+                    indicator.getBoundingClientRect();
+                    indicator.style.transition = '';
+                }
+                requestAnimationFrame(() => updateNavIndicator(false));
+            } else {
+                updateNavIndicator(true);
+            }
+
+            document.documentElement.classList.add('page-ready');
+        }
+
         setInterval(updateSaleStatus, 1000);
         updateSaleStatus();
+
+        if (document.readyState === 'complete') {
+            initSmoothNav();
+        } else {
+            window.addEventListener('load', initSmoothNav, { once: true });
+            setTimeout(() => {
+                if (!document.documentElement.classList.contains('page-ready')) {
+                    initSmoothNav();
+                }
+            }, 300);
+        }
+
+        window.addEventListener('resize', () => updateNavIndicator(true));
     </script>
 </body>
 </html>
