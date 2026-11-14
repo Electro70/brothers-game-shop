@@ -92,6 +92,73 @@
             gap: 6px;
         }
 
+        /* Header Logged-in Wallet Pill (Profile Photo + Balance + Plus) */
+        .header-wallet-pill {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px 4px 5px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .header-wallet-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .header-wallet-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .header-wallet-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+            padding-right: 2px;
+            text-decoration: none;
+        }
+
+        .header-wallet-label {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .header-wallet-amount {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+
+        .header-wallet-plus {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #10b981;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
         /* Main Container */
         .container {
             max-width: 600px;
@@ -642,6 +709,16 @@
                 <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
             <a href="login.html" class="signin-btn" id="header-signin-btn"><i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span></a>
+            <div class="header-wallet-pill" id="header-wallet-pill">
+                <a href="profile.html" class="header-wallet-avatar" id="header-user-avatar">
+                    <i class="fa-solid fa-user" style="font-size: 13px; color: #334155;"></i>
+                </a>
+                <a href="profile.html" class="header-wallet-info">
+                    <span class="header-wallet-label">Balance</span>
+                    <span class="header-wallet-amount">৳ <span id="header-user-balance">0</span></span>
+                </a>
+                <a href="add-money.html" class="header-wallet-plus"><i class="fa-solid fa-plus"></i></a>
+            </div>
         </div>
     </header>
 
@@ -858,22 +935,28 @@
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             const headerSigninBtn = document.getElementById("header-signin-btn");
+            const headerWalletPill = document.getElementById("header-wallet-pill");
+            const headerUserAvatar = document.getElementById("header-user-avatar");
+            const headerUserBalance = document.getElementById("header-user-balance");
             const myCoinsCount = document.querySelector(".my-coins-count");
 
             if (user) {
                 const data = getUserProfileData(user);
-                if (headerSigninBtn) {
-                    headerSigninBtn.href = "profile.html";
-                    headerSigninBtn.innerHTML = `<i class="fa-regular fa-user"></i> <span>${data.name}</span>`;
+                if (headerSigninBtn) headerSigninBtn.style.display = "none";
+                if (headerWalletPill) headerWalletPill.style.display = "flex";
+
+                if (headerUserAvatar && data.photoURL) {
+                    headerUserAvatar.innerHTML = `<img src="${data.photoURL}" alt="Profile">`;
+                }
+                if (headerUserBalance) {
+                    headerUserBalance.textContent = Number(data.balance || 0);
                 }
                 if (myCoinsCount) {
                     myCoinsCount.textContent = `${data.coins} Coins`;
                 }
             } else {
-                if (headerSigninBtn) {
-                    headerSigninBtn.href = "login.html";
-                    headerSigninBtn.innerHTML = `<i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span>`;
-                }
+                if (headerSigninBtn) headerSigninBtn.style.display = "flex";
+                if (headerWalletPill) headerWalletPill.style.display = "none";
             }
         });
 
