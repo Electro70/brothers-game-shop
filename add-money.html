@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Game Vault - Add Money</title>
+    <title id="page-title">Game Vault - Add Balance</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -14,7 +14,7 @@
             --header-bg: #ffffff;
             --card-bg: #ffffff;
             --border-color: #e5e7eb;
-            --accent-color: #eab308; /* Game Vault Yellow Accent */
+            --accent-color: #eab308;
         }
 
         [data-theme="dark"] {
@@ -77,7 +77,6 @@
             color: var(--text-color);
         }
 
-        /* User Balance Pill */
         .balance-pill {
             display: flex;
             align-items: center;
@@ -128,285 +127,139 @@
             padding: 0 15px;
         }
 
-        /* Top Green Banner */
-        .wallet-banner {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: white;
-            border-radius: 20px;
-            padding: 22px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        /* Top Banner */
+        .page-header-box {
+            margin-bottom: 16px;
         }
 
-        .wallet-icon-box {
-            background: rgba(255, 255, 255, 0.2);
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-
-        .wallet-titles h2 {
-            font-size: 18px;
+        .page-header-box h1 {
+            font-size: 22px;
             font-weight: 800;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
-        .wallet-titles p {
-            font-size: 12px;
-            opacity: 0.9;
+        .page-header-box p {
+            font-size: 13px;
+            color: #64748b;
         }
 
-        /* Card Box */
+        .notice-banner {
+            background: rgba(234, 179, 8, 0.14);
+            border: 1px solid #eab308;
+            color: var(--text-color);
+            padding: 11px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notice-banner i {
+            color: #ca8a04;
+            font-size: 15px;
+        }
+
         .card-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
 
-        .section-label {
+        .section-title {
             font-size: 14px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .limit-text {
-            font-size: 12px;
-            color: #94a3b8;
-            font-weight: 600;
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
         }
 
-        /* Amount Input */
-        .amount-input-wrap {
-            position: relative;
+        .preset-btn {
             background: var(--bg-color);
-            border: 2px solid #059669;
-            border-radius: 12px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .amount-input-wrap input {
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 18px;
-            font-weight: 700;
+            border: 1.5px solid var(--border-color);
             color: var(--text-color);
-            width: 100%;
-        }
-
-        .currency-tag {
+            padding: 11px 8px;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 700;
-            color: #64748b;
-        }
-
-        .feedback-msg {
-            font-size: 12px;
-            font-weight: 600;
-            min-height: 18px;
-            margin-bottom: 12px;
-        }
-
-        .feedback-msg.error {
-            color: #ef4444;
-        }
-
-        .feedback-msg.success {
-            color: #10b981;
-        }
-
-        /* Payment Methods */
-        .method-card {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             cursor: pointer;
             transition: 0.2s;
-            background: var(--bg-color);
         }
 
-        .method-card.selected {
-            border-color: #059669;
-            background: rgba(5, 150, 105, 0.05);
-        }
-
-        .method-left {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .method-title {
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .method-sub {
-            font-size: 12px;
-            color: #94a3b8;
-        }
-
-        /* Radio Custom */
-        .radio-dot {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #cbd5e1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .method-card.selected .radio-dot {
-            border-color: #059669;
-        }
-
-        .method-card.selected .radio-dot::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: #059669;
-            border-radius: 50%;
-        }
-
-        /* Deposit Confirmation Panel */
-        .confirm-panel {
-            display: none;
-            background: var(--card-bg);
-            border: 1px solid #059669;
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.12);
-        }
-
-        .confirm-panel h3 {
-            font-size: 15px;
-            font-weight: 800;
-            margin-bottom: 10px;
+        .preset-btn.active {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
             color: #059669;
         }
 
-        .confirm-summary {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
             font-size: 13px;
-            margin-bottom: 12px;
-            line-height: 1.6;
-        }
-
-        .trx-input {
-            width: 100%;
-            padding: 11px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            font-size: 14px;
-            outline: none;
-            margin-bottom: 12px;
-        }
-
-        .trx-input:focus {
-            border-color: #059669;
-        }
-
-        .confirm-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .cancel-btn {
-            flex: 1;
-            background: var(--border-color);
-            color: var(--text-color);
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
             font-weight: 700;
-            cursor: pointer;
+            margin-bottom: 6px;
         }
 
-        .confirm-submit-btn {
-            flex: 2;
-            background: #059669;
+        .form-control, .form-select {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-color);
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #10b981;
+        }
+
+        .error-text {
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .continue-btn {
+            width: 100%;
+            background: #16a34a;
             color: #ffffff;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        /* Proceed Button */
-        .proceed-btn {
-            width: 100%;
-            background: #059669;
-            color: white;
-            padding: 14px;
+            padding: 15px;
             border-radius: 12px;
-            border: none;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
             transition: 0.2s;
-            margin-bottom: 20px;
         }
 
-        .proceed-btn:hover {
-            opacity: 0.92;
-        }
-
-        /* Instructions Box */
-        .instruction-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 15px;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-            font-size: 12px;
-            color: #64748b;
-            line-height: 1.5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .instruction-box i {
-            color: #059669;
-            font-size: 16px;
-            margin-top: 2px;
+        .continue-btn:hover {
+            background: #15803d;
         }
 
         /* Footer */
@@ -494,87 +347,64 @@
 
     <!-- Main Container -->
     <div class="container">
-        
-        <!-- Top Wallet Banner -->
-        <div class="wallet-banner">
-            <div class="wallet-icon-box">
-                <i class="fa-solid fa-wallet"></i>
-            </div>
-            <div class="wallet-titles">
-                <h2>Add Money to Wallet</h2>
-                <p>Top up your wallet securely and instantly!</p>
-            </div>
+        <div class="page-header-box">
+            <h1>Add Balance</h1>
+            <p>Submit your payment details below to continue directly to our inbox.</p>
         </div>
 
-        <!-- Add Money Form Box -->
+        <div class="notice-banner">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়</span>
+        </div>
+
         <div class="card-box">
-            <div class="section-label">
-                <span>Enter amount</span>
-                <span class="limit-text">Min ৳10 Max ৳10000</span>
-            </div>
-            
-            <div class="amount-input-wrap">
-                <input type="number" placeholder="Write amount here" id="deposit-amount" min="10" max="10000" step="1">
-                <span class="currency-tag">BDT</span>
-            </div>
-            <div id="deposit-feedback" class="feedback-msg"></div>
-
-            <div class="section-label" style="margin-bottom: 10px;">
-                <span>Payment Method</span>
-            </div>
-            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px; text-transform: uppercase; font-weight: 700;">ONLINE PAYMENT</p>
-
-            <!-- EPS Option -->
-            <div class="method-card" data-method="EPS - Online Payment" data-guide="Pay via bKash / Nagad / Rocket / Card gateway and enter your Transaction ID." onclick="selectMethod(this)">
-                <div class="method-left">
-                    <span class="method-title">EPS - Online Payment</span>
-                    <span class="method-sub">bKash / Nagad / Rocket / Cards</span>
-                </div>
-                <div class="radio-dot"></div>
+            <div class="section-title">
+                <span>Choose Amount</span>
             </div>
 
-            <!-- MFS Option (Selected by default) -->
-            <div class="method-card selected" data-method="MFS - Online Payment" data-guide="Send money via bKash / Nagad / Rocket personal number and enter your TrxID." onclick="selectMethod(this)">
-                <div class="method-left">
-                    <span class="method-title">MFS - Online Payment</span>
-                    <span class="method-sub">bKash / Nagad / Rocket</span>
-                </div>
-                <div class="radio-dot"></div>
+            <div class="preset-grid">
+                <button type="button" class="preset-btn active" data-val="50" onclick="pickPreset(this)">50৳</button>
+                <button type="button" class="preset-btn" data-val="100" onclick="pickPreset(this)">100৳</button>
+                <button type="button" class="preset-btn" data-val="500" onclick="pickPreset(this)">500৳</button>
+                <button type="button" class="preset-btn" data-val="1000" onclick="pickPreset(this)">1000৳</button>
+                <button type="button" class="preset-btn" data-val="1500" onclick="pickPreset(this)">1500৳</button>
+                <button type="button" class="preset-btn" data-val="2000" onclick="pickPreset(this)">2000৳</button>
             </div>
 
-            <!-- USDT Option -->
-            <div class="method-card" data-method="USDT" data-guide="Send USDT (BSC / TRON) and enter your TxID / Hash below." onclick="selectMethod(this)">
-                <div class="method-left">
-                    <span class="method-title">USDT</span>
-                    <span class="method-sub">BSC - TRON</span>
-                </div>
-                <div class="radio-dot"></div>
+            <div class="form-group">
+                <label for="amount-input">টাকার পরিমাণ</label>
+                <input type="number" id="amount-input" class="form-control" value="50" min="20" max="10000" oninput="validateAmount()">
+                <div id="amount-error" class="error-text">দয়াকরে ২০-১০০০০ টাকার মধ্যে পরিমাণ লিখুন</div>
+            </div>
+
+            <div class="form-group">
+                <label for="sender-number">যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার</label>
+                <input type="tel" id="sender-number" class="form-control" placeholder="০১৭...." required>
+            </div>
+
+            <div class="form-group">
+                <label for="payment-method">পেমেন্ট অপশন</label>
+                <select id="payment-method" class="form-select">
+                    <option value="BKash">BKash</option>
+                    <option value="Nogod">Nogod</option>
+                    <option value="Roket">Roket</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="trx-id">ট্রানজেকশন আইডি</label>
+                <input type="text" id="trx-id" class="form-control" placeholder="#####" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 6px;">
+                <label for="account-no">আ্যকাউন্ট নং</label>
+                <input type="text" id="account-no" class="form-control" placeholder="#" required>
             </div>
         </div>
 
-        <!-- Confirmation / TrxID Panel -->
-        <div class="confirm-panel" id="confirm-panel">
-            <h3><i class="fa-solid fa-shield-halved"></i> Complete Deposit Request</h3>
-            <div class="confirm-summary" id="confirm-summary"></div>
-            <input type="text" id="trx-id-input" class="trx-input" placeholder="Enter Transaction ID / Reference">
-            <div class="confirm-actions">
-                <button type="button" class="cancel-btn" onclick="cancelDepositPanel()">Cancel</button>
-                <button type="button" class="confirm-submit-btn" id="confirm-deposit-btn">Confirm & Add Balance</button>
-            </div>
-        </div>
-
-        <!-- Proceed Button -->
-        <button type="button" class="proceed-btn" id="proceed-deposit-btn">
-            Proceed to Add Money <i class="fa-solid fa-arrow-right"></i>
+        <button type="button" class="continue-btn" onclick="continueToAddMoney()">
+            Continue to Add Money <i class="fa-solid fa-paper-plane"></i>
         </button>
-
-        <!-- Instruction Box -->
-        <div class="instruction-box">
-            <i class="fa-solid fa-circle-check"></i>
-            <div>
-                <strong>Payment Instructions:</strong> Select your amount and method, then enter your Transaction ID to credit your Game Vault wallet.
-            </div>
-        </div>
 
         <!-- Footer Info -->
         <div class="site-footer">
@@ -589,7 +419,6 @@
                 <a href="https://t.me/zunayed_islam00" target="_blank">Made by Game Vault 👾</a>
             </div>
         </div>
-
     </div>
 
     <!-- Bottom Navigation Bar (5 Items) -->
@@ -628,121 +457,77 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard & Wallet Deposit Logic -->
+    <!-- Firebase Auth Guard & User Data Display -->
     <script type="module">
-        import { auth, onAuthStateChanged, getUserProfileData, updateUserProfileData } from "./firebase.js";
-
-        let currentUser = null;
-        let pendingAmount = 0;
-
-        function renderUserHeader(user) {
-            const data = getUserProfileData(user);
-            const headerBalance = document.getElementById("user-balance");
-            const balanceAvatar = document.querySelector(".balance-avatar");
-
-            if (headerBalance && data) {
-                headerBalance.textContent = Number(data.balance).toFixed(1);
-            }
-            if (data && data.photoURL && balanceAvatar) {
-                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
-            }
-        }
+        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = "login.html";
                 return;
             }
-            currentUser = user;
-            renderUserHeader(user);
-        });
 
-        function showFeedback(message, type) {
-            const el = document.getElementById("deposit-feedback");
-            el.textContent = message;
-            el.className = `feedback-msg ${type || ""}`;
-        }
+            const data = getUserProfileData(user);
+            const headerBalance = document.getElementById("user-balance");
+            const balanceAvatar = document.querySelector(".balance-avatar");
+            const accountInput = document.getElementById("account-no");
 
-        function getSelectedMethodInfo() {
-            const selected = document.querySelector(".method-card.selected");
-            return {
-                method: selected ? selected.dataset.method : "MFS - Online Payment",
-                guide: selected ? selected.dataset.guide : ""
-            };
-        }
-
-        document.getElementById("proceed-deposit-btn").addEventListener("click", () => {
-            const amountInput = document.getElementById("deposit-amount");
-            const amount = Number(amountInput.value);
-
-            if (!amount || amount < 10 || amount > 10000) {
-                showFeedback("Please enter a valid amount between ৳10 and ৳10,000.", "error");
-                return;
+            if (headerBalance) {
+                headerBalance.textContent = Number(data.balance).toFixed(1);
             }
-
-            pendingAmount = amount;
-            const { method, guide } = getSelectedMethodInfo();
-            showFeedback("", "");
-
-            document.getElementById("confirm-summary").innerHTML = `
-                <div><strong>Method:</strong> ${method}</div>
-                <div><strong>Amount:</strong> ৳ ${amount.toFixed(2)} BDT</div>
-                <div style="font-size:12px; color:#64748b; margin-top:4px;">${guide}</div>
-            `;
-            document.getElementById("confirm-panel").style.display = "block";
-            document.getElementById("trx-id-input").focus();
-        });
-
-        document.getElementById("confirm-deposit-btn").addEventListener("click", () => {
-            if (!currentUser) return;
-
-            const trxId = document.getElementById("trx-id-input").value.trim();
-            if (!trxId || trxId.length < 4) {
-                showFeedback("Please enter a valid Transaction ID.", "error");
-                return;
+            if (data.photoURL && balanceAvatar) {
+                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
             }
-
-            const { method } = getSelectedMethodInfo();
-            const currentProfile = getUserProfileData(currentUser);
-            const updatedBalance = Number(currentProfile.balance || 0) + pendingAmount;
-
-            updateUserProfileData(currentUser, { balance: updatedBalance });
-            renderUserHeader(currentUser);
-
-            // Save deposit record locally for user's history
-            const depositKey = `gv_deposits_${currentUser.uid}`;
-            const existingDeposits = JSON.parse(localStorage.getItem(depositKey) || "[]");
-            existingDeposits.unshift({
-                id: `DEP-${Date.now()}`,
-                method,
-                amount: pendingAmount,
-                trxId,
-                status: "Completed",
-                date: new Date().toLocaleString()
-            });
-            localStorage.setItem(depositKey, JSON.stringify(existingDeposits));
-
-            document.getElementById("deposit-amount").value = "";
-            document.getElementById("trx-id-input").value = "";
-            document.getElementById("confirm-panel").style.display = "none";
-            showFeedback(`৳${pendingAmount.toFixed(2)} added successfully via ${method}!`, "success");
-            pendingAmount = 0;
+            if (accountInput && !accountInput.value) {
+                accountInput.value = user.email || user.uid;
+            }
         });
     </script>
 
     <script>
-        function selectMethod(element) {
-            document.querySelectorAll('.method-card').forEach(card => card.classList.remove('selected'));
-            element.classList.add('selected');
-            const panel = document.getElementById('confirm-panel');
-            if (panel && panel.style.display === 'block') {
-                document.getElementById('proceed-deposit-btn').click();
-            }
+        function pickPreset(btn) {
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('amount-input').value = btn.dataset.val;
+            validateAmount();
         }
 
-        function cancelDepositPanel() {
-            document.getElementById('confirm-panel').style.display = 'none';
-            document.getElementById('trx-id-input').value = '';
+        function validateAmount() {
+            const amount = Number(document.getElementById('amount-input').value);
+            const errEl = document.getElementById('amount-error');
+            if (!amount || amount < 20 || amount > 10000) {
+                errEl.style.display = 'block';
+                return false;
+            }
+            errEl.style.display = 'none';
+            return true;
+        }
+
+        function continueToAddMoney() {
+            if (!validateAmount()) return;
+
+            const amount = document.getElementById('amount-input').value.trim();
+            const senderNumber = document.getElementById('sender-number').value.trim();
+            const method = document.getElementById('payment-method').value;
+            const trxId = document.getElementById('trx-id').value.trim();
+            const accountNo = document.getElementById('account-no').value.trim();
+
+            if (!senderNumber || !trxId || !accountNo) {
+                alert('সবগুলো তথ্য পূরণ করুন।');
+                return;
+            }
+
+            const message =
+`Add Money Request (Game Vault)
+----------------------------
+টাকার পরিমাণ : ${amount}
+যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার : ${senderNumber}
+পেমেন্ট অপশন : ${method}
+ট্রানজেকশন আইডি : ${trxId}
+আ্যকাউন্ট নং : ${accountNo}`;
+
+            const telegramUrl = `https://t.me/zunayed_islam00?text=${encodeURIComponent(message)}`;
+            window.location.href = telegramUrl;
         }
 
         function openModal() { document.getElementById('langModal').style.display = 'flex'; }
