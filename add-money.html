@@ -439,15 +439,10 @@
         }
 
         .made-by {
-            margin-top: 14px;
+            margin-top: 12px;
             font-size: 13px;
             font-weight: 700;
-            color: #ffffff;
-            background: #0f172a;
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
+            color: var(--text-color);
         }
 
         .made-by a {
@@ -566,8 +561,8 @@
     <div class="container">
         <!-- Green Card Box -->
         <div class="green-header-card">
-            <h1 id="t-title">Add Balance</h1>
-            <p class="subtext-en" id="t-subtext">Top up your Game Vault wallet quickly and securely.</p>
+            <h1 id="t-title">ব্যালেন্স যোগ করুন</h1>
+            <p class="subtext-en" id="t-subtext">দ্রুত ও নিরাপদে আপনার Game Vault ওয়ালেটে ব্যালেন্স যোগ করুন।</p>
             <div class="green-warning-note">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 <span id="t-warning">শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়</span>
@@ -578,7 +573,7 @@
         <div class="card-box">
             <!-- Payment Method Section at Top -->
             <div class="section-title">
-                <span id="t-method-label">Payment Method</span>
+                <span id="t-method-label">পেমেন্ট মেথড</span>
             </div>
 
             <div class="method-grid">
@@ -590,7 +585,7 @@
                             onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='bkash.png';}else{this.style.display='none'; this.parentElement.textContent='bK';}"
                         >
                     </div>
-                    <span class="method-name">BKash</span>
+                    <span class="method-name" id="method-bkash-name">বিকাশ</span>
                 </div>
 
                 <div class="pay-method-box nagad-box" data-method="Nagad" data-number="01572921586" onclick="selectPayMethod(this)">
@@ -601,14 +596,14 @@
                             onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='nagad.png';}else{this.style.display='none'; this.parentElement.textContent='N';}"
                         >
                     </div>
-                    <span class="method-name">Nagad</span>
+                    <span class="method-name" id="method-nagad-name">নগদ</span>
                 </div>
             </div>
 
             <!-- Receiving Number Box -->
             <div class="receiver-number-box">
                 <div class="receiver-meta">
-                    <span class="receiver-label" id="receiver-label-text">BKash Send Money Number</span>
+                    <span class="receiver-label" id="receiver-label-text">বিকাশ সেন্ড মানি নাম্বার</span>
                     <span class="receiver-val" id="receiver-number-text">01857659802</span>
                 </div>
                 <button type="button" class="copy-num-btn" onclick="copyReceiverNumber()">
@@ -619,7 +614,7 @@
 
             <!-- Choose Amount Section -->
             <div class="section-title">
-                <span id="t-choose-amount">Choose Amount</span>
+                <span id="t-choose-amount">পরিমাণ নির্বাচন করুন</span>
             </div>
 
             <div class="preset-grid">
@@ -668,7 +663,7 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 4px;">
-                <label for="account-no" id="t-account-label">My Account</label>
+                <label for="account-no" id="t-account-label">আমার অ্যাকাউন্ট</label>
                 <input
                     type="email"
                     id="account-no"
@@ -787,15 +782,18 @@
             bn: {
                 flag: "🇧🇩",
                 langText: "বাংলা",
-                title: "Add Balance",
-                subtext: "Top up your Game Vault wallet quickly and securely.",
+                title: "ব্যালেন্স যোগ করুন",
+                subtext: "দ্রুত ও নিরাপদে আপনার Game Vault ওয়ালেটে ব্যালেন্স যোগ করুন।",
                 warning: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়",
-                chooseAmount: "Choose Amount",
+                chooseAmount: "পরিমাণ নির্বাচন করুন",
                 amountLabel: "টাকার পরিমাণ",
                 senderLabel: "যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার",
-                methodLabel: "Payment Method",
+                methodLabel: "পেমেন্ট মেথড",
+                bkashName: "বিকাশ",
+                nagadName: "নগদ",
+                receiverLabel: (method) => `${method === "BKash" ? "বিকাশ" : "নগদ"} সেন্ড মানি নাম্বার`,
                 trxLabel: "ট্রানজেকশন আইডি",
-                accountLabel: "My Account",
+                accountLabel: "আমার অ্যাকাউন্ট",
                 continueBtn: "Continue to Add Money",
                 copyBtn: "Copy",
                 footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
@@ -816,6 +814,9 @@
                 amountLabel: "Amount (BDT)",
                 senderLabel: "Sender Phone Number",
                 methodLabel: "Payment Method",
+                bkashName: "BKash",
+                nagadName: "Nagad",
+                receiverLabel: (method) => `${method} Send Money Number`,
                 trxLabel: "Transaction ID",
                 accountLabel: "My Account",
                 continueBtn: "Continue to Add Money",
@@ -845,6 +846,9 @@
             document.getElementById("t-amount-label").textContent = t.amountLabel;
             document.getElementById("t-sender-label").textContent = t.senderLabel;
             document.getElementById("t-method-label").textContent = t.methodLabel;
+            document.getElementById("method-bkash-name").textContent = t.bkashName;
+            document.getElementById("method-nagad-name").textContent = t.nagadName;
+            document.getElementById("receiver-label-text").textContent = t.receiverLabel(selectedPaymentMethod);
             document.getElementById("t-trx-label").textContent = t.trxLabel;
             document.getElementById("t-account-label").textContent = t.accountLabel;
             document.getElementById("copy-btn-text").textContent = t.copyBtn;
@@ -915,7 +919,9 @@
             el.classList.add("active");
             selectedPaymentMethod = el.dataset.method;
             selectedReceiverNumber = el.dataset.number;
-            document.getElementById("receiver-label-text").textContent = `${selectedPaymentMethod} Send Money Number`;
+            const savedLang = localStorage.getItem("language") || "bn";
+            const t = translations[savedLang] || translations.bn;
+            document.getElementById("receiver-label-text").textContent = t.receiverLabel(selectedPaymentMethod);
             document.getElementById("receiver-number-text").textContent = selectedReceiverNumber;
         }
 
