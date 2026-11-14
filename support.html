@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Game Vault - Customer Support</title>
-    <!-- FontAwesome Icons (Non-blocking preload + fallback to prevent FOUC) -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
@@ -114,7 +113,7 @@
             transform: scale(0.95);
         }
 
-        /* Icon-only Sign In Button (No text, no color fill) */
+        /* Icon-only Sign In Button */
         .signin-btn {
             width: 36px;
             height: 36px;
@@ -184,15 +183,9 @@
             margin: 20px auto;
             padding: 0 15px;
             display: block;
-            transition: opacity 0.18s ease;
         }
 
-        .container.is-swapping {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* Customer Support Green Banner Matching Screenshot */
+        /* Customer Support Green Banner */
         .support-banner {
             background:
                 radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 28%, transparent 29%),
@@ -308,11 +301,7 @@
             border-radius: 20px;
         }
 
-        .status-pill.active {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
-        }
-
+        .status-pill.active,
         .status-pill.online {
             background: rgba(34, 197, 94, 0.15);
             color: #22c55e;
@@ -417,7 +406,7 @@
             text-decoration: underline;
         }
 
-        /* Persistent Sliding Pill Bottom Navigation Bar (No rise-up animation) */
+        /* Persistent Sliding Pill Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 12px;
@@ -722,16 +711,17 @@
             const navAddMoney = document.getElementById("nav-add-money");
 
             if (user && user.email) {
-                const data = getUserProfileData(user);
+                const data = getUserProfileData(user) || {};
                 if (headerSigninBtn) headerSigninBtn.style.display = "none";
                 if (headerBalancePill) headerBalancePill.style.display = "flex";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
                 if (navAddMoney) navAddMoney.style.display = "flex";
-                if (headerBalance && data && data.balance !== undefined) {
+                if (headerBalance && data.balance !== undefined) {
                     headerBalance.textContent = Number(data.balance).toFixed(1);
                 }
-                if (data && data.photoURL && balanceAvatar) {
-                    balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
+                const photo = data.photoURL || user.photoURL;
+                if (photo && balanceAvatar) {
+                    balanceAvatar.innerHTML = `<img src="${photo}" alt="Avatar">`;
                 }
             } else {
                 if (headerSigninBtn) headerSigninBtn.style.display = "flex";
@@ -852,7 +842,6 @@
         }
         window.updateNavIndicator = updateNavIndicator;
 
-        // Smooth bottom nav navigation + smooth Profile->Login slider transition
         async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
@@ -867,8 +856,8 @@
                 localStorage.removeItem("redirectUrl");
                 if (!user || !user.email) {
                     localStorage.setItem("redirectUrl", targetUrl);
-                    // Slide indicator smoothly to Profile before redirecting to login.html
                     setActiveNavItem('profile.html');
+                    sessionStorage.setItem('prevNavTarget', currentFile);
                     setTimeout(() => {
                         window.location.href = "login.html";
                     }, 140);
@@ -876,58 +865,13 @@
                 }
             }
 
-            if (window.location.protocol === 'file:') {
-                window.location.href = targetUrl;
-                return;
-            }
-
-            const mainContainer = document.getElementById('main-container');
             setActiveNavItem(targetUrl);
-
-            try {
-                if (mainContainer) mainContainer.classList.add('is-swapping');
-                const response = await fetch(targetUrl, { cache: 'no-cache' });
-                if (!response.ok) throw new Error('Failed to load page');
-
-                const htmlText = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlText, 'text/html');
-                const nextContainer = doc.querySelector('.container');
-                const nextTitle = doc.querySelector('title')?.textContent;
-
-                if (nextContainer && mainContainer) {
-                    mainContainer.innerHTML = nextContainer.innerHTML;
-                    if (nextTitle) document.title = nextTitle;
-                    window.history.pushState({ page: targetUrl }, '', targetUrl);
-
-                    const scripts = nextContainer.querySelectorAll('script');
-                    scripts.forEach(oldScript => {
-                        const newScript = document.createElement('script');
-                        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                        newScript.textContent = oldScript.textContent;
-                        mainContainer.appendChild(newScript);
-                    });
-
-                    applyLanguage(localStorage.getItem('language') || 'en');
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                } else {
-                    window.location.href = targetUrl;
-                }
-            } catch (err) {
+            sessionStorage.setItem('prevNavTarget', currentFile);
+            setTimeout(() => {
                 window.location.href = targetUrl;
-            } finally {
-                requestAnimationFrame(() => {
-                    if (mainContainer) mainContainer.classList.remove('is-swapping');
-                    updateNavIndicator(false);
-                });
-            }
+            }, 150);
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
-
-        window.addEventListener('popstate', () => {
-            const currentFile = window.location.pathname.split('/').pop() || 'support.html';
-            setActiveNavItem(currentFile);
-        });
 
         function applyTheme() {
             const theme = localStorage.getItem('theme') || 'light';
@@ -1002,12 +946,31 @@
             requestAnimationFrame(() => updateNavIndicator(false));
         }
 
-        function markPageReady() {
-            updateNavIndicator(true);
-            requestAnimationFrame(() => {
-                document.documentElement.classList.add('page-ready');
+        function initSmoothNav() {
+            const nav = document.getElementById('persistent-bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const prevTarget = sessionStorage.getItem('prevNavTarget');
+            sessionStorage.removeItem('prevNavTarget');
+
+            if (prevTarget) {
+                const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
+                if (prevItem && getComputedStyle(prevItem).display !== 'none') {
+                    indicator.style.transition = 'none';
+                    const navRect = nav.getBoundingClientRect();
+                    const prevRect = prevItem.getBoundingClientRect();
+                    indicator.style.width = `${prevRect.width}px`;
+                    indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
+                    indicator.getBoundingClientRect();
+                    indicator.style.transition = '';
+                }
+                requestAnimationFrame(() => updateNavIndicator(false));
+            } else {
                 updateNavIndicator(true);
-            });
+            }
+
+            document.documentElement.classList.add('page-ready');
         }
 
         applyTheme();
@@ -1015,12 +978,12 @@
         applyLanguage(savedLang);
 
         if (document.readyState === 'complete') {
-            markPageReady();
+            initSmoothNav();
         } else {
-            window.addEventListener('load', markPageReady, { once: true });
+            window.addEventListener('load', initSmoothNav, { once: true });
             setTimeout(() => {
                 if (!document.documentElement.classList.contains('page-ready')) {
-                    markPageReady();
+                    initSmoothNav();
                 }
             }, 300);
         }
