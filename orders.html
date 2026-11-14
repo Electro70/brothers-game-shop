@@ -462,13 +462,25 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard -->
+    <!-- Firebase Auth Guard & User Data Display -->
     <script type="module">
-        import { auth, onAuthStateChanged } from "./firebase.js";
+        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = "login.html";
+                return;
+            }
+
+            const data = getUserProfileData(user);
+            const headerBalance = document.getElementById("user-balance");
+            const balanceAvatar = document.querySelector(".balance-avatar");
+
+            if (headerBalance) {
+                headerBalance.textContent = Number(data.balance).toFixed(1);
+            }
+            if (data.photoURL && balanceAvatar) {
+                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
             }
         });
     </script>
