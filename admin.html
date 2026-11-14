@@ -350,6 +350,13 @@
             color: #4ade80;
             border: 1px solid rgba(74, 222, 128, 0.35);
         }
+
+        .toast-msg.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.18);
+            color: #fca5a5;
+            border: 1px solid rgba(248, 113, 113, 0.35);
+        }
     </style>
 </head>
 <body>
@@ -422,7 +429,7 @@
             <div class="panel-card tab-section" id="tab-images">
                 <span class="status-pill">Images & Branding</span>
                 <h2>ছবি ও লোগো ম্যানেজমেন্ট</h2>
-                <p class="panel-sub">কোড না ধরেই BKash, Nagad ও সাইট লোগোর ইমেজ URL বা ফাইল আপডেট করে সেভ করুন।</p>
+                <p class="panel-sub">BKash, Nagad ও সাইট লোগোর ইমেজ URL বা পাথ দিয়ে সেভ করলে সব ব্রাউজারে আপডেট হবে।</p>
 
                 <div class="grid-2">
                     <div class="asset-box">
@@ -536,7 +543,7 @@
             <div class="panel-card tab-section" id="tab-users" style="display:none;">
                 <span class="status-pill">Users & Balance</span>
                 <h2>ইউজার ব্যালেন্স ম্যানেজমেন্ট</h2>
-                <p class="panel-sub">পরবর্তী ধাপে Firebase Firestore/Realtime Database থেকে ইউজার জিমেইল দিয়ে ব্যালেন্স যোগ/কমানোর ফাংশন যুক্ত হবে।</p>
+                <p class="panel-sub">পরবর্তী ধাপে Cloud Firestore থেকে ইউজার জিমেইল দিয়ে ব্যালেন্স যোগ/কমানোর ফাংশন যুক্ত হবে।</p>
             </div>
 
             <!-- TAB 5: Orders & Requests -->
@@ -565,19 +572,23 @@
             warningNote: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়"
         };
 
-        function showToast(elId, msg) {
+        function showToast(elId, msg, isError = false) {
             const el = document.getElementById(elId);
             el.textContent = msg;
-            el.className = "toast-msg success";
+            el.className = isError ? "toast-msg error" : "toast-msg success";
             el.style.display = "block";
             setTimeout(() => {
                 el.style.display = "none";
-            }, 2500);
+            }, 3000);
         }
 
         function handleFileUpload(input, key) {
             const file = input.files && input.files[0];
             if (!file) return;
+            if (file.size > 350000) {
+                showToast("imagesToast", "বড় ফাইলের বদলে ইমেজ URL বা ছোট ফাইল ব্যবহার করো।", true);
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function (e) {
                 const dataUrl = e.target.result;
@@ -587,7 +598,7 @@
             reader.readAsDataURL(file);
         }
 
-        function saveImagesConfig() {
+        async function saveImagesConfig() {
             const cfg = {
                 bkashLogo: document.getElementById("input-bkashLogo").value.trim() || DEFAULT_IMAGES.bkashLogo,
                 nagadLogo: document.getElementById("input-nagadLogo").value.trim() || DEFAULT_IMAGES.nagadLogo,
@@ -598,16 +609,31 @@
             document.getElementById("preview-nagadLogo").src = cfg.nagadLogo;
             document.getElementById("preview-siteLogo").src = cfg.siteLogo;
             renderDashboardSummary();
-            showToast("imagesToast", "ছবি ও লোগো সেটিংস সেভ হয়েছে।");
+
+            if (typeof window.syncSiteConfigToCloud === "function") {
+                try {
+                    await window.syncSiteConfigToCloud({ images: cfg });
+                    showToast("imagesToast", "ছবি ও লোগো ক্লাউড ডাটাবেসে সেভ হয়েছে।");
+                } catch (err) {
+                    showToast("imagesToast", "লোকাল সেভ হয়েছে, কিন্তু ক্লাউডে সেভ হয়নি।", true);
+                }
+            } else {
+                showToast("imagesToast", "ছবি ও লোগো সেটিংস সেভ হয়েছে।");
+            }
         }
 
-        function resetImagesConfig() {
+        async function resetImagesConfig() {
             localStorage.removeItem("gv_admin_images");
             loadSavedConfigs();
+            if (typeof window.syncSiteConfigToCloud === "function") {
+                try {
+                    await window.syncSiteConfigToCloud({ images: DEFAULT_IMAGES });
+                } catch (_) {}
+            }
             showToast("imagesToast", "ডিফল্ট ইমেজ সেটিংসে ফিরিয়ে আনা হয়েছে।");
         }
 
-        function savePaymentConfig() {
+        async function savePaymentConfig() {
             const cfg = {
                 bkashNumber: document.getElementById("cfg-bkashNumber").value.trim() || DEFAULT_PAYMENTS.bkashNumber,
                 nagadNumber: document.getElementById("cfg-nagadNumber").value.trim() || DEFAULT_PAYMENTS.nagadNumber,
@@ -619,18 +645,33 @@
             };
             localStorage.setItem("gv_admin_payments", JSON.stringify(cfg));
             renderDashboardSummary();
-            showToast("paymentToast", "পেমেন্ট ও লিমিট সেটিংস সেভ হয়েছে।");
+
+            if (typeof window.syncSiteConfigToCloud === "function") {
+                try {
+                    await window.syncSiteConfigToCloud({ payments: cfg });
+                    showToast("paymentToast", "পেমেন্ট ও লিমিট ক্লাউড ডাটাবেসে সেভ হয়েছে।");
+                } catch (err) {
+                    showToast("paymentToast", "লোকাল সেভ হয়েছে, কিন্তু ক্লাউডে সেভ হয়নি।", true);
+                }
+            } else {
+                showToast("paymentToast", "পেমেন্ট ও লিমিট সেটিংস সেভ হয়েছে।");
+            }
         }
 
-        function resetPaymentConfig() {
+        async function resetPaymentConfig() {
             localStorage.removeItem("gv_admin_payments");
             loadSavedConfigs();
+            if (typeof window.syncSiteConfigToCloud === "function") {
+                try {
+                    await window.syncSiteConfigToCloud({ payments: DEFAULT_PAYMENTS });
+                } catch (_) {}
+            }
             showToast("paymentToast", "ডিফল্ট পেমেন্ট সেটিংসে ফিরিয়ে আনা হয়েছে।");
         }
 
-        function loadSavedConfigs() {
-            const imgs = { ...DEFAULT_IMAGES, ...JSON.parse(localStorage.getItem("gv_admin_images") || "{}") };
-            const pays = { ...DEFAULT_PAYMENTS, ...JSON.parse(localStorage.getItem("gv_admin_payments") || "{}") };
+        function applyConfigValues(imgsInput, paysInput) {
+            const imgs = { ...DEFAULT_IMAGES, ...(imgsInput || {}) };
+            const pays = { ...DEFAULT_PAYMENTS, ...(paysInput || {}) };
 
             document.getElementById("input-bkashLogo").value = imgs.bkashLogo;
             document.getElementById("input-nagadLogo").value = imgs.nagadLogo;
@@ -649,6 +690,12 @@
             document.getElementById("cfg-warningNote").value = pays.warningNote;
 
             renderDashboardSummary();
+        }
+
+        function loadSavedConfigs() {
+            const imgs = JSON.parse(localStorage.getItem("gv_admin_images") || "{}");
+            const pays = JSON.parse(localStorage.getItem("gv_admin_payments") || "{}");
+            applyConfigValues(imgs, pays);
         }
 
         function renderDashboardSummary() {
@@ -684,6 +731,39 @@
             signInWithEmailAndPassword,
             signOut
         } from "./firebase.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const db = getFirestore(auth.app);
+        const configDocRef = doc(db, "siteConfig", "settings");
+
+        window.syncSiteConfigToCloud = async function (partialData) {
+            await setDoc(configDocRef, {
+                ...partialData,
+                updatedAt: new Date().toISOString()
+            }, { merge: true });
+        };
+
+        async function loadCloudSiteConfig() {
+            try {
+                const snap = await getDoc(configDocRef);
+                if (!snap.exists()) return;
+                const data = snap.data() || {};
+                if (data.images) {
+                    localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
+                }
+                if (data.payments) {
+                    localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
+                }
+                if (typeof applyConfigValues === "function") {
+                    applyConfigValues(data.images, data.payments);
+                }
+            } catch (_) {}
+        }
 
         const ADMIN_EMAILS = [
             "theummah234@gmail.com"
@@ -727,9 +807,7 @@
                 loginGate.style.display = "none";
                 adminPanel.style.display = "block";
                 loggedAdminEmail.textContent = user.email;
-                if (typeof loadSavedConfigs === "function") {
-                    loadSavedConfigs();
-                }
+                await loadCloudSiteConfig();
                 return;
             }
 
