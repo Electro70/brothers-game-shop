@@ -536,7 +536,6 @@
             </a>
         </div>
         <div class="header-right">
-            <!-- Day / Night Icon Only Button (Outside Modal) -->
             <button type="button" class="theme-icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Theme">
                 <i class="fa-solid fa-moon" id="theme-icon"></i>
             </button>
@@ -571,7 +570,6 @@
 
         <!-- Form Card Box -->
         <div class="card-box">
-            <!-- Payment Method Section at Top -->
             <div class="section-title">
                 <span id="t-method-label">পেমেন্ট মেথড</span>
             </div>
@@ -614,7 +612,6 @@
                 </button>
             </div>
 
-            <!-- Choose Amount Section -->
             <div class="section-title">
                 <span id="t-choose-amount">পরিমাণ নির্বাচন করুন</span>
             </div>
@@ -856,6 +853,10 @@
             if (savedImages.siteLogo) {
                 const headerLogo = document.getElementById("header-site-logo");
                 const footerLogo = document.getElementById("footer-site-logo");
+                const fallbackLogo = document.getElementById("fallback-logo");
+                const footerFallback = document.getElementById("footer-fallback");
+                if (fallbackLogo) fallbackLogo.style.display = "none";
+                if (footerFallback) footerFallback.style.display = "none";
                 if (headerLogo) {
                     headerLogo.style.display = "inline-block";
                     headerLogo.src = savedImages.siteLogo;
@@ -890,6 +891,8 @@
             if (savedPayments.warningNote) {
                 translations.bn.warning = savedPayments.warningNote;
                 translations.en.warning = savedPayments.warningNote;
+                const warningEl = document.getElementById("t-warning");
+                if (warningEl) warningEl.textContent = savedPayments.warningNote;
             }
 
             const activeBox = document.querySelector(".pay-method-box.active") || bkashBox;
@@ -1060,18 +1063,24 @@ Thank you for choose Game Vault BD https://game-vault-bd.theummah234.workers.dev
 
         function openModal() {
             applyLanguage();
+            applyAdminConfigs();
             document.getElementById("langModal").style.display = "flex";
         }
         function closeModal() { document.getElementById("langModal").style.display = "none"; }
         function selectLang(lang) {
             localStorage.setItem("language", lang);
             applyLanguage();
+            applyAdminConfigs();
             closeModal();
         }
 
         applyTheme();
-        applyAdminConfigs();
         applyLanguage();
+        applyAdminConfigs();
+        window.addEventListener("load", () => {
+            applyLanguage();
+            applyAdminConfigs();
+        });
     </script>
 </body>
 </html>
