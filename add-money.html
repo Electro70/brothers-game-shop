@@ -694,7 +694,7 @@
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span id="nav-orders">Orders</span>
         </a>
-        <a href="add-money.html" class="nav-item active" id="nav-add-money" style="display: none;">
+        <a href="add-money.html" class="nav-item active" id="nav-add-money-link" style="display: none;">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span id="nav-add">Add Money</span>
         </a>
@@ -725,42 +725,21 @@
         </div>
     </div>
 
-    <!-- User Firebase Auth + Live Firestore Site Config Loader -->
+    <!-- Firebase Auth Guard & User Email Sync (Connected to firebase.js) -->
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
-        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const db = getFirestore(auth.app);
-        const configDocRef = doc(db, "siteConfig", "settings");
-
-        onSnapshot(configDocRef, (snap) => {
-            if (!snap.exists()) return;
-            const data = snap.data() || {};
-            if (data.images) {
-                localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
-            }
-            if (data.payments) {
-                localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
-            }
-            if (typeof window.applyAdminConfigs === "function") {
-                window.applyAdminConfigs();
-            }
-            if (typeof window.applyLanguage === "function") {
-                window.applyLanguage();
-            }
-        }, () => {});
-
-        onAuthStateChanged(auth, (user) => {
+        function syncUserToAddMoneyUI(user) {
             const accountInput = document.getElementById("account-no");
             const headerBalance = document.getElementById("user-balance");
             const balanceAvatar = document.querySelector(".balance-avatar");
             const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
-            const navAddMoney = document.getElementById("nav-add-money");
+            const navAddMoneyLink = document.getElementById("nav-add-money-link");
 
             if (user && user.email) {
                 const data = getUserProfileData(user);
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
-                if (navAddMoney) navAddMoney.style.display = "flex";
+                if (navAddMoneyLink) navAddMoneyLink.style.display = "flex";
                 if (accountInput) {
                     accountInput.value = user.email;
                 }
@@ -772,11 +751,19 @@
                 }
             } else {
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
-                if (navAddMoney) navAddMoney.style.display = "none";
+                if (navAddMoneyLink) navAddMoneyLink.style.display = "none";
                 if (accountInput) {
                     accountInput.value = "";
                 }
             }
+        }
+
+        if (auth.currentUser) {
+            syncUserToAddMoneyUI(auth.currentUser);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            syncUserToAddMoneyUI(user);
         });
     </script>
 
