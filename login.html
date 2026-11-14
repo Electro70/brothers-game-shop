@@ -113,7 +113,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             font-size: 11px;
@@ -383,7 +383,7 @@
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <span>৳ <span id="user-balance">0.0</span></span>
-                <a href="add-money.html" class="add-balance-btn"><i class="fa-solid fa-plus"></i></a>
+                <a href="add-money.html" class="add-balance-btn" id="header-add-money-plus" style="display: none;"><i class="fa-solid fa-plus"></i></a>
             </div>
         </div>
     </header>
@@ -464,7 +464,7 @@
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span>Orders</span>
         </a>
-        <a href="add-money.html" class="nav-item">
+        <a href="add-money.html" class="nav-item" id="nav-add-money" style="display: none;">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span>Add Money</span>
         </a>
@@ -506,8 +506,8 @@
 
         function completeLoginRedirect() {
             const redirectUrl = localStorage.getItem('redirectUrl');
+            localStorage.removeItem('redirectUrl');
             if (redirectUrl) {
-                localStorage.removeItem('redirectUrl');
                 window.location.href = redirectUrl;
             } else {
                 window.location.href = "index.html";
@@ -518,17 +518,25 @@
             const headerBalancePill = document.getElementById("header-balance-pill");
             const headerBalance = document.getElementById("user-balance");
             const balanceAvatar = document.querySelector(".balance-avatar");
+            const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
+            const navAddMoney = document.getElementById("nav-add-money");
 
-            if (user) {
+            if (user && user.email) {
                 const data = getUserProfileData(user);
                 if (headerBalancePill) headerBalancePill.style.display = "flex";
-                if (headerBalance) headerBalance.textContent = Number(data.balance).toFixed(1);
-                if (data.photoURL && balanceAvatar) {
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
+                if (navAddMoney) navAddMoney.style.display = "flex";
+                if (headerBalance && data && data.balance !== undefined) {
+                    headerBalance.textContent = Number(data.balance).toFixed(1);
+                }
+                if (data && data.photoURL && balanceAvatar) {
                     balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
                 }
                 completeLoginRedirect();
             } else {
                 if (headerBalancePill) headerBalancePill.style.display = "none";
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
+                if (navAddMoney) navAddMoney.style.display = "none";
             }
         });
 
