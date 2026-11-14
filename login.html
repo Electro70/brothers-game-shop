@@ -37,8 +37,19 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 95px;
+            padding-bottom: 105px;
             transition: background 0.3s, color 0.3s;
+        }
+
+        @keyframes fadeRiseIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Header */
@@ -79,7 +90,11 @@
             justify-content: center;
             cursor: pointer;
             font-size: 15px;
-            transition: 0.2s;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .theme-icon-btn:active {
+            transform: scale(0.93);
         }
 
         .lang-trigger {
@@ -93,6 +108,11 @@
             font-weight: 600;
             cursor: pointer;
             color: var(--text-color);
+            transition: transform 0.2s ease;
+        }
+
+        .lang-trigger:active {
+            transform: scale(0.95);
         }
 
         .balance-pill {
@@ -154,6 +174,7 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.06);
             text-align: center;
             overflow: hidden;
+            animation: fadeRiseIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
         /* Green Header Banner matching screenshot */
@@ -196,12 +217,17 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            transition: 0.2s;
+            transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .google-signin-btn:hover {
             border-color: #05a86b;
             transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(5, 168, 107, 0.12);
+        }
+
+        .google-signin-btn:active {
+            transform: scale(0.97);
         }
 
         /* Cloudflare Turnstile Container below Google button */
@@ -258,6 +284,7 @@
             font-size: 12px;
             border-top: 1px solid var(--border-color);
             margin-top: 32px;
+            animation: fadeRiseIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
         }
 
         .footer-logo img {
@@ -324,22 +351,49 @@
             font-weight: 800;
         }
 
-        /* Bottom Nav */
+        /* Animated Sliding Pill Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 12px;
+            left: 50%;
+            width: calc(100% - 24px);
+            max-width: 480px;
             background: var(--header-bg);
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            border-top: 1px solid var(--border-color);
+            align-items: center;
+            padding: 6px;
+            border-radius: 24px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+            border: 1px solid var(--border-color);
             z-index: 100;
+            transform: translate(-50%, 150%);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+        }
+
+        .bottom-nav.nav-ready {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            height: calc(100% - 12px);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(5, 168, 107, 0.18), rgba(5, 168, 107, 0.06));
+            border: 1px solid rgba(5, 168, 107, 0.3);
+            box-shadow: 0 4px 12px rgba(5, 168, 107, 0.12);
+            transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .nav-item {
+            position: relative;
+            z-index: 1;
+            flex: 1;
             text-align: center;
             color: #94a3b8;
             text-decoration: none;
@@ -348,10 +402,18 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            padding: 8px 4px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: color 0.25s ease, transform 0.15s ease;
+        }
+
+        .nav-item:active {
+            transform: scale(0.94);
         }
 
         .nav-item.active {
-            color: var(--accent-color);
+            color: #05a86b;
             font-weight: 700;
         }
 
@@ -377,6 +439,7 @@
             border-radius: 16px;
             padding: 20px;
             border: 1px solid var(--border-color);
+            animation: fadeRiseIn 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
         .modal-option {
@@ -390,6 +453,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: transform 0.15s ease, border-color 0.2s ease;
+        }
+
+        .modal-option:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
@@ -499,8 +567,9 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar with Sliding Pill Indicator -->
     <nav class="bottom-nav">
+        <span class="nav-indicator" id="nav-indicator"></span>
         <a href="index.html" class="nav-item">
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
             <span id="nav-home">Home</span>
@@ -517,7 +586,7 @@
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
             <span id="nav-support">Support</span>
         </a>
-        <a href="profile.html" class="nav-item">
+        <a href="profile.html" class="nav-item active">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
             <span id="nav-profile">Profile</span>
         </a>
@@ -573,11 +642,17 @@
                 if (data && data.photoURL && balanceAvatar) {
                     balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
                 }
+                if (window.updateNavIndicator) {
+                    requestAnimationFrame(window.updateNavIndicator);
+                }
                 completeLoginRedirect();
             } else {
                 if (headerBalancePill) headerBalancePill.style.display = "none";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
                 if (navAddMoney) navAddMoney.style.display = "none";
+                if (window.updateNavIndicator) {
+                    requestAnimationFrame(window.updateNavIndicator);
+                }
             }
         });
 
@@ -662,6 +737,24 @@
             }
         };
 
+        function updateNavIndicator() {
+            const nav = document.querySelector('.bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const visibleItems = Array.from(nav.querySelectorAll('.nav-item')).filter(
+                el => getComputedStyle(el).display !== 'none'
+            );
+            const activeItem = visibleItems.find(el => el.classList.contains('active'));
+            if (!activeItem) return;
+
+            const navRect = nav.getBoundingClientRect();
+            const itemRect = activeItem.getBoundingClientRect();
+            indicator.style.width = `${itemRect.width}px`;
+            indicator.style.transform = `translateX(${itemRect.left - navRect.left - 6}px)`;
+        }
+        window.updateNavIndicator = updateNavIndicator;
+
         function applyTheme() {
             const theme = localStorage.getItem('theme') || 'light';
             const icon = document.getElementById('theme-icon');
@@ -719,6 +812,8 @@
             const checkBn = document.getElementById('check-bn');
             if (checkEn) checkEn.style.display = lang === 'en' ? 'inline-block' : 'none';
             if (checkBn) checkBn.style.display = lang === 'bn' ? 'inline-block' : 'none';
+
+            requestAnimationFrame(updateNavIndicator);
         }
 
         function openModal() {
@@ -736,6 +831,17 @@
 
         applyTheme();
         applyLanguage();
+
+        window.addEventListener('load', () => {
+            const nav = document.querySelector('.bottom-nav');
+            updateNavIndicator();
+            requestAnimationFrame(() => {
+                nav?.classList.add('nav-ready');
+                updateNavIndicator();
+            });
+        });
+
+        window.addEventListener('resize', updateNavIndicator);
     </script>
 </body>
 </html>
