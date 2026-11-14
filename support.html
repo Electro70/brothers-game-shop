@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Game Vault - Customer Support</title>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FontAwesome Icons (Non-blocking preload + fallback to prevent FOUC) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <style>
         :root {
@@ -30,6 +31,17 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html:not(.page-ready) #main-container {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        html.page-ready #main-container {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.16s ease;
         }
 
         body {
@@ -172,11 +184,12 @@
             margin: 20px auto;
             padding: 0 15px;
             display: block;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.18s ease;
         }
 
         .container.is-swapping {
-            opacity: 0.35;
+            opacity: 0;
+            visibility: hidden;
         }
 
         /* Customer Support Green Banner Matching Screenshot */
@@ -432,8 +445,8 @@
             border: 1px solid rgba(5, 168, 107, 0.32);
             box-shadow: 0 4px 14px rgba(5, 168, 107, 0.14);
             will-change: transform, width;
-            transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1),
-                        width 0.44s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             z-index: 0;
         }
@@ -839,7 +852,7 @@
         }
         window.updateNavIndicator = updateNavIndicator;
 
-        // Leak Studio-style persistent bottom nav navigation (bottom nav never refreshes)
+        // Smooth bottom nav navigation + smooth Profile->Login slider transition
         async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
@@ -854,12 +867,15 @@
                 localStorage.removeItem("redirectUrl");
                 if (!user || !user.email) {
                     localStorage.setItem("redirectUrl", targetUrl);
-                    window.location.href = "login.html";
+                    // Slide indicator smoothly to Profile before redirecting to login.html
+                    setActiveNavItem('profile.html');
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 140);
                     return;
                 }
             }
 
-            // If opened over file:// protocol, fallback to normal navigation
             if (window.location.protocol === 'file:') {
                 window.location.href = targetUrl;
                 return;
@@ -884,7 +900,6 @@
                     if (nextTitle) document.title = nextTitle;
                     window.history.pushState({ page: targetUrl }, '', targetUrl);
 
-                    // Re-execute inline scripts inside fetched container if any
                     const scripts = nextContainer.querySelectorAll('script');
                     scripts.forEach(oldScript => {
                         const newScript = document.createElement('script');
@@ -901,8 +916,10 @@
             } catch (err) {
                 window.location.href = targetUrl;
             } finally {
-                if (mainContainer) mainContainer.classList.remove('is-swapping');
-                requestAnimationFrame(() => updateNavIndicator(false));
+                requestAnimationFrame(() => {
+                    if (mainContainer) mainContainer.classList.remove('is-swapping');
+                    updateNavIndicator(false);
+                });
             }
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
@@ -985,13 +1002,28 @@
             requestAnimationFrame(() => updateNavIndicator(false));
         }
 
+        function markPageReady() {
+            updateNavIndicator(true);
+            requestAnimationFrame(() => {
+                document.documentElement.classList.add('page-ready');
+                updateNavIndicator(true);
+            });
+        }
+
         applyTheme();
         const savedLang = localStorage.getItem('language') || 'en';
         applyLanguage(savedLang);
 
-        window.addEventListener('load', () => {
-            updateNavIndicator(true);
-        });
+        if (document.readyState === 'complete') {
+            markPageReady();
+        } else {
+            window.addEventListener('load', markPageReady, { once: true });
+            setTimeout(() => {
+                if (!document.documentElement.classList.contains('page-ready')) {
+                    markPageReady();
+                }
+            }, 300);
+        }
 
         window.addEventListener('resize', () => updateNavIndicator(true));
     </script>
