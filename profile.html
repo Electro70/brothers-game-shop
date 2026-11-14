@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Game Vault - User Profile</title>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -50,7 +49,6 @@
             transition: background 0.25s ease, color 0.25s ease;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -112,7 +110,6 @@
             transform: scale(0.95);
         }
 
-        /* Balance Pill */
         .balance-pill {
             display: flex;
             align-items: center;
@@ -156,14 +153,12 @@
             text-decoration: none;
         }
 
-        /* Main Container */
         .container {
             max-width: 500px;
             margin: 20px auto;
             padding: 0 15px;
         }
 
-        /* Top Yellow Profile Banner Card */
         .profile-banner {
             background: linear-gradient(135deg, #eab308, #ca8a04);
             color: #1f2937;
@@ -236,7 +231,6 @@
             gap: 6px;
         }
 
-        /* Card Box */
         .card-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -291,7 +285,6 @@
             cursor: pointer;
         }
 
-        /* Settings List Rows */
         .setting-row {
             display: flex;
             justify-content: space-between;
@@ -326,7 +319,6 @@
             text-align: center;
         }
 
-        /* Switch Toggle */
         .switch {
             position: relative;
             display: inline-block;
@@ -369,7 +361,6 @@
             transform: translateX(20px);
         }
 
-        /* App Install Banner */
         .app-banner-inner {
             display: flex;
             justify-content: space-between;
@@ -390,7 +381,6 @@
             gap: 6px;
         }
 
-        /* Logout Button */
         .logout-btn {
             width: 100%;
             background: rgba(239, 68, 68, 0.1);
@@ -414,7 +404,6 @@
             background: rgba(239, 68, 68, 0.2);
         }
 
-        /* Footer */
         .site-footer {
             text-align: center;
             padding: 20px 15px;
@@ -504,7 +493,6 @@
             font-weight: 700;
         }
 
-        /* Language Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -549,7 +537,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo-container">
             <a href="index.html">
@@ -574,10 +561,7 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <div class="container" id="main-container">
-        
-        <!-- Top Yellow Profile Banner -->
         <div class="profile-banner">
             <div class="profile-top-row">
                 <div class="profile-avatar-large">
@@ -599,7 +583,6 @@
             </div>
         </div>
 
-        <!-- Wallet & Coins Box -->
         <div class="card-box">
             <div class="wallet-card-inner">
                 <div class="wallet-left">
@@ -619,7 +602,6 @@
             </div>
         </div>
 
-        <!-- Telegram ID Card -->
         <div class="card-box" style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div style="background: rgba(34, 158, 217, 0.15); color: #229ED9; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">
@@ -635,7 +617,6 @@
             </button>
         </div>
 
-        <!-- Preferences Settings Box -->
         <div class="card-box">
             <div style="font-size: 12px; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-bottom: 12px;">Preferences</div>
             
@@ -670,7 +651,6 @@
             </div>
         </div>
 
-        <!-- App Install Banner -->
         <div class="card-box">
             <div class="app-banner-inner">
                 <div style="display: flex; align-items: center; gap: 12px;">
@@ -688,7 +668,6 @@
             </div>
         </div>
 
-        <!-- Links List Box -->
         <div class="card-box" style="padding: 6px 20px;">
             <a href="orders.html" onclick="navigateWithoutBarRefresh(event, 'orders.html', true)" class="setting-row">
                 <div class="setting-left">
@@ -723,12 +702,10 @@
             </a>
         </div>
 
-        <!-- Logout Button -->
         <a href="login.html" class="logout-btn" id="profile-logout-btn">
             <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
 
-        <!-- Footer Info -->
         <div class="site-footer">
             <div class="footer-logo">
                 <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
@@ -741,10 +718,8 @@
                 <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Made by Game Vault 👾</a>
             </div>
         </div>
-
     </div>
 
-    <!-- Persistent Bottom Navigation Bar with Smooth Sliding Pill Indicator -->
     <nav class="bottom-nav" id="persistent-bottom-nav">
         <span class="nav-indicator" id="nav-indicator"></span>
         <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item">
@@ -755,7 +730,7 @@
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span>Orders</span>
         </a>
-        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item">
+        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item" id="nav-add-money">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span>Add Money</span>
         </a>
@@ -769,7 +744,6 @@
         </a>
     </nav>
 
-    <!-- Language Modal -->
     <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
         <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
@@ -787,7 +761,6 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard, User Data Display & Logout Logic -->
     <script type="module">
         import { auth, onAuthStateChanged, signOut, getUserProfileData } from "./firebase.js";
 
@@ -870,10 +843,7 @@
             const indicator = document.getElementById('nav-indicator');
             if (!nav || !indicator) return;
 
-            const visibleItems = Array.from(nav.querySelectorAll('.nav-item')).filter(
-                el => getComputedStyle(el).display !== 'none'
-            );
-            const activeItem = visibleItems.find(el => el.classList.contains('active'));
+            const activeItem = nav.querySelector('.nav-item.active');
             if (!activeItem) return;
 
             if (instant) {
@@ -910,7 +880,7 @@
                     sessionStorage.setItem('prevNavTarget', currentFile);
                     setTimeout(() => {
                         window.location.href = "login.html";
-                    }, 140);
+                    }, 180);
                     return;
                 }
             }
@@ -919,7 +889,7 @@
             sessionStorage.setItem('prevNavTarget', currentFile);
             setTimeout(() => {
                 window.location.href = targetUrl;
-            }, 150);
+            }, 220);
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
@@ -970,7 +940,7 @@
 
             if (prevTarget) {
                 const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
-                if (prevItem && getComputedStyle(prevItem).display !== 'none') {
+                if (prevItem) {
                     indicator.style.transition = 'none';
                     const navRect = nav.getBoundingClientRect();
                     const prevRect = prevItem.getBoundingClientRect();
