@@ -916,6 +916,10 @@
             <i class="fa-solid fa-file-lines"></i>
             <span data-i18n="nav_orders">Orders</span>
         </a>
+        <a onclick="handleProtectedAction('add-money.html')" class="nav-item" id="nav-add-money" style="display: none;">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span data-i18n="nav_add_money">Add Money</span>
+        </a>
         <a href="support.html" class="nav-item">
             <i class="fa-solid fa-headset"></i>
             <span data-i18n="nav_support">Support</span>
@@ -939,11 +943,13 @@
             const headerUserAvatar = document.getElementById("header-user-avatar");
             const headerUserBalance = document.getElementById("header-user-balance");
             const myCoinsCount = document.querySelector(".my-coins-count");
+            const navAddMoney = document.getElementById("nav-add-money");
 
             if (user) {
                 const data = getUserProfileData(user);
                 if (headerSigninBtn) headerSigninBtn.style.display = "none";
                 if (headerWalletPill) headerWalletPill.style.display = "flex";
+                if (navAddMoney) navAddMoney.style.display = "flex";
 
                 if (headerUserAvatar && data.photoURL) {
                     headerUserAvatar.innerHTML = `<img src="${data.photoURL}" alt="Profile">`;
@@ -957,6 +963,7 @@
             } else {
                 if (headerSigninBtn) headerSigninBtn.style.display = "flex";
                 if (headerWalletPill) headerWalletPill.style.display = "none";
+                if (navAddMoney) navAddMoney.style.display = "none";
             }
         });
 
@@ -998,6 +1005,7 @@
                 dark_mode: "Dark Mode",
                 nav_home: "Home",
                 nav_orders: "Orders",
+                nav_add_money: "Add Money",
                 nav_support: "Support",
                 nav_profile: "Profile"
             },
@@ -1026,6 +1034,7 @@
                 dark_mode: "ডার্ক মোড",
                 nav_home: "হোম",
                 nav_orders: "অর্ডার",
+                nav_add_money: "অ্যাড মানি",
                 nav_support: "সাপোর্ট",
                 nav_profile: "প্রোফাইল"
             }
