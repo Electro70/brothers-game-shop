@@ -744,12 +744,28 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard & User Data Display -->
+    <!-- Firebase Auth Guard & Admin Email Block -->
     <script type="module">
-        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
+        import { auth, onAuthStateChanged, signOut, getUserProfileData } from "./firebase.js";
 
-        onAuthStateChanged(auth, (user) => {
+        const BLOCKED_ADMIN_EMAILS = [
+            "theummah234@gmail.com"
+        ];
+
+        function isBlockedAdmin(user) {
+            if (!user || !user.email) return false;
+            return BLOCKED_ADMIN_EMAILS.includes(user.email.trim().toLowerCase());
+        }
+
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            if (isBlockedAdmin(user)) {
+                await signOut(auth);
+                sessionStorage.setItem("gv_admin_blocked_msg", "অ্যাডমিন জিমেইল দিয়ে ইউজার ওয়েবসাইটে লগইন করা যাবে না।");
                 window.location.href = "login.html";
                 return;
             }
