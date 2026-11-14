@@ -126,7 +126,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             font-size: 11px;
@@ -363,7 +363,7 @@
         }
 
         .form-control[readonly] {
-            opacity: 0.8;
+            opacity: 0.85;
             cursor: not-allowed;
         }
 
@@ -541,7 +541,7 @@
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <span>৳ <span id="user-balance">0.0</span></span>
-                <a href="add-money.html" class="add-balance-btn"><i class="fa-solid fa-plus"></i></a>
+                <a href="add-money.html" class="add-balance-btn" id="header-add-money-plus" style="display: none;"><i class="fa-solid fa-plus"></i></a>
             </div>
         </div>
     </header>
@@ -655,7 +655,6 @@
                     class="form-control"
                     value=""
                     readonly
-                    disabled
                 >
             </div>
         </div>
@@ -695,7 +694,7 @@
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span id="nav-orders">Orders</span>
         </a>
-        <a href="add-money.html" class="nav-item active">
+        <a href="add-money.html" class="nav-item active" id="nav-add-money" style="display: none;">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span id="nav-add">Add Money</span>
         </a>
@@ -726,69 +725,59 @@
         </div>
     </div>
 
-    <!-- Safe Firebase Auth + Live Firestore Site Config Loader -->
+    <!-- User Firebase Auth + Live Firestore Site Config Loader -->
     <script type="module">
-        try {
-            const fbMod = await import("./firebase.js");
-            const { getFirestore, doc, onSnapshot } = await import(
-                "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-            );
+        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-            const auth = fbMod.auth;
-            const onAuthStateChanged = fbMod.onAuthStateChanged;
-            const getUserProfileData = fbMod.getUserProfileData;
+        const db = getFirestore(auth.app);
+        const configDocRef = doc(db, "siteConfig", "settings");
 
+        onSnapshot(configDocRef, (snap) => {
+            if (!snap.exists()) return;
+            const data = snap.data() || {};
+            if (data.images) {
+                localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
+            }
+            if (data.payments) {
+                localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
+            }
+            if (typeof window.applyAdminConfigs === "function") {
+                window.applyAdminConfigs();
+            }
+            if (typeof window.applyLanguage === "function") {
+                window.applyLanguage();
+            }
+        }, () => {});
+
+        onAuthStateChanged(auth, (user) => {
             const accountInput = document.getElementById("account-no");
+            const headerBalance = document.getElementById("user-balance");
+            const balanceAvatar = document.querySelector(".balance-avatar");
+            const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
+            const navAddMoney = document.getElementById("nav-add-money");
 
-            if (auth && auth.app) {
-                const db = getFirestore(auth.app);
-                const configDocRef = doc(db, "siteConfig", "settings");
-
-                onSnapshot(configDocRef, (snap) => {
-                    if (!snap.exists()) return;
-                    const data = snap.data() || {};
-                    if (data.images) {
-                        localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
-                    }
-                    if (data.payments) {
-                        localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
-                    }
-                    if (typeof window.applyAdminConfigs === "function") {
-                        window.applyAdminConfigs();
-                    }
-                    if (typeof window.applyLanguage === "function") {
-                        window.applyLanguage();
-                    }
-                }, () => {});
+            if (user && user.email) {
+                const data = getUserProfileData(user);
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
+                if (navAddMoney) navAddMoney.style.display = "flex";
+                if (accountInput) {
+                    accountInput.value = user.email;
+                }
+                if (headerBalance && data && data.balance !== undefined) {
+                    headerBalance.textContent = Number(data.balance).toFixed(1);
+                }
+                if (balanceAvatar && data && data.photoURL) {
+                    balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Profile">`;
+                }
+            } else {
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
+                if (navAddMoney) navAddMoney.style.display = "none";
+                if (accountInput) {
+                    accountInput.value = "";
+                }
             }
-
-            if (auth && typeof onAuthStateChanged === "function") {
-                onAuthStateChanged(auth, async (user) => {
-                    if (!user) return;
-                    if (accountInput && user.email) {
-                        accountInput.value = user.email;
-                    }
-                    if (typeof getUserProfileData === "function") {
-                        try {
-                            const data = await getUserProfileData(user);
-                            if (data) {
-                                const headerBalance = document.getElementById("user-balance");
-                                const balanceAvatar = document.querySelector(".balance-avatar");
-                                if (headerBalance && data.balance !== undefined) {
-                                    headerBalance.textContent = Number(data.balance).toFixed(1);
-                                }
-                                if (data.photoURL && balanceAvatar) {
-                                    balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
-                                }
-                                if (accountInput && data.email) {
-                                    accountInput.value = data.email;
-                                }
-                            }
-                        } catch (_) {}
-                    }
-                });
-            }
-        } catch (_) {}
+        });
     </script>
 
     <script>
