@@ -528,6 +528,17 @@
         </div>
     </div>
 
+    <!-- Firebase Auth Guard -->
+    <script type="module">
+        import { auth, onAuthStateChanged } from "./firebase.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+
     <script>
         function selectMethod(element) {
             document.querySelectorAll('.method-card').forEach(card => card.classList.remove('selected'));
