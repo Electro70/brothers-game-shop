@@ -548,6 +548,135 @@
         </div>
     </div>
 
+    <script>
+        const DEFAULT_IMAGES = {
+            bkashLogo: "bkash.jpg",
+            nagadLogo: "nagad.jpg",
+            siteLogo: "logo.jpg"
+        };
+
+        const DEFAULT_PAYMENTS = {
+            bkashNumber: "01857659802",
+            nagadNumber: "01572921586",
+            minAmount: "20",
+            maxAmount: "10000",
+            whatsappNumber: "8801572921586",
+            telegramUsername: "zunayed_islam00",
+            warningNote: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়"
+        };
+
+        function showToast(elId, msg) {
+            const el = document.getElementById(elId);
+            el.textContent = msg;
+            el.className = "toast-msg success";
+            el.style.display = "block";
+            setTimeout(() => {
+                el.style.display = "none";
+            }, 2500);
+        }
+
+        function handleFileUpload(input, key) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const dataUrl = e.target.result;
+                document.getElementById(`preview-${key}`).src = dataUrl;
+                document.getElementById(`input-${key}`).value = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveImagesConfig() {
+            const cfg = {
+                bkashLogo: document.getElementById("input-bkashLogo").value.trim() || DEFAULT_IMAGES.bkashLogo,
+                nagadLogo: document.getElementById("input-nagadLogo").value.trim() || DEFAULT_IMAGES.nagadLogo,
+                siteLogo: document.getElementById("input-siteLogo").value.trim() || DEFAULT_IMAGES.siteLogo
+            };
+            localStorage.setItem("gv_admin_images", JSON.stringify(cfg));
+            document.getElementById("preview-bkashLogo").src = cfg.bkashLogo;
+            document.getElementById("preview-nagadLogo").src = cfg.nagadLogo;
+            document.getElementById("preview-siteLogo").src = cfg.siteLogo;
+            renderDashboardSummary();
+            showToast("imagesToast", "ছবি ও লোগো সেটিংস সেভ হয়েছে।");
+        }
+
+        function resetImagesConfig() {
+            localStorage.removeItem("gv_admin_images");
+            loadSavedConfigs();
+            showToast("imagesToast", "ডিফল্ট ইমেজ সেটিংসে ফিরিয়ে আনা হয়েছে।");
+        }
+
+        function savePaymentConfig() {
+            const cfg = {
+                bkashNumber: document.getElementById("cfg-bkashNumber").value.trim() || DEFAULT_PAYMENTS.bkashNumber,
+                nagadNumber: document.getElementById("cfg-nagadNumber").value.trim() || DEFAULT_PAYMENTS.nagadNumber,
+                minAmount: document.getElementById("cfg-minAmount").value.trim() || DEFAULT_PAYMENTS.minAmount,
+                maxAmount: document.getElementById("cfg-maxAmount").value.trim() || DEFAULT_PAYMENTS.maxAmount,
+                whatsappNumber: document.getElementById("cfg-whatsappNumber").value.trim() || DEFAULT_PAYMENTS.whatsappNumber,
+                telegramUsername: document.getElementById("cfg-telegramUsername").value.trim().replace(/^@/, "") || DEFAULT_PAYMENTS.telegramUsername,
+                warningNote: document.getElementById("cfg-warningNote").value.trim() || DEFAULT_PAYMENTS.warningNote
+            };
+            localStorage.setItem("gv_admin_payments", JSON.stringify(cfg));
+            renderDashboardSummary();
+            showToast("paymentToast", "পেমেন্ট ও লিমিট সেটিংস সেভ হয়েছে।");
+        }
+
+        function resetPaymentConfig() {
+            localStorage.removeItem("gv_admin_payments");
+            loadSavedConfigs();
+            showToast("paymentToast", "ডিফল্ট পেমেন্ট সেটিংসে ফিরিয়ে আনা হয়েছে।");
+        }
+
+        function loadSavedConfigs() {
+            const imgs = { ...DEFAULT_IMAGES, ...JSON.parse(localStorage.getItem("gv_admin_images") || "{}") };
+            const pays = { ...DEFAULT_PAYMENTS, ...JSON.parse(localStorage.getItem("gv_admin_payments") || "{}") };
+
+            document.getElementById("input-bkashLogo").value = imgs.bkashLogo;
+            document.getElementById("input-nagadLogo").value = imgs.nagadLogo;
+            document.getElementById("input-siteLogo").value = imgs.siteLogo;
+
+            document.getElementById("preview-bkashLogo").src = imgs.bkashLogo;
+            document.getElementById("preview-nagadLogo").src = imgs.nagadLogo;
+            document.getElementById("preview-siteLogo").src = imgs.siteLogo;
+
+            document.getElementById("cfg-bkashNumber").value = pays.bkashNumber;
+            document.getElementById("cfg-nagadNumber").value = pays.nagadNumber;
+            document.getElementById("cfg-minAmount").value = pays.minAmount;
+            document.getElementById("cfg-maxAmount").value = pays.maxAmount;
+            document.getElementById("cfg-whatsappNumber").value = pays.whatsappNumber;
+            document.getElementById("cfg-telegramUsername").value = pays.telegramUsername;
+            document.getElementById("cfg-warningNote").value = pays.warningNote;
+
+            renderDashboardSummary();
+        }
+
+        function renderDashboardSummary() {
+            const pays = { ...DEFAULT_PAYMENTS, ...JSON.parse(localStorage.getItem("gv_admin_payments") || "{}") };
+            const summary = document.getElementById("dashboardSummary");
+            if (!summary) return;
+            summary.innerHTML = `
+                <div><strong>BKash Number:</strong> ${pays.bkashNumber}</div>
+                <div><strong>Nagad Number:</strong> ${pays.nagadNumber}</div>
+                <div><strong>Amount Limit:</strong> Min ${pays.minAmount}৳ - Max ${pays.maxAmount}৳</div>
+                <div><strong>WhatsApp:</strong> ${pays.whatsappNumber}</div>
+                <div><strong>Telegram:</strong> @${pays.telegramUsername}</div>
+                <div><strong>Warning Note:</strong> ${pays.warningNote}</div>
+            `;
+        }
+
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+                document.querySelectorAll(".tab-section").forEach((s) => (s.style.display = "none"));
+                btn.classList.add("active");
+                document.getElementById(`tab-${btn.dataset.tab}`).style.display = "block";
+            });
+        });
+
+        loadSavedConfigs();
+    </script>
+
     <script type="module">
         import {
             auth,
@@ -598,7 +727,9 @@
                 loginGate.style.display = "none";
                 adminPanel.style.display = "block";
                 loggedAdminEmail.textContent = user.email;
-                loadSavedConfigs();
+                if (typeof loadSavedConfigs === "function") {
+                    loadSavedConfigs();
+                }
                 return;
             }
 
@@ -642,132 +773,6 @@
 
         logoutBtn.addEventListener("click", async () => {
             await signOut(auth);
-        });
-    </script>
-
-    <script>
-        const DEFAULT_IMAGES = {
-            bkashLogo: "bkash.jpg",
-            nagadLogo: "nagad.jpg",
-            siteLogo: "logo.jpg"
-        };
-
-        const DEFAULT_PAYMENTS = {
-            bkashNumber: "01857659802",
-            nagadNumber: "01572921586",
-            minAmount: "20",
-            maxAmount: "10000",
-            whatsappNumber: "8801572921586",
-            telegramUsername: "zunayed_islam00",
-            warningNote: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়"
-        };
-
-        function showToast(elId, msg) {
-            const el = document.getElementById(elId);
-            el.textContent = msg;
-            el.className = "toast-msg success";
-            setTimeout(() => {
-                el.style.display = "none";
-            }, 2500);
-        }
-
-        function handleFileUpload(input, key) {
-            const file = input.files && input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const dataUrl = e.target.result;
-                document.getElementById(`preview-${key}`).src = dataUrl;
-                document.getElementById(`input-${key}`).value = dataUrl;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function saveImagesConfig() {
-            const cfg = {
-                bkashLogo: document.getElementById("input-bkashLogo").value.trim() || DEFAULT_IMAGES.bkashLogo,
-                nagadLogo: document.getElementById("input-nagadLogo").value.trim() || DEFAULT_IMAGES.nagadLogo,
-                siteLogo: document.getElementById("input-siteLogo").value.trim() || DEFAULT_IMAGES.siteLogo
-            };
-            localStorage.setItem("gv_admin_images", JSON.stringify(cfg));
-            document.getElementById("preview-bkashLogo").src = cfg.bkashLogo;
-            document.getElementById("preview-nagadLogo").src = cfg.nagadLogo;
-            document.getElementById("preview-siteLogo").src = cfg.siteLogo;
-            renderDashboardSummary();
-            showToast("imagesToast", "ছবি ও লোগো সেটিংস সেভ হয়েছে।");
-        }
-
-        function resetImagesConfig() {
-            localStorage.removeItem("gv_admin_images");
-            loadSavedConfigs();
-            showToast("imagesToast", "ডিফল্ট ইমেজ সেটিংসে ফিরিয়ে আনা হয়েছে।");
-        }
-
-        function savePaymentConfig() {
-            const cfg = {
-                bkashNumber: document.getElementById("cfg-bkashNumber").value.trim() || DEFAULT_PAYMENTS.bkashNumber,
-                nagadNumber: document.getElementById("cfg-nagadNumber").value.trim() || DEFAULT_PAYMENTS.nagadNumber,
-                minAmount: document.getElementById("cfg-minAmount").value.trim() || DEFAULT_PAYMENTS.minAmount,
-                maxAmount: document.getElementById("cfg-maxAmount").value.trim() || DEFAULT_PAYMENTS.maxAmount,
-                whatsappNumber: document.getElementById("cfg-whatsappNumber").value.trim() || DEFAULT_PAYMENTS.whatsappNumber,
-                telegramUsername: document.getElementById("cfg-telegramUsername").value.trim() || DEFAULT_PAYMENTS.telegramUsername,
-                warningNote: document.getElementById("cfg-warningNote").value.trim() || DEFAULT_PAYMENTS.warningNote
-            };
-            localStorage.setItem("gv_admin_payments", JSON.stringify(cfg));
-            renderDashboardSummary();
-            showToast("paymentToast", "পেমেন্ট ও লিমিট সেটিংস সেভ হয়েছে।");
-        }
-
-        function resetPaymentConfig() {
-            localStorage.removeItem("gv_admin_payments");
-            loadSavedConfigs();
-            showToast("paymentToast", "ডিফল্ট পেমেন্ট সেটিংসে ফিরিয়ে আনা হয়েছে।");
-        }
-
-        function loadSavedConfigs() {
-            const imgs = { ...DEFAULT_IMAGES, ...JSON.parse(localStorage.getItem("gv_admin_images") || "{}") };
-            const pays = { ...DEFAULT_PAYMENTS, ...JSON.parse(localStorage.getItem("gv_admin_payments") || "{}") };
-
-            document.getElementById("input-bkashLogo").value = imgs.bkashLogo;
-            document.getElementById("input-nagadLogo").value = imgs.nagadLogo;
-            document.getElementById("input-siteLogo").value = imgs.siteLogo;
-
-            document.getElementById("preview-bkashLogo").src = imgs.bkashLogo;
-            document.getElementById("preview-nagadLogo").src = imgs.nagadLogo;
-            document.getElementById("preview-siteLogo").src = imgs.siteLogo;
-
-            document.getElementById("cfg-bkashNumber").value = pays.bkashNumber;
-            document.getElementById("cfg-nagadNumber").value = pays.nagadNumber;
-            document.getElementById("cfg-minAmount").value = pays.minAmount;
-            document.getElementById("cfg-maxAmount").value = pays.maxAmount;
-            document.getElementById("cfg-whatsappNumber").value = pays.whatsappNumber;
-            document.getElementById("cfg-telegramUsername").value = pays.telegramUsername;
-            document.getElementById("cfg-warningNote").value = pays.warningNote;
-
-            renderDashboardSummary();
-        }
-
-        function renderDashboardSummary() {
-            const pays = { ...DEFAULT_PAYMENTS, ...JSON.parse(localStorage.getItem("gv_admin_payments") || "{}") };
-            const summary = document.getElementById("dashboardSummary");
-            if (!summary) return;
-            summary.innerHTML = `
-                <div><strong>BKash Number:</strong> ${pays.bkashNumber}</div>
-                <div><strong>Nagad Number:</strong> ${pays.nagadNumber}</div>
-                <div><strong>Amount Limit:</strong> Min ${pays.minAmount}৳ - Max ${pays.maxAmount}৳</div>
-                <div><strong>WhatsApp:</strong> ${pays.whatsappNumber}</div>
-                <div><strong>Telegram:</strong> @${pays.telegramUsername}</div>
-            `;
-        }
-
-        // Tab switching
-        document.querySelectorAll(".tab-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-                document.querySelectorAll(".tab-section").forEach((s) => (s.style.display = "none"));
-                btn.classList.add("active");
-                document.getElementById(`tab-${btn.dataset.tab}`).style.display = "block";
-            });
         });
     </script>
 </body>
