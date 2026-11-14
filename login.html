@@ -78,7 +78,7 @@
         }
 
         .balance-pill {
-            display: none;
+            display: flex;
             align-items: center;
             gap: 8px;
             background: var(--border-color);
@@ -99,12 +99,6 @@
             font-size: 12px;
             color: #334155;
             overflow: hidden;
-        }
-
-        .balance-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .add-balance-btn {
@@ -378,7 +372,7 @@
             <div class="lang-trigger" onclick="openModal()">
                 <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
-            <div class="balance-pill" id="header-balance-pill">
+            <div class="balance-pill">
                 <div class="balance-avatar">
                     <i class="fa-solid fa-user"></i>
                 </div>
@@ -492,7 +486,7 @@
 
     <!-- Firebase Auth Integration Script -->
     <script type="module">
-        import { auth, googleProvider, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged, getUserProfileData } from "./firebase.js";
+        import { auth, googleProvider, signInWithEmailAndPassword, signInWithPopup } from "./firebase.js";
 
         function openModal() { document.getElementById('langModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('langModal').style.display = 'none'; }
@@ -504,34 +498,6 @@
             location.reload();
         }
 
-        function completeLoginRedirect() {
-            const redirectUrl = localStorage.getItem('redirectUrl');
-            if (redirectUrl) {
-                localStorage.removeItem('redirectUrl');
-                window.location.href = redirectUrl;
-            } else {
-                window.location.href = "index.html";
-            }
-        }
-
-        onAuthStateChanged(auth, (user) => {
-            const headerBalancePill = document.getElementById("header-balance-pill");
-            const headerBalance = document.getElementById("user-balance");
-            const balanceAvatar = document.querySelector(".balance-avatar");
-
-            if (user) {
-                const data = getUserProfileData(user);
-                if (headerBalancePill) headerBalancePill.style.display = "flex";
-                if (headerBalance) headerBalance.textContent = Number(data.balance).toFixed(1);
-                if (data.photoURL && balanceAvatar) {
-                    balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
-                }
-                completeLoginRedirect();
-            } else {
-                if (headerBalancePill) headerBalancePill.style.display = "none";
-            }
-        });
-
         const loginForm = document.getElementById('login-form');
         const googleBtn = document.getElementById('google-login-btn');
         const errorMsg = document.getElementById('error-msg');
@@ -541,11 +507,10 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            errorMsg.innerText = "";
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                completeLoginRedirect();
+                window.location.href = "index.html";
             } catch (error) {
                 errorMsg.innerText = "Invalid email or password. Please try again.";
             }
@@ -553,10 +518,9 @@
 
         // Google Sign-In
         googleBtn.addEventListener('click', async () => {
-            errorMsg.innerText = "";
             try {
                 await signInWithPopup(auth, googleProvider);
-                completeLoginRedirect();
+                window.location.href = "index.html";
             } catch (error) {
                 errorMsg.innerText = "Google Sign-In failed. Please try again.";
             }
