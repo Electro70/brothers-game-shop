@@ -485,7 +485,7 @@
             font-weight: 800;
         }
 
-        /* Persistent Sliding Pill Bottom Navigation Bar (Matching orders.html) */
+        /* Persistent Sliding Pill Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 12px;
@@ -501,6 +501,11 @@
             box-shadow: 0 10px 28px rgba(0,0,0,0.14);
             border: 1px solid var(--border-color);
             z-index: 100;
+        }
+
+        .bottom-nav.hide-add-money #nav-add-money-link {
+            visibility: hidden;
+            pointer-events: none;
         }
 
         .nav-indicator {
@@ -764,8 +769,7 @@
         </div>
     </div>
 
-    <!-- Persistent Bottom Navigation Bar with Smooth Sliding Pill Indicator -->
-    <nav class="bottom-nav" id="persistent-bottom-nav">
+    <nav class="bottom-nav hide-add-money" id="persistent-bottom-nav">
         <span class="nav-indicator" id="nav-indicator"></span>
         <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item">
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
@@ -775,7 +779,7 @@
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span id="nav-orders">Orders</span>
         </a>
-        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item active" id="nav-add-money-link" style="display: none;">
+        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item active" id="nav-add-money-link">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span id="nav-add">Add Money</span>
         </a>
@@ -806,7 +810,6 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard & User Email Sync (Connected to firebase.js) -->
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
@@ -818,12 +821,12 @@
             const headerBalance = document.getElementById("user-balance");
             const balanceAvatar = document.querySelector(".balance-avatar");
             const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
-            const navAddMoneyLink = document.getElementById("nav-add-money-link");
+            const nav = document.getElementById("persistent-bottom-nav");
 
             if (user && user.email) {
                 const data = getUserProfileData(user);
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
-                if (navAddMoneyLink) navAddMoneyLink.style.display = "flex";
+                if (nav) nav.classList.remove("hide-add-money");
                 if (accountInput) {
                     accountInput.value = user.email;
                 }
@@ -835,7 +838,7 @@
                 }
             } else {
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
-                if (navAddMoneyLink) navAddMoneyLink.style.display = "none";
+                if (nav) nav.classList.add("hide-add-money");
                 if (accountInput) {
                     accountInput.value = "";
                 }
@@ -933,10 +936,7 @@
             const indicator = document.getElementById('nav-indicator');
             if (!nav || !indicator) return;
 
-            const visibleItems = Array.from(nav.querySelectorAll('.nav-item')).filter(
-                el => getComputedStyle(el).display !== 'none'
-            );
-            const activeItem = visibleItems.find(el => el.classList.contains('active'));
+            const activeItem = nav.querySelector('.nav-item.active');
             if (!activeItem) return;
 
             if (instant) {
@@ -973,7 +973,7 @@
                     sessionStorage.setItem('prevNavTarget', currentFile);
                     setTimeout(() => {
                         window.location.href = "login.html";
-                    }, 140);
+                    }, 180);
                     return;
                 }
             }
@@ -982,7 +982,7 @@
             sessionStorage.setItem('prevNavTarget', currentFile);
             setTimeout(() => {
                 window.location.href = targetUrl;
-            }, 150);
+            }, 220);
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
@@ -1242,7 +1242,7 @@ Thank you for choose Game Vault BD `;
 
             if (prevTarget) {
                 const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
-                if (prevItem && getComputedStyle(prevItem).display !== 'none') {
+                if (prevItem) {
                     indicator.style.transition = 'none';
                     const navRect = nav.getBoundingClientRect();
                     const prevRect = prevItem.getBoundingClientRect();
