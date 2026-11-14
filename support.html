@@ -128,7 +128,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             font-size: 11px;
@@ -410,7 +410,7 @@
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <span>৳ <span id="user-balance">0.0</span></span>
-                <a href="add-money.html" class="add-balance-btn"><i class="fa-solid fa-plus"></i></a>
+                <a href="add-money.html" class="add-balance-btn" id="header-add-money-plus" style="display: none;"><i class="fa-solid fa-plus"></i></a>
             </div>
         </div>
     </header>
@@ -529,11 +529,11 @@
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
             <span data-i18n="nav_home">Home</span>
         </a>
-        <a href="orders.html" class="nav-item">
+        <a onclick="handleProtectedAction('orders.html')" class="nav-item">
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span data-i18n="nav_orders">Orders</span>
         </a>
-        <a href="add-money.html" class="nav-item">
+        <a onclick="handleProtectedAction('add-money.html')" class="nav-item" id="nav-add-money" style="display: none;">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span data-i18n="nav_add_money">Add Money</span>
         </a>
@@ -541,7 +541,7 @@
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
             <span data-i18n="nav_support">Support</span>
         </a>
-        <a href="profile.html" class="nav-item">
+        <a onclick="handleProtectedAction('profile.html')" class="nav-item">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
             <span data-i18n="nav_profile">Profile</span>
         </a>
@@ -569,25 +569,46 @@
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
+        let currentUser = null;
+
         onAuthStateChanged(auth, (user) => {
+            currentUser = user;
             const headerSigninBtn = document.getElementById("header-signin-btn");
             const headerBalancePill = document.getElementById("header-balance-pill");
             const headerBalance = document.getElementById("user-balance");
             const balanceAvatar = document.querySelector(".balance-avatar");
+            const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
+            const navAddMoney = document.getElementById("nav-add-money");
 
-            if (user) {
+            if (user && user.email) {
                 const data = getUserProfileData(user);
                 if (headerSigninBtn) headerSigninBtn.style.display = "none";
                 if (headerBalancePill) headerBalancePill.style.display = "flex";
-                if (headerBalance) headerBalance.textContent = Number(data.balance).toFixed(1);
-                if (data.photoURL && balanceAvatar) {
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
+                if (navAddMoney) navAddMoney.style.display = "flex";
+                if (headerBalance && data && data.balance !== undefined) {
+                    headerBalance.textContent = Number(data.balance).toFixed(1);
+                }
+                if (data && data.photoURL && balanceAvatar) {
                     balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
                 }
             } else {
                 if (headerSigninBtn) headerSigninBtn.style.display = "flex";
                 if (headerBalancePill) headerBalancePill.style.display = "none";
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
+                if (navAddMoney) navAddMoney.style.display = "none";
             }
         });
+
+        window.handleProtectedAction = function(targetUrl) {
+            localStorage.removeItem("redirectUrl");
+            if (currentUser && currentUser.email) {
+                window.location.href = targetUrl;
+            } else {
+                localStorage.setItem("redirectUrl", targetUrl);
+                window.location.href = "login.html";
+            }
+        };
     </script>
 
     <script>
@@ -673,7 +694,7 @@
                 document.getElementById('lang-en-option').classList.add('selected');
                 document.getElementById('check-en').style.display = 'block';
                 document.getElementById('lang-bn-option').classList.remove('selected');
-                document.getElementById('check-en').style.display = 'none';
+                document.getElementById('check-bn').style.display = 'none';
             }
         }
 
