@@ -181,6 +181,118 @@
             align-items: center;
         }
 
+        /* BKash & Nagad Method Cards */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .pay-method-box {
+            border: 2px solid var(--border-color);
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pay-method-box.bkash-box.active {
+            border-color: #E2136E;
+            background: rgba(226, 19, 110, 0.08);
+            box-shadow: 0 4px 12px rgba(226, 19, 110, 0.15);
+        }
+
+        .pay-method-box.nagad-box.active {
+            border-color: #F6921E;
+            background: rgba(246, 146, 30, 0.08);
+            box-shadow: 0 4px 12px rgba(246, 146, 30, 0.15);
+        }
+
+        .method-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .bkash-badge {
+            background: linear-gradient(135deg, #E2136E, #C10D5B);
+        }
+
+        .nagad-badge {
+            background: linear-gradient(135deg, #F6921E, #ED1C24);
+        }
+
+        .method-name {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .bkash-box .method-name {
+            color: #E2136E;
+        }
+
+        .nagad-box .method-name {
+            color: #F6921E;
+        }
+
+        /* Receiving Number Box */
+        .receiver-number-box {
+            background: var(--bg-color);
+            border: 1.5px dashed #16a34a;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .receiver-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .receiver-label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .receiver-val {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .copy-num-btn {
+            background: #16a34a;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
         .preset-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -236,72 +348,6 @@
         .form-control[readonly] {
             opacity: 0.8;
             cursor: not-allowed;
-        }
-
-        /* BKash & Nagad Method Cards */
-        .method-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .pay-method-box {
-            border: 2px solid var(--border-color);
-            background: var(--bg-color);
-            border-radius: 12px;
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-            position: relative;
-        }
-
-        .pay-method-box.bkash-box.active {
-            border-color: #E2136E;
-            background: rgba(226, 19, 110, 0.08);
-            box-shadow: 0 4px 12px rgba(226, 19, 110, 0.15);
-        }
-
-        .pay-method-box.nagad-box.active {
-            border-color: #F6921E;
-            background: rgba(246, 146, 30, 0.08);
-            box-shadow: 0 4px 12px rgba(246, 146, 30, 0.15);
-        }
-
-        .method-badge {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            color: #ffffff;
-            font-weight: 900;
-            font-size: 16px;
-        }
-
-        .bkash-badge {
-            background: linear-gradient(135deg, #E2136E, #C10D5B);
-        }
-
-        .nagad-badge {
-            background: linear-gradient(135deg, #F6921E, #ED1C24);
-        }
-
-        .method-name {
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-        .bkash-box .method-name {
-            color: #E2136E;
-        }
-
-        .nagad-box .method-name {
-            color: #F6921E;
         }
 
         .error-text {
@@ -496,6 +542,48 @@
 
         <!-- Form Card Box -->
         <div class="card-box">
+            <!-- Payment Method Section at Top -->
+            <div class="section-title">
+                <span id="t-method-label">পেমেন্ট মেথড</span>
+            </div>
+
+            <div class="method-grid">
+                <div class="pay-method-box bkash-box active" data-method="BKash" data-number="01857659802" onclick="selectPayMethod(this)">
+                    <div class="method-badge bkash-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M12.5 3L5 11.5L11.2 13.2L12.5 3Z" fill="#ffffff"/>
+                            <path d="M12.5 3L19 9.8L11.2 13.2L12.5 3Z" fill="#ffd1e6"/>
+                            <path d="M5 11.5L9.5 20.5L11.2 13.2L5 11.5Z" fill="#ffe6f2"/>
+                            <path d="M19 9.8L14.5 18.8L11.2 13.2L19 9.8Z" fill="#ffffff"/>
+                        </svg>
+                    </div>
+                    <span class="method-name">BKash</span>
+                </div>
+
+                <div class="pay-method-box nagad-box" data-method="Nagad" data-number="01572921586" onclick="selectPayMethod(this)">
+                    <div class="method-badge nagad-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="8" stroke="#ffffff" stroke-width="2.4"/>
+                            <path d="M9 15V9L15 15V9" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="method-name">Nagad</span>
+                </div>
+            </div>
+
+            <!-- Receiving Number Box -->
+            <div class="receiver-number-box">
+                <div class="receiver-meta">
+                    <span class="receiver-label" id="receiver-label-text">BKash Send Money Number</span>
+                    <span class="receiver-val" id="receiver-number-text">01857659802</span>
+                </div>
+                <button type="button" class="copy-num-btn" onclick="copyReceiverNumber()">
+                    <i class="fa-regular fa-copy"></i>
+                    <span id="copy-btn-text">Copy</span>
+                </button>
+            </div>
+
+            <!-- Choose Amount Section -->
             <div class="section-title">
                 <span id="t-choose-amount">Choose Amount</span>
             </div>
@@ -532,33 +620,6 @@
                     placeholder="01#########"
                     oninput="handleNumericInput(this, false)"
                 >
-            </div>
-
-            <div class="form-group">
-                <label id="t-method-label">পেমেন্ট মেথড</label>
-                <div class="method-grid">
-                    <div class="pay-method-box bkash-box active" data-method="BKash" onclick="selectPayMethod(this)">
-                        <div class="method-badge bkash-badge">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M12.5 3L5 11.5L11.2 13.2L12.5 3Z" fill="#ffffff"/>
-                                <path d="M12.5 3L19 9.8L11.2 13.2L12.5 3Z" fill="#ffd1e6"/>
-                                <path d="M5 11.5L9.5 20.5L11.2 13.2L5 11.5Z" fill="#ffe6f2"/>
-                                <path d="M19 9.8L14.5 18.8L11.2 13.2L19 9.8Z" fill="#ffffff"/>
-                            </svg>
-                        </div>
-                        <span class="method-name">BKash</span>
-                    </div>
-
-                    <div class="pay-method-box nagad-box" data-method="Nagad" onclick="selectPayMethod(this)">
-                        <div class="method-badge nagad-badge">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="8" stroke="#ffffff" stroke-width="2.4"/>
-                                <path d="M9 15V9L15 15V9" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <span class="method-name">Nagad</span>
-                    </div>
-                </div>
             </div>
 
             <div class="form-group">
@@ -690,9 +751,10 @@
     </script>
 
     <script>
-        const WHATSAPP_USERNAME = "Ben_Suspend";
+        const WHATSAPP_NUMBER = "8801572921586";
         const TELEGRAM_USERNAME = "zunayed_islam00";
         let selectedPaymentMethod = "BKash";
+        let selectedReceiverNumber = "01857659802";
 
         const translations = {
             bn: {
@@ -708,6 +770,7 @@
                 trxLabel: "ট্রানজেকশন আইডি",
                 accountLabel: "My Account",
                 continueBtn: "Continue to Add Money",
+                copyBtn: "Copy",
                 footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
                 navHome: "হোম",
                 navOrders: "অর্ডার",
@@ -729,6 +792,7 @@
                 trxLabel: "Transaction ID",
                 accountLabel: "My Account",
                 continueBtn: "Continue to Add Money",
+                copyBtn: "Copy",
                 footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
                 navHome: "Home",
                 navOrders: "Orders",
@@ -756,6 +820,7 @@
             document.getElementById("t-method-label").textContent = t.methodLabel;
             document.getElementById("t-trx-label").textContent = t.trxLabel;
             document.getElementById("t-account-label").textContent = t.accountLabel;
+            document.getElementById("copy-btn-text").textContent = t.copyBtn;
             document.querySelectorAll(".t-continue-btn").forEach(el => {
                 el.textContent = t.continueBtn;
             });
@@ -795,7 +860,6 @@
         }
 
         function handleTrxInput(input) {
-            // Block Bengali Unicode characters & allow only English alphanumeric characters
             input.value = input.value.replace(/[\u0980-\u09FF]/g, "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
         }
 
@@ -811,6 +875,18 @@
             document.querySelectorAll(".pay-method-box").forEach(box => box.classList.remove("active"));
             el.classList.add("active");
             selectedPaymentMethod = el.dataset.method;
+            selectedReceiverNumber = el.dataset.number;
+            document.getElementById("receiver-label-text").textContent = `${selectedPaymentMethod} Send Money Number`;
+            document.getElementById("receiver-number-text").textContent = selectedReceiverNumber;
+        }
+
+        function copyReceiverNumber() {
+            navigator.clipboard?.writeText(selectedReceiverNumber);
+            const btnText = document.getElementById("copy-btn-text");
+            btnText.textContent = "Copied!";
+            setTimeout(() => {
+                btnText.textContent = "Copy";
+            }, 1500);
         }
 
         function validateAmount() {
@@ -847,7 +923,7 @@
 
 টাকার পরিমাণ   : ${amount}   ৳
  টাকা পাঠানো নাম্বার : ${senderNumber}  
-পেমেন্ট মেথড   : ${selectedPaymentMethod}  
+পেমেন্ট মেথড   : ${selectedPaymentMethod} (${selectedReceiverNumber})  
 ট্রানজেকশন আইডি :   ${trxId}  
 আ্যকাউন্ট জিমেইল  :  ${myAccount}  
 
@@ -857,7 +933,7 @@ Thank you for choose Game Vault BD https://game-vault-bd.theummah234.workers.dev
             const encoded = encodeURIComponent(formattedMessage);
 
             if (platform === "whatsapp") {
-                window.location.href = `https://wa.me/${WHATSAPP_USERNAME}?text=${encoded}`;
+                window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
             } else {
                 window.location.href = `https://t.me/${TELEGRAM_USERNAME}?text=${encoded}`;
             }
