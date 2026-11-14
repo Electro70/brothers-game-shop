@@ -102,6 +102,12 @@
             overflow: hidden;
         }
 
+        .balance-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .add-balance-btn {
             background: #10b981;
             color: white;
@@ -450,7 +456,7 @@
                 <div class="balance-avatar">
                     <i class="fa-solid fa-user"></i>
                 </div>
-                <span>৳ <span id="user-balance">3.3</span></span>
+                <span>৳ <span id="user-balance">0.0</span></span>
                 <a href="add-money.html" class="add-balance-btn"><i class="fa-solid fa-plus"></i></a>
             </div>
         </div>
@@ -467,13 +473,13 @@
                 </div>
                 <div class="profile-info">
                     <h3>My Account</h3>
-                    <h2><span id="profile-name">Zunayed Islam</span> <i class="fa-solid fa-pen" style="font-size: 12px; cursor: pointer;"></i></h2>
-                    <p id="profile-email">theummah234@gmail.com</p>
+                    <h2><span id="profile-name">Loading...</span> <i class="fa-solid fa-pen" style="font-size: 12px; cursor: pointer;"></i></h2>
+                    <p id="profile-email">Loading...</p>
                 </div>
             </div>
             <div class="profile-meta-row">
                 <div class="meta-badge">
-                    <i class="fa-solid fa-calendar-days"></i> Member since: Dec 22, 2025
+                    <i class="fa-solid fa-calendar-days"></i> Member since: -
                 </div>
                 <div class="meta-badge">
                     <i class="fa-solid fa-clock"></i> Session: 59d 22h
@@ -486,7 +492,7 @@
             <div class="wallet-card-inner">
                 <div class="wallet-left">
                     <h4>Wallet Balance</h4>
-                    <div class="balance-val">৳ <span id="wallet-balance-val">3.32</span></div>
+                    <div class="balance-val">৳ <span id="wallet-balance-val">0.00</span></div>
                 </div>
                 <a href="add-money.html" class="add-money-pill-btn">
                     <i class="fa-solid fa-plus"></i> Add Money
@@ -495,7 +501,7 @@
             <div class="coins-row">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-coins" style="color: #eab308;"></i>
-                    <span>My Coins: <strong>2.1 COINS</strong></span>
+                    <span>My Coins: <strong>0 COINS</strong></span>
                 </div>
                 <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #94a3b8;"></i>
             </div>
@@ -509,7 +515,7 @@
                 </div>
                 <div>
                     <div style="font-size: 12px; color: #94a3b8; font-weight: 700;">Telegram ID</div>
-                    <div style="font-size: 15px; font-weight: 800;">8481682057 <span style="font-size: 11px; background: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 2px 6px; border-radius: 10px; margin-left: 6px;">active</span></div>
+                    <div style="font-size: 15px; font-weight: 800;"><span id="profile-telegram-id">8481682057</span> <span style="font-size: 11px; background: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 2px 6px; border-radius: 10px; margin-left: 6px;">active</span></div>
                 </div>
             </div>
             <button style="background: var(--border-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--text-color);">
@@ -676,8 +682,8 @@
 
             const nameEl = document.getElementById("profile-name");
             const emailEl = document.getElementById("profile-email");
-            if (nameEl) nameEl.textContent = data.name;
-            if (emailEl) emailEl.textContent = data.email;
+            if (nameEl) nameEl.textContent = data.name || "User";
+            if (emailEl) emailEl.textContent = data.email || "";
 
             const avatarLarge = document.querySelector(".profile-avatar-large");
             const balanceAvatar = document.querySelector(".balance-avatar");
@@ -688,11 +694,16 @@
 
             const headerBalance = document.getElementById("user-balance");
             const walletBalance = document.getElementById("wallet-balance-val");
-            if (headerBalance) headerBalance.textContent = Number(data.balance).toFixed(1);
-            if (walletBalance) walletBalance.textContent = Number(data.balance).toFixed(2);
+            if (headerBalance) headerBalance.textContent = Number(data.balance || 0).toFixed(1);
+            if (walletBalance) walletBalance.textContent = Number(data.balance || 0).toFixed(2);
 
             const coinsStrong = document.querySelector(".coins-row strong");
-            if (coinsStrong) coinsStrong.textContent = `${data.coins} COINS`;
+            if (coinsStrong) coinsStrong.textContent = `${data.coins || 0} COINS`;
+
+            const telegramIdEl = document.getElementById("profile-telegram-id");
+            if (telegramIdEl && data.telegramId) {
+                telegramIdEl.textContent = data.telegramId;
+            }
 
             const metaBadges = document.querySelectorAll(".meta-badge");
             if (metaBadges[0] && data.memberSince) {
