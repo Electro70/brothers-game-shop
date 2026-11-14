@@ -127,7 +127,7 @@
             padding: 0 15px;
         }
 
-        /* Green Banner Card Box (Matches form card style) */
+        /* Green Card Box */
         .green-header-card {
             background: linear-gradient(135deg, #16a34a, #15803d);
             color: #ffffff;
@@ -217,7 +217,7 @@
             margin-bottom: 6px;
         }
 
-        .form-control, .form-select {
+        .form-control {
             width: 100%;
             padding: 12px 14px;
             background: var(--bg-color);
@@ -229,13 +229,79 @@
             outline: none;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus {
             border-color: #16a34a;
         }
 
         .form-control[readonly] {
-            opacity: 0.75;
+            opacity: 0.8;
             cursor: not-allowed;
+        }
+
+        /* BKash & Nagad Method Cards */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .pay-method-box {
+            border: 2px solid var(--border-color);
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .pay-method-box.bkash-box.active {
+            border-color: #E2136E;
+            background: rgba(226, 19, 110, 0.08);
+            box-shadow: 0 4px 12px rgba(226, 19, 110, 0.15);
+        }
+
+        .pay-method-box.nagad-box.active {
+            border-color: #F6921E;
+            background: rgba(246, 146, 30, 0.08);
+            box-shadow: 0 4px 12px rgba(246, 146, 30, 0.15);
+        }
+
+        .method-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .bkash-badge {
+            background: linear-gradient(135deg, #E2136E, #C10D5B);
+        }
+
+        .nagad-badge {
+            background: linear-gradient(135deg, #F6921E, #ED1C24);
+        }
+
+        .method-name {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .bkash-box .method-name {
+            color: #E2136E;
+        }
+
+        .nagad-box .method-name {
+            color: #F6921E;
         }
 
         .error-text {
@@ -304,14 +370,21 @@
         }
 
         .made-by {
-            margin-top: 12px;
+            margin-top: 14px;
             font-size: 13px;
             font-weight: 700;
+            color: #ffffff;
+            background: #0f172a;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
         }
 
         .made-by a {
-            color: var(--accent-color);
+            color: #22c55e;
             text-decoration: none;
+            font-weight: 800;
         }
 
         /* Bottom Nav */
@@ -411,7 +484,7 @@
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Green Card Box with Add Balance, English Subtext & Warning -->
+        <!-- Green Card Box -->
         <div class="green-header-card">
             <h1 id="t-title">Add Balance</h1>
             <p class="subtext-en" id="t-subtext">Top up your Game Vault wallet quickly and securely.</p>
@@ -462,12 +535,30 @@
             </div>
 
             <div class="form-group">
-                <label for="payment-method" id="t-method-label">পেমেন্ট অপশন</label>
-                <select id="payment-method" class="form-select">
-                    <option value="BKash">BKash</option>
-                    <option value="Nogod">Nogod</option>
-                    <option value="Roket">Roket</option>
-                </select>
+                <label id="t-method-label">পেমেন্ট মেথড</label>
+                <div class="method-grid">
+                    <div class="pay-method-box bkash-box active" data-method="BKash" onclick="selectPayMethod(this)">
+                        <div class="method-badge bkash-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path d="M12.5 3L5 11.5L11.2 13.2L12.5 3Z" fill="#ffffff"/>
+                                <path d="M12.5 3L19 9.8L11.2 13.2L12.5 3Z" fill="#ffd1e6"/>
+                                <path d="M5 11.5L9.5 20.5L11.2 13.2L5 11.5Z" fill="#ffe6f2"/>
+                                <path d="M19 9.8L14.5 18.8L11.2 13.2L19 9.8Z" fill="#ffffff"/>
+                            </svg>
+                        </div>
+                        <span class="method-name">BKash</span>
+                    </div>
+
+                    <div class="pay-method-box nagad-box" data-method="Nagad" onclick="selectPayMethod(this)">
+                        <div class="method-badge nagad-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="8" stroke="#ffffff" stroke-width="2.4"/>
+                                <path d="M9 15V9L15 15V9" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <span class="method-name">Nagad</span>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -477,6 +568,7 @@
                     id="trx-id"
                     class="form-control"
                     placeholder="DKA7BREFU5"
+                    oninput="handleTrxInput(this)"
                 >
             </div>
 
@@ -512,11 +604,11 @@
                 <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
                 <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
             </div>
-            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;" id="t-footer-desc">Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.</p>
-            <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2019 - 2026 Game Vault Bangladesh, All trademarks belong to their respective owners.</p>
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;" id="t-footer-desc">Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.</p>
+            <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2025- 2026 Game Vault Bangladesh, All trademarks belong to their respective owners</p>
             
             <div class="made-by">
-                <a href="https://t.me/zunayed_islam00" target="_blank">Made by Game Vault 👾</a>
+                Made by <a href="https://t.me/zunayed_islam00" target="_blank">Game Vault</a>
             </div>
         </div>
     </div>
@@ -598,9 +690,9 @@
     </script>
 
     <script>
-        // Replace with your WhatsApp number in international format without '+' (e.g., 8801XXXXXXXXX)
-        const WHATSAPP_NUMBER = "8801700000000";
+        const WHATSAPP_USERNAME = "Ben_Suspend";
         const TELEGRAM_USERNAME = "zunayed_islam00";
+        let selectedPaymentMethod = "BKash";
 
         const translations = {
             bn: {
@@ -612,11 +704,11 @@
                 chooseAmount: "Choose Amount",
                 amountLabel: "টাকার পরিমাণ",
                 senderLabel: "যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার",
-                methodLabel: "পেমেন্ট অপশন",
+                methodLabel: "পেমেন্ট মেথড",
                 trxLabel: "ট্রানজেকশন আইডি",
                 accountLabel: "My Account",
                 continueBtn: "Continue to Add Money",
-                footerDesc: "Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.",
+                footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
                 navHome: "হোম",
                 navOrders: "অর্ডার",
                 navAdd: "অ্যাড মানি",
@@ -633,11 +725,11 @@
                 chooseAmount: "Choose Amount",
                 amountLabel: "Amount (BDT)",
                 senderLabel: "Sender Phone Number",
-                methodLabel: "Payment Method",
+                methodLabel: "পেমেন্ট মেথড",
                 trxLabel: "Transaction ID",
                 accountLabel: "My Account",
                 continueBtn: "Continue to Add Money",
-                footerDesc: "Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.",
+                footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
                 navHome: "Home",
                 navOrders: "Orders",
                 navAdd: "Add Money",
@@ -647,7 +739,6 @@
             }
         };
 
-        // Auto-convert page to Bangla on load unless user explicitly switches to EN
         function applyLanguage() {
             const savedLang = localStorage.getItem("language") || "bn";
             localStorage.setItem("language", savedLang);
@@ -697,11 +788,15 @@
         }
 
         function handleNumericInput(input, checkRange) {
-            // Allow only English digits 0-9
             input.value = input.value.replace(/[^0-9]/g, "");
             if (checkRange) {
                 validateAmount();
             }
+        }
+
+        function handleTrxInput(input) {
+            // Block Bengali Unicode characters & allow only English alphanumeric characters
+            input.value = input.value.replace(/[\u0980-\u09FF]/g, "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
         }
 
         function pickPreset(btn) {
@@ -710,6 +805,12 @@
             const input = document.getElementById("amount-input");
             input.value = btn.dataset.val;
             validateAmount();
+        }
+
+        function selectPayMethod(el) {
+            document.querySelectorAll(".pay-method-box").forEach(box => box.classList.remove("active"));
+            el.classList.add("active");
+            selectedPaymentMethod = el.dataset.method;
         }
 
         function validateAmount() {
@@ -728,7 +829,6 @@
             const isAmountValid = validateAmount();
             const amount = document.getElementById("amount-input").value.trim();
             const senderNumber = document.getElementById("sender-number").value.trim();
-            const method = document.getElementById("payment-method").value;
             const trxId = document.getElementById("trx-id").value.trim();
             const myAccount = document.getElementById("account-no").value.trim();
 
@@ -743,20 +843,21 @@
 
             const formattedMessage =
 `💸 Add Money Request (Game Vault BD )
-Web:https://game-vault-bd.theummah234.workers.dev
------------------------------------------
 
-টাকার পরিমাণ 🪙  : ${amount}  ৳
-যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার 📞 :
-  ${senderNumber}  
-পেমেন্ট অপশন ⚙️ : ${method}  
-ট্রানজেকশন আইডি :  ${trxId}  
-My Account  :  ${myAccount}`;
+
+টাকার পরিমাণ   : ${amount}   ৳
+ টাকা পাঠানো নাম্বার : ${senderNumber}  
+পেমেন্ট মেথড   : ${selectedPaymentMethod}  
+ট্রানজেকশন আইডি :   ${trxId}  
+আ্যকাউন্ট জিমেইল  :  ${myAccount}  
+
+
+Thank you for choose Game Vault BD https://game-vault-bd.theummah234.workers.dev`;
 
             const encoded = encodeURIComponent(formattedMessage);
 
             if (platform === "whatsapp") {
-                window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+                window.location.href = `https://wa.me/${WHATSAPP_USERNAME}?text=${encoded}`;
             } else {
                 window.location.href = `https://t.me/${TELEGRAM_USERNAME}?text=${encoded}`;
             }
