@@ -1,38 +1,779 @@
-import { auth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "./firebase.js";
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Vault BD - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --muted-color: #94a3b8;
+            --border-color: #334155;
+            --accent-color: #eab308;
+            --success-color: #16a34a;
+            --danger-color: #ef4444;
+        }
 
-const BLOCKED_ADMIN_EMAILS = [
-    "theummah234@gmail.com"
-];
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-function isBlockedAdmin(email) {
-    if (!email) return false;
-    return BLOCKED_ADMIN_EMAILS.includes(email.trim().toLowerCase());
-}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
 
-// যদি আগে থেকেই অ্যাডমিন জিমেইল লগইন থাকে, সাথে সাথে সাইন আউট করবে
-onAuthStateChanged(auth, async (user) => {
-    if (user && isBlockedAdmin(user.email)) {
-        await signOut(auth);
-        alert("অ্যাডমিন জিমেইল দিয়ে ইউজার ওয়েবসাইটে লগইন করা যাবে না।");
-        return;
-    }
-    if (user) {
-        window.location.href = "index.html";
-    }
-});
+        /* Admin Login Gate */
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-// লগইন সাবমিটের সময় অ্যাডমিন জিমেইল ব্লক করা
-async function handleUserLogin(email, password) {
-    const cleanEmail = email.trim().toLowerCase();
-    if (isBlockedAdmin(cleanEmail)) {
-        alert("অ্যাডমিন জিমেইল দিয়ে ইউজার ওয়েবসাইটে লগইন করা যাবে না।");
-        return;
-    }
-    const cred = await signInWithEmailAndPassword(auth, cleanEmail, password);
-    if (isBlockedAdmin(cred.user.email)) {
-        await signOut(auth);
-        alert("অ্যাডমিন জিমেইল দিয়ে ইউজার ওয়েবসাইটে লগইন করা যাবে না।");
-        return;
-    }
-    window.location.href = "index.html";
-}
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 26px 22px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .login-brand-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .login-logo-box {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .login-logo-box img {
+            max-height: 42px;
+            max-width: 180px;
+            object-fit: contain;
+        }
+
+        .login-restricted-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 0.3px;
+        }
+
+        .login-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .login-card p {
+            font-size: 13px;
+            color: var(--muted-color);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+        }
+
+        .password-field-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-field-wrap .form-control {
+            padding-right: 42px;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--muted-color);
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+        }
+
+        .toggle-password-btn:hover {
+            color: var(--text-color);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: var(--accent-color);
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-alert {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            font-size: 12px;
+            font-weight: 600;
+            display: none;
+        }
+
+        /* Protected Admin Panel */
+        #adminPanel {
+            display: none;
+        }
+
+        .admin-header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .admin-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .admin-brand strong {
+            font-size: 16px;
+            color: var(--accent-color);
+        }
+
+        .admin-brand span {
+            font-size: 11px;
+            color: var(--muted-color);
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.16);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .admin-container {
+            max-width: 760px;
+            margin: 20px auto;
+            padding: 0 15px 50px;
+        }
+
+        .tabs-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            color: var(--muted-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: #0f172a;
+            border-color: var(--accent-color);
+        }
+
+        .panel-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .panel-card h2 {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .panel-sub {
+            color: var(--muted-color);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(22, 163, 74, 0.18);
+            color: #4ade80;
+            margin-bottom: 10px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+        }
+
+        .asset-box {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .asset-preview {
+            width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: #0b1120;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 8px 0 10px;
+        }
+
+        .asset-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-save {
+            background: var(--success-color);
+            color: #ffffff;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(148, 163, 184, 0.16);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .toast-msg {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .toast-msg.success {
+            display: block;
+            background: rgba(22, 163, 74, 0.18);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Step 1: Strict Email & Password Login Gate -->
+    <div class="login-wrapper" id="loginGate">
+        <div class="login-card">
+            <div class="login-brand-center">
+                <div class="login-logo-box">
+                    <img
+                        src="logo.jpg"
+                        alt="Game Vault BD"
+                        onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='logo.png';}else{this.style.display='none'; document.getElementById('loginLogoFallback').style.display='block';}"
+                    >
+                    <span id="loginLogoFallback" style="display:none; font-size:20px; font-weight:900; color:var(--accent-color); letter-spacing:0.6px;">GAME VAULT</span>
+                </div>
+                <div class="login-restricted-text">Restricted Access</div>
+            </div>
+
+            <h1>Admin Login</h1>
+            <p>শুধুমাত্র অনুমোদিত অ্যাডমিন জিমেইল এবং পাসওয়ার্ড দিয়ে প্রবেশ করা যাবে।</p>
+
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminEmail">Admin Gmail</label>
+                    <input type="email" id="adminEmail" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <div class="password-field-wrap">
+                        <input type="password" id="adminPassword" class="form-control" required>
+                        <button type="button" class="toggle-password-btn" id="togglePasswordBtn" aria-label="Toggle Password">
+                            <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="loginSubmitBtn">
+                    <i class="fa-solid fa-right-to-bracket"></i> Log in to Admin Panel
+                </button>
+            </form>
+
+            <div class="login-alert" id="loginAlert"></div>
+        </div>
+    </div>
+
+    <!-- Step 2: Protected Admin Panel -->
+    <div id="adminPanel">
+        <header class="admin-header">
+            <div class="admin-brand">
+                <strong>Game Vault BD Admin</strong>
+                <span id="loggedAdminEmail"></span>
+            </div>
+            <button type="button" class="logout-btn" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </header>
+
+        <div class="admin-container">
+            <div class="tabs-bar">
+                <button class="tab-btn active" data-tab="images">Images & Branding</button>
+                <button class="tab-btn" data-tab="payments">Payment & Limits</button>
+                <button class="tab-btn" data-tab="dashboard">Dashboard</button>
+                <button class="tab-btn" data-tab="users">Users & Balance</button>
+                <button class="tab-btn" data-tab="orders">Orders & Requests</button>
+            </div>
+
+            <!-- TAB 1: Images & Branding -->
+            <div class="panel-card tab-section" id="tab-images">
+                <span class="status-pill">Images & Branding</span>
+                <h2>ছবি ও লোগো ম্যানেজমেন্ট</h2>
+                <p class="panel-sub">কোড না ধরেই BKash, Nagad ও সাইট লোগোর ইমেজ URL বা ফাইল আপডেট করে সেভ করুন।</p>
+
+                <div class="grid-2">
+                    <div class="asset-box">
+                        <label style="font-size:13px; font-weight:700;">BKash Logo</label>
+                        <div class="asset-preview">
+                            <img id="preview-bkashLogo" src="bkash.jpg" alt="BKash Logo">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="input-bkashLogo" class="form-control" placeholder="bkash.jpg বা ইমেজ URL">
+                        </div>
+                        <input type="file" accept="image/*" class="form-control" onchange="handleFileUpload(this, 'bkashLogo')">
+                    </div>
+
+                    <div class="asset-box">
+                        <label style="font-size:13px; font-weight:700;">Nagad Logo</label>
+                        <div class="asset-preview">
+                            <img id="preview-nagadLogo" src="nagad.jpg" alt="Nagad Logo">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="input-nagadLogo" class="form-control" placeholder="nagad.jpg বা ইমেজ URL">
+                        </div>
+                        <input type="file" accept="image/*" class="form-control" onchange="handleFileUpload(this, 'nagadLogo')">
+                    </div>
+
+                    <div class="asset-box">
+                        <label style="font-size:13px; font-weight:700;">Site Logo</label>
+                        <div class="asset-preview">
+                            <img id="preview-siteLogo" src="logo.jpg" alt="Site Logo">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="input-siteLogo" class="form-control" placeholder="logo.jpg বা ইমেজ URL">
+                        </div>
+                        <input type="file" accept="image/*" class="form-control" onchange="handleFileUpload(this, 'siteLogo')">
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" class="btn-save" onclick="saveImagesConfig()">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Images
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="resetImagesConfig()">
+                        Reset Default
+                    </button>
+                </div>
+                <div class="toast-msg" id="imagesToast"></div>
+            </div>
+
+            <!-- TAB 2: Payment & Limits -->
+            <div class="panel-card tab-section" id="tab-payments" style="display:none;">
+                <span class="status-pill">Payment & Limits</span>
+                <h2>পেমেন্ট নাম্বার, লিমিট ও ইনবক্স সেটিংস</h2>
+                <p class="panel-sub">বিকাশ, নগদ নাম্বার, সর্বনিম্ন/সর্বোচ্চ লিমিট এবং WhatsApp/Telegram ইনবক্স কনফিগার করুন।</p>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="cfg-bkashNumber">BKash Number</label>
+                        <input type="text" id="cfg-bkashNumber" class="form-control" value="01857659802">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cfg-nagadNumber">Nagad Number</label>
+                        <input type="text" id="cfg-nagadNumber" class="form-control" value="01572921586">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cfg-minAmount">Minimum Amount (৳)</label>
+                        <input type="number" id="cfg-minAmount" class="form-control" value="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cfg-maxAmount">Maximum Amount (৳)</label>
+                        <input type="number" id="cfg-maxAmount" class="form-control" value="10000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cfg-whatsappNumber">WhatsApp Number (Country Code সহ)</label>
+                        <input type="text" id="cfg-whatsappNumber" class="form-control" value="8801572921586">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cfg-telegramUsername">Telegram Username</label>
+                        <input type="text" id="cfg-telegramUsername" class="form-control" value="zunayed_islam00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cfg-warningNote">Warning Note (বাংলা)</label>
+                    <input type="text" id="cfg-warningNote" class="form-control" value="শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়">
+                </div>
+
+                <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" class="btn-save" onclick="savePaymentConfig()">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Payment Settings
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="resetPaymentConfig()">
+                        Reset Default
+                    </button>
+                </div>
+                <div class="toast-msg" id="paymentToast"></div>
+            </div>
+
+            <!-- TAB 3: Dashboard -->
+            <div class="panel-card tab-section" id="tab-dashboard" style="display:none;">
+                <span class="status-pill">Dashboard</span>
+                <h2>সিস্টেম ওভারভিউ</h2>
+                <p class="panel-sub">বর্তমান পেমেন্ট ও ব্র্যান্ডিং কনফিগারেশন একনজরে।</p>
+                <div id="dashboardSummary" style="font-size: 13px; line-height: 1.8; color: var(--muted-color);"></div>
+            </div>
+
+            <!-- TAB 4: Users & Balance -->
+            <div class="panel-card tab-section" id="tab-users" style="display:none;">
+                <span class="status-pill">Users & Balance</span>
+                <h2>ইউজার ব্যালেন্স ম্যানেজমেন্ট</h2>
+                <p class="panel-sub">পরবর্তী ধাপে Firebase Firestore/Realtime Database থেকে ইউজার জিমেইল দিয়ে ব্যালেন্স যোগ/কমানোর ফাংশন যুক্ত হবে।</p>
+            </div>
+
+            <!-- TAB 5: Orders & Requests -->
+            <div class="panel-card tab-section" id="tab-orders" style="display:none;">
+                <span class="status-pill">Orders & Requests</span>
+                <h2>অর্ডার ও Add Money রিকোয়েস্ট</h2>
+                <p class="panel-sub">পরবর্তী ধাপে রিকোয়েস্ট লিস্ট ও স্ট্যাটাস আপডেট যুক্ত হবে।</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_IMAGES = {
+            bkashLogo: "bkash.jpg",
+            nagadLogo: "nagad.jpg",
+            siteLogo: "logo.jpg"
+        };
+
+        const DEFAULT_PAYMENTS = {
+            bkashNumber: "01857659802",
+            nagadNumber: "01572921586",
+            minAmount: "20",
+            maxAmount: "10000",
+            whatsappNumber: "8801572921586",
+            telegramUsername: "zunayed_islam00",
+            warningNote: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়"
+        };
+
+        function showToast(elId, msg) {
+            const el = document.getElementById(elId);
+            el.textContent = msg;
+            el.className = "toast-msg success";
+            el.style.display = "block";
+            setTimeout(() => {
+                el.style.display = "none";
+            }, 2500);
+        }
+
+        function handleFileUpload(input, key) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const dataUrl = e.target.result;
+                document.getElementById(`preview-${key}`).src = dataUrl;
+                document.getElementById(`input-${key}`).value = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveImagesConfig() {
+            const cfg = {
+                bkashLogo: document.getElementById("input-bkashLogo").value.trim() || DEFAULT_IMAGES.bkashLogo,
+                nagadLogo: document.getElementById("input-nagadLogo").value.trim() || DEFAULT_IMAGES.nagadLogo,
+                siteLogo: document.getElementById("input-siteLogo").value.trim() || DEFAULT_IMAGES.siteLogo
+            };
+            localStorage.setItem("gv_admin_images", JSON.stringify(cfg));
+            document.getElementById("preview-bkashLogo").src = cfg.bkashLogo;
+            document.getElementById("preview-nagadLogo").src = cfg.nagadLogo;
+            document.getElementById("preview-siteLogo").src = cfg.siteLogo;
+            renderDashboardSummary();
+            showToast("imagesToast", "ছবি ও লোগো সেটিংস সেভ হয়েছে।");
+        }
+
+        function resetImagesConfig() {
+            localStorage.removeItem("gv_admin_images");
+            loadSavedConfigs();
+            showToast("imagesToast", "ডিফল্ট ইমেজ সেটিংসে ফিরিয়ে আনা হয়েছে।");
+        }
+
+        function savePaymentConfig() {
+            const cfg = {
+                bkashNumber: document.getElementById("cfg-bkashNumber").value.trim() || DEFAULT_PAYMENTS.bkashNumber,
+                nagadNumber: document.getElementById("cfg-nagadNumber").value.trim() || DEFAULT_PAYMENTS.nagadNumber,
+                minAmount: document.getElementById("cfg-minAmount").value.trim() || DEFAULT_PAYMENTS.minAmount,
+                maxAmount: document.getElementById("cfg-maxAmount").value.trim() || DEFAULT_PAYMENTS.maxAmount,
+                whatsappNumber: document.getElementById("cfg-whatsappNumber").value.trim() || DEFAULT_PAYMENTS.whatsappNumber,
+                telegramUsername: document.getElementById("cfg-telegramUsername").value.trim().replace(/^@/, "") || DEFAULT_PAYMENTS.telegramUsername,
+                warningNote: document.getElementById("cfg-warningNote").value.trim() || DEFAULT_PAYMENTS.warningNote
+            };
+            localStorage.setItem("gv_admin_payments", JSON.stringify(cfg));
+            renderDashboardSummary();
+            showToast("paymentToast", "পেমেন্ট ও লিমিট সেটিংস সেভ হয়েছে।");
+        }
+
+        function resetPaymentConfig() {
+            localStorage.removeItem("gv_admin_payments");
+            loadSavedConfigs();
+            showToast("paymentToast", "ডিফল্ট পেমেন্ট সেটিংসে ফিরিয়ে আনা হয়েছে।");
+        }
+
+        function loadSavedConfigs() {
+            const imgs = { ...DEFAULT_IMAGES, ...JSON.parse(localStorage.getItem("gv_admin_images") || "{}") };
+            const pays = { ...DEFAULT_PAYMENTS, ...JSON.parse(localStorage.getItem("gv_admin_payments") || "{}") };
+
+            document.getElementById("input-bkashLogo").value = imgs.bkashLogo;
+            document.getElementById("input-nagadLogo").value = imgs.nagadLogo;
+            document.getElementById("input-siteLogo").value = imgs.siteLogo;
+
+            document.getElementById("preview-bkashLogo").src = imgs.bkashLogo;
+            document.getElementById("preview-nagadLogo").src = imgs.nagadLogo;
+            document.getElementById("preview-siteLogo").src = imgs.siteLogo;
+
+            document.getElementById("cfg-bkashNumber").value = pays.bkashNumber;
+            document.getElementById("cfg-nagadNumber").value = pays.nagadNumber;
+            document.getElementById("cfg-minAmount").value = pays.minAmount;
+            document.getElementById("cfg-maxAmount").value = pays.maxAmount;
+            document.getElementById("cfg-whatsappNumber").value = pays.whatsappNumber;
+            document.getElementById("cfg-telegramUsername").value = pays.telegramUsername;
+            document.getElementById("cfg-warningNote").value = pays.warningNote;
+
+            renderDashboardSummary();
+        }
+
+        function renderDashboardSummary() {
+            const pays = { ...DEFAULT_PAYMENTS, ...JSON.parse(localStorage.getItem("gv_admin_payments") || "{}") };
+            const summary = document.getElementById("dashboardSummary");
+            if (!summary) return;
+            summary.innerHTML = `
+                <div><strong>BKash Number:</strong> ${pays.bkashNumber}</div>
+                <div><strong>Nagad Number:</strong> ${pays.nagadNumber}</div>
+                <div><strong>Amount Limit:</strong> Min ${pays.minAmount}৳ - Max ${pays.maxAmount}৳</div>
+                <div><strong>WhatsApp:</strong> ${pays.whatsappNumber}</div>
+                <div><strong>Telegram:</strong> @${pays.telegramUsername}</div>
+                <div><strong>Warning Note:</strong> ${pays.warningNote}</div>
+            `;
+        }
+
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+                document.querySelectorAll(".tab-section").forEach((s) => (s.style.display = "none"));
+                btn.classList.add("active");
+                document.getElementById(`tab-${btn.dataset.tab}`).style.display = "block";
+            });
+        });
+
+        loadSavedConfigs();
+    </script>
+
+    <script type="module">
+        import {
+            auth,
+            onAuthStateChanged,
+            signInWithEmailAndPassword,
+            signOut
+        } from "./firebase.js";
+
+        const ADMIN_EMAILS = [
+            "theummah234@gmail.com"
+        ];
+
+        const loginGate = document.getElementById("loginGate");
+        const adminPanel = document.getElementById("adminPanel");
+        const loginForm = document.getElementById("adminLoginForm");
+        const loginAlert = document.getElementById("loginAlert");
+        const loginSubmitBtn = document.getElementById("loginSubmitBtn");
+        const loggedAdminEmail = document.getElementById("loggedAdminEmail");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+        const togglePasswordIcon = document.getElementById("togglePasswordIcon");
+        const adminPasswordInput = document.getElementById("adminPassword");
+
+        togglePasswordBtn.addEventListener("click", () => {
+            const isHidden = adminPasswordInput.type === "password";
+            adminPasswordInput.type = isHidden ? "text" : "password";
+            togglePasswordIcon.className = isHidden ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+        });
+
+        function showError(message) {
+            loginAlert.textContent = message;
+            loginAlert.style.display = "block";
+        }
+
+        function hideError() {
+            loginAlert.style.display = "none";
+            loginAlert.textContent = "";
+        }
+
+        function isAuthorizedAdmin(user) {
+            if (!user || !user.email) return false;
+            return ADMIN_EMAILS.includes(user.email.trim().toLowerCase());
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user && isAuthorizedAdmin(user)) {
+                hideError();
+                loginGate.style.display = "none";
+                adminPanel.style.display = "block";
+                loggedAdminEmail.textContent = user.email;
+                if (typeof loadSavedConfigs === "function") {
+                    loadSavedConfigs();
+                }
+                return;
+            }
+
+            if (user && !isAuthorizedAdmin(user)) {
+                await signOut(auth);
+                showError("এই জিমেইলের অ্যাডমিন প্যানেলে প্রবেশের অনুমতি নেই।");
+            }
+
+            adminPanel.style.display = "none";
+            loginGate.style.display = "flex";
+        });
+
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            hideError();
+
+            const email = document.getElementById("adminEmail").value.trim().toLowerCase();
+            const password = adminPasswordInput.value;
+
+            if (!ADMIN_EMAILS.includes(email)) {
+                showError("ভুল জিমেইল অথবা এই জিমেইলে অ্যাডমিন অ্যাক্সেস নেই।");
+                return;
+            }
+
+            loginSubmitBtn.disabled = true;
+            loginSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
+
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                if (!isAuthorizedAdmin(cred.user)) {
+                    await signOut(auth);
+                    showError("এই অ্যাকাউন্টটি অ্যাডমিন হিসেবে অনুমোদিত নয়।");
+                }
+            } catch (err) {
+                showError("জিমেইল বা পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করো।");
+            } finally {
+                loginSubmitBtn.disabled = false;
+                loginSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Log in to Admin Panel';
+            }
+        });
+
+        logoutBtn.addEventListener("click", async () => {
+            await signOut(auth);
+        });
+    </script>
+</body>
+</html>
