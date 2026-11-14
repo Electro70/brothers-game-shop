@@ -199,7 +199,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
         }
 
         .amount-input-wrap input {
@@ -218,6 +218,21 @@
             color: #64748b;
         }
 
+        .feedback-msg {
+            font-size: 12px;
+            font-weight: 600;
+            min-height: 18px;
+            margin-bottom: 12px;
+        }
+
+        .feedback-msg.error {
+            color: #ef4444;
+        }
+
+        .feedback-msg.success {
+            color: #10b981;
+        }
+
         /* Payment Methods */
         .method-card {
             border: 1px solid var(--border-color);
@@ -234,7 +249,7 @@
 
         .method-card.selected {
             border-color: #059669;
-            background: rgba(5, 150, 105, 0.03);
+            background: rgba(5, 150, 105, 0.05);
         }
 
         .method-left {
@@ -251,12 +266,6 @@
         .method-sub {
             font-size: 12px;
             color: #94a3b8;
-        }
-
-        .method-logos {
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 4px;
         }
 
         /* Radio Custom */
@@ -282,6 +291,79 @@
             border-radius: 50%;
         }
 
+        /* Deposit Confirmation Panel */
+        .confirm-panel {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid #059669;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.12);
+        }
+
+        .confirm-panel h3 {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #059669;
+        }
+
+        .confirm-summary {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .trx-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .trx-input:focus {
+            border-color: #059669;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cancel-btn {
+            flex: 1;
+            background: var(--border-color);
+            color: var(--text-color);
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .confirm-submit-btn {
+            flex: 2;
+            background: #059669;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
         /* Proceed Button */
         .proceed-btn {
             width: 100%;
@@ -303,7 +385,7 @@
         }
 
         .proceed-btn:hover {
-            opacity: 0.9;
+            opacity: 0.92;
         }
 
         /* Instructions Box */
@@ -432,9 +514,10 @@
             </div>
             
             <div class="amount-input-wrap">
-                <input type="number" placeholder="Write amount here" id="deposit-amount">
+                <input type="number" placeholder="Write amount here" id="deposit-amount" min="10" max="10000" step="1">
                 <span class="currency-tag">BDT</span>
             </div>
+            <div id="deposit-feedback" class="feedback-msg"></div>
 
             <div class="section-label" style="margin-bottom: 10px;">
                 <span>Payment Method</span>
@@ -442,7 +525,7 @@
             <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px; text-transform: uppercase; font-weight: 700;">ONLINE PAYMENT</p>
 
             <!-- EPS Option -->
-            <div class="method-card" onclick="selectMethod(this)">
+            <div class="method-card" data-method="EPS - Online Payment" data-guide="Pay via bKash / Nagad / Rocket / Card gateway and enter your Transaction ID." onclick="selectMethod(this)">
                 <div class="method-left">
                     <span class="method-title">EPS - Online Payment</span>
                     <span class="method-sub">bKash / Nagad / Rocket / Cards</span>
@@ -451,7 +534,7 @@
             </div>
 
             <!-- MFS Option (Selected by default) -->
-            <div class="method-card selected" onclick="selectMethod(this)">
+            <div class="method-card selected" data-method="MFS - Online Payment" data-guide="Send money via bKash / Nagad / Rocket personal number and enter your TrxID." onclick="selectMethod(this)">
                 <div class="method-left">
                     <span class="method-title">MFS - Online Payment</span>
                     <span class="method-sub">bKash / Nagad / Rocket</span>
@@ -460,7 +543,7 @@
             </div>
 
             <!-- USDT Option -->
-            <div class="method-card" onclick="selectMethod(this)">
+            <div class="method-card" data-method="USDT" data-guide="Send USDT (BSC / TRON) and enter your TxID / Hash below." onclick="selectMethod(this)">
                 <div class="method-left">
                     <span class="method-title">USDT</span>
                     <span class="method-sub">BSC - TRON</span>
@@ -469,8 +552,19 @@
             </div>
         </div>
 
+        <!-- Confirmation / TrxID Panel -->
+        <div class="confirm-panel" id="confirm-panel">
+            <h3><i class="fa-solid fa-shield-halved"></i> Complete Deposit Request</h3>
+            <div class="confirm-summary" id="confirm-summary"></div>
+            <input type="text" id="trx-id-input" class="trx-input" placeholder="Enter Transaction ID / Reference">
+            <div class="confirm-actions">
+                <button type="button" class="cancel-btn" onclick="cancelDepositPanel()">Cancel</button>
+                <button type="button" class="confirm-submit-btn" id="confirm-deposit-btn">Confirm & Add Balance</button>
+            </div>
+        </div>
+
         <!-- Proceed Button -->
-        <button class="proceed-btn">
+        <button type="button" class="proceed-btn" id="proceed-deposit-btn">
             Proceed to Add Money <i class="fa-solid fa-arrow-right"></i>
         </button>
 
@@ -478,7 +572,7 @@
         <div class="instruction-box">
             <i class="fa-solid fa-circle-check"></i>
             <div>
-                <strong>Payment Instructions:</strong> You'll be securely redirected to our payment gateway. Once completed, your wallet will be instantly credited!
+                <strong>Payment Instructions:</strong> Select your amount and method, then enter your Transaction ID to credit your Game Vault wallet.
             </div>
         </div>
 
@@ -534,26 +628,105 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard & User Data Display -->
+    <!-- Firebase Auth Guard & Wallet Deposit Logic -->
     <script type="module">
-        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
+        import { auth, onAuthStateChanged, getUserProfileData, updateUserProfileData } from "./firebase.js";
+
+        let currentUser = null;
+        let pendingAmount = 0;
+
+        function renderUserHeader(user) {
+            const data = getUserProfileData(user);
+            const headerBalance = document.getElementById("user-balance");
+            const balanceAvatar = document.querySelector(".balance-avatar");
+
+            if (headerBalance && data) {
+                headerBalance.textContent = Number(data.balance).toFixed(1);
+            }
+            if (data && data.photoURL && balanceAvatar) {
+                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
+            }
+        }
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = "login.html";
                 return;
             }
+            currentUser = user;
+            renderUserHeader(user);
+        });
 
-            const data = getUserProfileData(user);
-            const headerBalance = document.getElementById("user-balance");
-            const balanceAvatar = document.querySelector(".balance-avatar");
+        function showFeedback(message, type) {
+            const el = document.getElementById("deposit-feedback");
+            el.textContent = message;
+            el.className = `feedback-msg ${type || ""}`;
+        }
 
-            if (headerBalance) {
-                headerBalance.textContent = Number(data.balance).toFixed(1);
+        function getSelectedMethodInfo() {
+            const selected = document.querySelector(".method-card.selected");
+            return {
+                method: selected ? selected.dataset.method : "MFS - Online Payment",
+                guide: selected ? selected.dataset.guide : ""
+            };
+        }
+
+        document.getElementById("proceed-deposit-btn").addEventListener("click", () => {
+            const amountInput = document.getElementById("deposit-amount");
+            const amount = Number(amountInput.value);
+
+            if (!amount || amount < 10 || amount > 10000) {
+                showFeedback("Please enter a valid amount between ৳10 and ৳10,000.", "error");
+                return;
             }
-            if (data.photoURL && balanceAvatar) {
-                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
+
+            pendingAmount = amount;
+            const { method, guide } = getSelectedMethodInfo();
+            showFeedback("", "");
+
+            document.getElementById("confirm-summary").innerHTML = `
+                <div><strong>Method:</strong> ${method}</div>
+                <div><strong>Amount:</strong> ৳ ${amount.toFixed(2)} BDT</div>
+                <div style="font-size:12px; color:#64748b; margin-top:4px;">${guide}</div>
+            `;
+            document.getElementById("confirm-panel").style.display = "block";
+            document.getElementById("trx-id-input").focus();
+        });
+
+        document.getElementById("confirm-deposit-btn").addEventListener("click", () => {
+            if (!currentUser) return;
+
+            const trxId = document.getElementById("trx-id-input").value.trim();
+            if (!trxId || trxId.length < 4) {
+                showFeedback("Please enter a valid Transaction ID.", "error");
+                return;
             }
+
+            const { method } = getSelectedMethodInfo();
+            const currentProfile = getUserProfileData(currentUser);
+            const updatedBalance = Number(currentProfile.balance || 0) + pendingAmount;
+
+            updateUserProfileData(currentUser, { balance: updatedBalance });
+            renderUserHeader(currentUser);
+
+            // Save deposit record locally for user's history
+            const depositKey = `gv_deposits_${currentUser.uid}`;
+            const existingDeposits = JSON.parse(localStorage.getItem(depositKey) || "[]");
+            existingDeposits.unshift({
+                id: `DEP-${Date.now()}`,
+                method,
+                amount: pendingAmount,
+                trxId,
+                status: "Completed",
+                date: new Date().toLocaleString()
+            });
+            localStorage.setItem(depositKey, JSON.stringify(existingDeposits));
+
+            document.getElementById("deposit-amount").value = "";
+            document.getElementById("trx-id-input").value = "";
+            document.getElementById("confirm-panel").style.display = "none";
+            showFeedback(`৳${pendingAmount.toFixed(2)} added successfully via ${method}!`, "success");
+            pendingAmount = 0;
         });
     </script>
 
@@ -561,6 +734,15 @@
         function selectMethod(element) {
             document.querySelectorAll('.method-card').forEach(card => card.classList.remove('selected'));
             element.classList.add('selected');
+            const panel = document.getElementById('confirm-panel');
+            if (panel && panel.style.display === 'block') {
+                document.getElementById('proceed-deposit-btn').click();
+            }
+        }
+
+        function cancelDepositPanel() {
+            document.getElementById('confirm-panel').style.display = 'none';
+            document.getElementById('trx-id-input').value = '';
         }
 
         function openModal() { document.getElementById('langModal').style.display = 'flex'; }
