@@ -728,54 +728,83 @@
 
     <!-- User Firebase Auth Guard + Live Firestore Site Config Loader -->
     <script type="module">
-        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
+        import * as fbMod from "./firebase.js";
         import {
             getFirestore,
             doc,
             onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const db = getFirestore(auth.app);
-        const configDocRef = doc(db, "siteConfig", "settings");
+        const auth = fbMod.auth;
+        const onAuthStateChanged = fbMod.onAuthStateChanged;
+        const getUserProfileData = fbMod.getUserProfileData;
 
-        onSnapshot(configDocRef, (snap) => {
-            if (!snap.exists()) return;
-            const data = snap.data() || {};
-            if (data.images) {
-                localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
-            }
-            if (data.payments) {
-                localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
-            }
-            if (typeof window.applyAdminConfigs === "function") {
-                window.applyAdminConfigs();
-            }
-            if (typeof window.applyLanguage === "function") {
-                window.applyLanguage();
-            }
-        }, () => {});
-
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "login.html";
-                return;
-            }
-
-            const data = typeof getUserProfileData === "function" ? getUserProfileData(user) : null;
-            const headerBalance = document.getElementById("user-balance");
-            const balanceAvatar = document.querySelector(".balance-avatar");
+        function applyUserEmailToAccountField(user) {
             const accountInput = document.getElementById("account-no");
+            if (accountInput && user && user.email) {
+                accountInput.value = user.email;
+            }
+        }
 
-            if (headerBalance && data && data.balance !== undefined) {
-                headerBalance.textContent = Number(data.balance).toFixed(1);
+        if (auth && auth.app) {
+            const db = getFirestore(auth.app);
+            const configDocRef = doc(db, "siteConfig", "settings");
+
+            onSnapshot(configDocRef, (snap) => {
+                if (!snap.exists()) return;
+                const data = snap.data() || {};
+                if (data.images) {
+                    localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
+                }
+                if (data.payments) {
+                    localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
+                }
+                if (typeof window.applyAdminConfigs === "function") {
+                    window.applyAdminConfigs();
+                }
+                if (typeof window.applyLanguage === "function") {
+                    window.applyLanguage();
+                }
+                if (auth.currentUser) {
+                    applyUserEmailToAccountField(auth.currentUser);
+                }
+            }, () => {});
+        }
+
+        if (auth && typeof onAuthStateChanged === "function") {
+            if (auth.currentUser) {
+                applyUserEmailToAccountField(auth.currentUser);
             }
-            if (data && data.photoURL && balanceAvatar) {
-                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
-            }
-            if (accountInput) {
-                accountInput.value = user.email || (data && data.email) || "";
-            }
-        });
+
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                applyUserEmailToAccountField(user);
+
+                const headerBalance = document.getElementById("user-balance");
+                const balanceAvatar = document.querySelector(".balance-avatar");
+
+                if (typeof getUserProfileData === "function") {
+                    try {
+                        const data = await getUserProfileData(user);
+                        if (data) {
+                            if (headerBalance && data.balance !== undefined) {
+                                headerBalance.textContent = Number(data.balance).toFixed(1);
+                            }
+                            if (data.photoURL && balanceAvatar) {
+                                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
+                            }
+                            if (data.email) {
+                                applyUserEmailToAccountField({ email: data.email });
+                            }
+                        }
+                    } catch (_) {}
+                }
+            });
+        }
     </script>
 
     <script>
