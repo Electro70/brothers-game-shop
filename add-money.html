@@ -214,24 +214,32 @@
         }
 
         .method-badge {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            overflow: hidden;
             color: #ffffff;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 15px;
+        }
+
+        .method-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .bkash-badge {
-            background: linear-gradient(135deg, #E2136E, #C10D5B);
+            background: #E2136E;
         }
 
         .nagad-badge {
-            background: linear-gradient(135deg, #F6921E, #ED1C24);
+            background: #F6921E;
         }
 
         .method-name {
@@ -544,28 +552,20 @@
         <div class="card-box">
             <!-- Payment Method Section at Top -->
             <div class="section-title">
-                <span id="t-method-label">পেমেন্ট মেথড</span>
+                <span id="t-method-label">Payment Method</span>
             </div>
 
             <div class="method-grid">
                 <div class="pay-method-box bkash-box active" data-method="BKash" data-number="01857659802" onclick="selectPayMethod(this)">
                     <div class="method-badge bkash-badge">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                            <path d="M12.5 3L5 11.5L11.2 13.2L12.5 3Z" fill="#ffffff"/>
-                            <path d="M12.5 3L19 9.8L11.2 13.2L12.5 3Z" fill="#ffd1e6"/>
-                            <path d="M5 11.5L9.5 20.5L11.2 13.2L5 11.5Z" fill="#ffe6f2"/>
-                            <path d="M19 9.8L14.5 18.8L11.2 13.2L19 9.8Z" fill="#ffffff"/>
-                        </svg>
+                        <img src="bkash.png" alt="BKash" onerror="this.style.display='none'; this.parentElement.textContent='bK';">
                     </div>
                     <span class="method-name">BKash</span>
                 </div>
 
                 <div class="pay-method-box nagad-box" data-method="Nagad" data-number="01572921586" onclick="selectPayMethod(this)">
                     <div class="method-badge nagad-badge">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="8" stroke="#ffffff" stroke-width="2.4"/>
-                            <path d="M9 15V9L15 15V9" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <img src="nagad.png" alt="Nagad" onerror="this.style.display='none'; this.parentElement.textContent='N';">
                     </div>
                     <span class="method-name">Nagad</span>
                 </div>
@@ -766,7 +766,7 @@
                 chooseAmount: "Choose Amount",
                 amountLabel: "টাকার পরিমাণ",
                 senderLabel: "যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার",
-                methodLabel: "পেমেন্ট মেথড",
+                methodLabel: "Payment Method",
                 trxLabel: "ট্রানজেকশন আইডি",
                 accountLabel: "My Account",
                 continueBtn: "Continue to Add Money",
@@ -788,7 +788,7 @@
                 chooseAmount: "Choose Amount",
                 amountLabel: "Amount (BDT)",
                 senderLabel: "Sender Phone Number",
-                methodLabel: "পেমেন্ট মেথড",
+                methodLabel: "Payment Method",
                 trxLabel: "Transaction ID",
                 accountLabel: "My Account",
                 continueBtn: "Continue to Add Money",
