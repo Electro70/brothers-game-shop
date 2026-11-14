@@ -546,7 +546,7 @@
         </div>
     </header>
 
-    <div class="container" id="addMoneyMainContent" style="display:none;">
+    <div class="container" id="addMoneyMainContent">
         <div class="green-header-card">
             <h1 id="t-title">ব্যালেন্স যোগ করুন</h1>
             <p class="subtext-en" id="t-subtext">দ্রুত ও নিরাপদে আপনার Game Vault ওয়ালেটে ব্যালেন্স যোগ করুন।</p>
@@ -726,67 +726,69 @@
         </div>
     </div>
 
-    <!-- User Firebase Auth Guard + Live Firestore Site Config Loader -->
+    <!-- Safe Firebase Auth + Live Firestore Site Config Loader -->
     <script type="module">
-        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
-        import {
-            getFirestore,
-            doc,
-            onSnapshot
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        try {
+            const fbMod = await import("./firebase.js");
+            const { getFirestore, doc, onSnapshot } = await import(
+                "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+            );
 
-        const mainContent = document.getElementById("addMoneyMainContent");
-        const accountInput = document.getElementById("account-no");
+            const auth = fbMod.auth;
+            const onAuthStateChanged = fbMod.onAuthStateChanged;
+            const getUserProfileData = fbMod.getUserProfileData;
 
-        const db = getFirestore(auth.app);
-        const configDocRef = doc(db, "siteConfig", "settings");
+            const accountInput = document.getElementById("account-no");
 
-        onSnapshot(configDocRef, (snap) => {
-            if (!snap.exists()) return;
-            const data = snap.data() || {};
-            if (data.images) {
-                localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
-            }
-            if (data.payments) {
-                localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
-            }
-            if (typeof window.applyAdminConfigs === "function") {
-                window.applyAdminConfigs();
-            }
-            if (typeof window.applyLanguage === "function") {
-                window.applyLanguage();
-            }
-        }, () => {});
+            if (auth && auth.app) {
+                const db = getFirestore(auth.app);
+                const configDocRef = doc(db, "siteConfig", "settings");
 
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.replace("login.html");
-                return;
+                onSnapshot(configDocRef, (snap) => {
+                    if (!snap.exists()) return;
+                    const data = snap.data() || {};
+                    if (data.images) {
+                        localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
+                    }
+                    if (data.payments) {
+                        localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
+                    }
+                    if (typeof window.applyAdminConfigs === "function") {
+                        window.applyAdminConfigs();
+                    }
+                    if (typeof window.applyLanguage === "function") {
+                        window.applyLanguage();
+                    }
+                }, () => {});
             }
 
-            if (mainContent) {
-                mainContent.style.display = "block";
+            if (auth && typeof onAuthStateChanged === "function") {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) return;
+                    if (accountInput && user.email) {
+                        accountInput.value = user.email;
+                    }
+                    if (typeof getUserProfileData === "function") {
+                        try {
+                            const data = await getUserProfileData(user);
+                            if (data) {
+                                const headerBalance = document.getElementById("user-balance");
+                                const balanceAvatar = document.querySelector(".balance-avatar");
+                                if (headerBalance && data.balance !== undefined) {
+                                    headerBalance.textContent = Number(data.balance).toFixed(1);
+                                }
+                                if (data.photoURL && balanceAvatar) {
+                                    balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
+                                }
+                                if (accountInput && data.email) {
+                                    accountInput.value = data.email;
+                                }
+                            }
+                        } catch (_) {}
+                    }
+                });
             }
-            if (accountInput) {
-                accountInput.value = user.email || "";
-            }
-
-            const data = typeof getUserProfileData === "function" ? await getUserProfileData(user) : null;
-            const headerBalance = document.getElementById("user-balance");
-            const balanceAvatar = document.querySelector(".balance-avatar");
-
-            if (data) {
-                if (headerBalance && data.balance !== undefined) {
-                    headerBalance.textContent = Number(data.balance).toFixed(1);
-                }
-                if (data.photoURL && balanceAvatar) {
-                    balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
-                }
-                if (accountInput && data.email) {
-                    accountInput.value = data.email;
-                }
-            }
-        });
+        } catch (_) {}
     </script>
 
     <script>
@@ -1064,13 +1066,13 @@
 
 
 টাকার পরিমাণ   : ${amount}   ৳
-টাকা পাঠানো নাম্বার : ${senderNumber}  
+ টাকা পাঠানো নাম্বার : ${senderNumber}  
 পেমেন্ট মেথড   : ${selectedPaymentMethod} (${selectedReceiverNumber})  
 ট্রানজেকশন আইডি :   ${trxId}  
 আ্যকাউন্ট জিমেইল  :  ${myAccount}  
 
 
-Thank you for choose Game Vault BD `;
+Thank you for choose Game Vault BD https://game-vault-bd.theummah234.workers.dev`;
 
             const encoded = encodeURIComponent(formattedMessage);
 
