@@ -726,9 +726,34 @@
         </div>
     </div>
 
-    <!-- User Firebase Auth Guard -->
+    <!-- User Firebase Auth Guard + Live Firestore Site Config Loader -->
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
+        import {
+            getFirestore,
+            doc,
+            onSnapshot
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const db = getFirestore(auth.app);
+        const configDocRef = doc(db, "siteConfig", "settings");
+
+        onSnapshot(configDocRef, (snap) => {
+            if (!snap.exists()) return;
+            const data = snap.data() || {};
+            if (data.images) {
+                localStorage.setItem("gv_admin_images", JSON.stringify(data.images));
+            }
+            if (data.payments) {
+                localStorage.setItem("gv_admin_payments", JSON.stringify(data.payments));
+            }
+            if (typeof window.applyAdminConfigs === "function") {
+                window.applyAdminConfigs();
+            }
+            if (typeof window.applyLanguage === "function") {
+                window.applyLanguage();
+            }
+        }, () => {});
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -889,6 +914,7 @@
                 errEl.textContent = `Min ${MIN_AMOUNT}৳ -Max ${MAX_AMOUNT}৳`;
             }
         }
+        window.applyAdminConfigs = applyAdminConfigs;
 
         function applyLanguage() {
             const savedLang = localStorage.getItem("language") || "bn";
@@ -932,6 +958,7 @@
             bnCheck.style.display = savedLang === "bn" ? "inline-block" : "none";
             enCheck.style.display = savedLang === "en" ? "inline-block" : "none";
         }
+        window.applyLanguage = applyLanguage;
 
         function applyTheme() {
             const theme = localStorage.getItem("theme") || "light";
