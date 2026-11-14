@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +35,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 90px;
+            padding-bottom: 95px;
             transition: background 0.3s, color 0.3s;
         }
 
@@ -71,8 +71,8 @@
             background: var(--border-color);
             padding: 6px 12px;
             border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
             color: var(--text-color);
         }
@@ -127,54 +127,55 @@
             padding: 0 15px;
         }
 
-        /* Top Banner */
-        .page-header-box {
-            margin-bottom: 16px;
+        /* Green Banner Card Box (Matches form card style) */
+        .green-header-card {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            color: #ffffff;
+            border: 1px solid #15803d;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.25);
         }
 
-        .page-header-box h1 {
-            font-size: 22px;
+        .green-header-card h1 {
+            font-size: 21px;
             font-weight: 800;
             margin-bottom: 4px;
         }
 
-        .page-header-box p {
+        .green-header-card .subtext-en {
             font-size: 13px;
-            color: #64748b;
+            opacity: 0.95;
+            margin-bottom: 14px;
+            font-weight: 500;
         }
 
-        .notice-banner {
-            background: rgba(234, 179, 8, 0.14);
-            border: 1px solid #eab308;
-            color: var(--text-color);
-            padding: 11px 14px;
-            border-radius: 12px;
+        .green-warning-note {
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 10px;
+            padding: 10px 12px;
             font-size: 13px;
             font-weight: 700;
-            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .notice-banner i {
-            color: #ca8a04;
-            font-size: 15px;
         }
 
         .card-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 16px;
+            padding: 20px;
+            margin-bottom: 18px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
 
         .section-title {
             font-size: 14px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -184,7 +185,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
         .preset-btn {
@@ -200,9 +201,9 @@
         }
 
         .preset-btn.active {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-            color: #059669;
+            border-color: #16a34a;
+            background: rgba(22, 163, 74, 0.12);
+            color: #16a34a;
         }
 
         .form-group {
@@ -229,7 +230,12 @@
         }
 
         .form-control:focus, .form-select:focus {
-            border-color: #10b981;
+            border-color: #16a34a;
+        }
+
+        .form-control[readonly] {
+            opacity: 0.75;
+            cursor: not-allowed;
         }
 
         .error-text {
@@ -240,26 +246,45 @@
             display: none;
         }
 
-        .continue-btn {
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .social-action-btn {
             width: 100%;
-            background: #16a34a;
             color: #ffffff;
             border: none;
-            padding: 15px;
+            padding: 14px 16px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+            gap: 10px;
             transition: 0.2s;
         }
 
-        .continue-btn:hover {
-            background: #15803d;
+        .whatsapp-btn {
+            background: #25D366;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            background: #1ebe5d;
+        }
+
+        .telegram-btn {
+            background: #229ED9;
+            box-shadow: 0 4px 14px rgba(34, 158, 217, 0.3);
+        }
+
+        .telegram-btn:hover {
+            background: #1c88bd;
         }
 
         /* Footer */
@@ -319,6 +344,43 @@
             color: var(--accent-color);
             font-weight: 700;
         }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal-box {
+            background: var(--header-bg);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-option {
+            padding: 11px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            color: var(--text-color);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -333,7 +395,9 @@
         </div>
         <div class="header-right">
             <div class="lang-trigger" onclick="openModal()">
-                <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                <span id="current-lang-flag">🇧🇩</span>
+                <span id="current-lang-text">বাংলা</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
             <div class="balance-pill">
                 <div class="balance-avatar">
@@ -347,19 +411,20 @@
 
     <!-- Main Container -->
     <div class="container">
-        <div class="page-header-box">
-            <h1>Add Balance</h1>
-            <p>Submit your payment details below to continue directly to our inbox.</p>
+        <!-- Green Card Box with Add Balance, English Subtext & Warning -->
+        <div class="green-header-card">
+            <h1 id="t-title">Add Balance</h1>
+            <p class="subtext-en" id="t-subtext">Top up your Game Vault wallet quickly and securely.</p>
+            <div class="green-warning-note">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span id="t-warning">শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়</span>
+            </div>
         </div>
 
-        <div class="notice-banner">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়</span>
-        </div>
-
+        <!-- Form Card Box -->
         <div class="card-box">
             <div class="section-title">
-                <span>Choose Amount</span>
+                <span id="t-choose-amount">Choose Amount</span>
             </div>
 
             <div class="preset-grid">
@@ -372,18 +437,32 @@
             </div>
 
             <div class="form-group">
-                <label for="amount-input">টাকার পরিমাণ</label>
-                <input type="number" id="amount-input" class="form-control" value="50" min="20" max="10000" oninput="validateAmount()">
-                <div id="amount-error" class="error-text">দয়াকরে ২০-১০০০০ টাকার মধ্যে পরিমাণ লিখুন</div>
+                <label for="amount-input" id="t-amount-label">টাকার পরিমাণ</label>
+                <input
+                    type="text"
+                    inputmode="numeric"
+                    id="amount-input"
+                    class="form-control"
+                    value="50"
+                    oninput="handleNumericInput(this, true)"
+                >
+                <div id="amount-error" class="error-text">Min 20৳ -Max 10000৳</div>
             </div>
 
             <div class="form-group">
-                <label for="sender-number">যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার</label>
-                <input type="tel" id="sender-number" class="form-control" placeholder="০১৭...." required>
+                <label for="sender-number" id="t-sender-label">যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার</label>
+                <input
+                    type="text"
+                    inputmode="numeric"
+                    id="sender-number"
+                    class="form-control"
+                    placeholder="01#########"
+                    oninput="handleNumericInput(this, false)"
+                >
             </div>
 
             <div class="form-group">
-                <label for="payment-method">পেমেন্ট অপশন</label>
+                <label for="payment-method" id="t-method-label">পেমেন্ট অপশন</label>
                 <select id="payment-method" class="form-select">
                     <option value="BKash">BKash</option>
                     <option value="Nogod">Nogod</option>
@@ -392,19 +471,40 @@
             </div>
 
             <div class="form-group">
-                <label for="trx-id">ট্রানজেকশন আইডি</label>
-                <input type="text" id="trx-id" class="form-control" placeholder="#####" required>
+                <label for="trx-id" id="t-trx-label">ট্রানজেকশন আইডি</label>
+                <input
+                    type="text"
+                    id="trx-id"
+                    class="form-control"
+                    placeholder="DKA7BREFU5"
+                >
             </div>
 
-            <div class="form-group" style="margin-bottom: 6px;">
-                <label for="account-no">আ্যকাউন্ট নং</label>
-                <input type="text" id="account-no" class="form-control" placeholder="#" required>
+            <div class="form-group" style="margin-bottom: 4px;">
+                <label for="account-no" id="t-account-label">My Account</label>
+                <input
+                    type="email"
+                    id="account-no"
+                    class="form-control"
+                    value=""
+                    readonly
+                    disabled
+                >
             </div>
         </div>
 
-        <button type="button" class="continue-btn" onclick="continueToAddMoney()">
-            Continue to Add Money <i class="fa-solid fa-paper-plane"></i>
-        </button>
+        <!-- WhatsApp & Telegram Action Buttons -->
+        <div class="action-buttons">
+            <button type="button" class="social-action-btn whatsapp-btn" onclick="sendToInbox('whatsapp')">
+                <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i>
+                <span class="t-continue-btn">Continue to Add Money</span>
+            </button>
+
+            <button type="button" class="social-action-btn telegram-btn" onclick="sendToInbox('telegram')">
+                <i class="fa-brands fa-telegram" style="font-size: 20px;"></i>
+                <span class="t-continue-btn">Continue to Add Money</span>
+            </button>
+        </div>
 
         <!-- Footer Info -->
         <div class="site-footer">
@@ -412,7 +512,7 @@
                 <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
                 <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
             </div>
-            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.</p>
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;" id="t-footer-desc">Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.</p>
             <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2019 - 2026 Game Vault Bangladesh, All trademarks belong to their respective owners.</p>
             
             <div class="made-by">
@@ -425,35 +525,48 @@
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item">
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
-            <span>Home</span>
+            <span id="nav-home">Home</span>
         </a>
         <a href="orders.html" class="nav-item">
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
-            <span>Orders</span>
+            <span id="nav-orders">Orders</span>
         </a>
         <a href="add-money.html" class="nav-item active">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
-            <span>Add Money</span>
+            <span id="nav-add">Add Money</span>
         </a>
         <a href="support.html" class="nav-item">
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
-            <span>Support</span>
+            <span id="nav-support">Support</span>
         </a>
         <a href="profile.html" class="nav-item">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
-            <span>Profile</span>
+            <span id="nav-profile">Profile</span>
         </a>
     </nav>
 
-    <!-- Language & Modal -->
-    <div class="modal-overlay" id="langModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
-        <div class="modal-box" style="background:var(--header-bg); width:100%; max-width:400px; border-radius:16px; padding:20px; border:1px solid var(--border-color);">
+    <!-- Language & Theme Modal -->
+    <div class="modal-overlay" id="langModal">
+        <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
-                <span>Language & Theme</span>
+                <span id="modal-heading">Language & Theme</span>
                 <button onclick="closeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div onclick="selectLang('en')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:8px; cursor:pointer; color:var(--text-color);">🇺🇸 English</div>
-            <div onclick="selectLang('bn')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; cursor:pointer; color:var(--text-color);">🇧🇩 বাংলা</div>
+            <div class="modal-option" onclick="selectLang('bn')">
+                <span>🇧🇩 বাংলা (Auto)</span>
+                <i class="fa-solid fa-check" style="color:#16a34a;"></i>
+            </div>
+            <div class="modal-option" onclick="selectLang('en')">
+                <span>🇺🇸 English</span>
+            </div>
+            <div class="modal-option" onclick="selectTheme('light')">
+                <span>☀️ Bright Theme</span>
+                <span id="light-badge">Active</span>
+            </div>
+            <div class="modal-option" onclick="selectTheme('dark')">
+                <span>🌙 Dark Theme</span>
+                <span id="dark-badge"></span>
+            </div>
         </div>
     </div>
 
@@ -472,74 +585,193 @@
             const balanceAvatar = document.querySelector(".balance-avatar");
             const accountInput = document.getElementById("account-no");
 
-            if (headerBalance) {
+            if (headerBalance && data) {
                 headerBalance.textContent = Number(data.balance).toFixed(1);
             }
-            if (data.photoURL && balanceAvatar) {
+            if (data && data.photoURL && balanceAvatar) {
                 balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
             }
-            if (accountInput && !accountInput.value) {
-                accountInput.value = user.email || user.uid;
+            if (accountInput) {
+                accountInput.value = user.email || (data && data.email) || "";
             }
         });
     </script>
 
     <script>
+        // Replace with your WhatsApp number in international format without '+' (e.g., 8801XXXXXXXXX)
+        const WHATSAPP_NUMBER = "8801700000000";
+        const TELEGRAM_USERNAME = "zunayed_islam00";
+
+        const translations = {
+            bn: {
+                flag: "🇧🇩",
+                langText: "বাংলা",
+                title: "Add Balance",
+                subtext: "Top up your Game Vault wallet quickly and securely.",
+                warning: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়",
+                chooseAmount: "Choose Amount",
+                amountLabel: "টাকার পরিমাণ",
+                senderLabel: "যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার",
+                methodLabel: "পেমেন্ট অপশন",
+                trxLabel: "ট্রানজেকশন আইডি",
+                accountLabel: "My Account",
+                continueBtn: "Continue to Add Money",
+                footerDesc: "Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.",
+                navHome: "হোম",
+                navOrders: "অর্ডার",
+                navAdd: "অ্যাড মানি",
+                navSupport: "সাপোর্ট",
+                navProfile: "প্রোফাইল",
+                modalHeading: "ভাষা ও থিম"
+            },
+            en: {
+                flag: "🇺🇸",
+                langText: "EN",
+                title: "Add Balance",
+                subtext: "Top up your Game Vault wallet quickly and securely.",
+                warning: "শুধুমাত্র সেন্ড মানি করবেন, ক্যাশ ইন গ্রহণযোগ্য নয়",
+                chooseAmount: "Choose Amount",
+                amountLabel: "Amount (BDT)",
+                senderLabel: "Sender Phone Number",
+                methodLabel: "Payment Method",
+                trxLabel: "Transaction ID",
+                accountLabel: "My Account",
+                continueBtn: "Continue to Add Money",
+                footerDesc: "Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.",
+                navHome: "Home",
+                navOrders: "Orders",
+                navAdd: "Add Money",
+                navSupport: "Support",
+                navProfile: "Profile",
+                modalHeading: "Language & Theme"
+            }
+        };
+
+        // Auto-convert page to Bangla on load unless user explicitly switches to EN
+        function applyLanguage() {
+            const savedLang = localStorage.getItem("language") || "bn";
+            localStorage.setItem("language", savedLang);
+            const t = translations[savedLang] || translations.bn;
+
+            document.documentElement.lang = savedLang;
+            document.getElementById("current-lang-flag").textContent = t.flag;
+            document.getElementById("current-lang-text").textContent = t.langText;
+            document.getElementById("t-title").textContent = t.title;
+            document.getElementById("t-subtext").textContent = t.subtext;
+            document.getElementById("t-warning").textContent = t.warning;
+            document.getElementById("t-choose-amount").textContent = t.chooseAmount;
+            document.getElementById("t-amount-label").textContent = t.amountLabel;
+            document.getElementById("t-sender-label").textContent = t.senderLabel;
+            document.getElementById("t-method-label").textContent = t.methodLabel;
+            document.getElementById("t-trx-label").textContent = t.trxLabel;
+            document.getElementById("t-account-label").textContent = t.accountLabel;
+            document.querySelectorAll(".t-continue-btn").forEach(el => {
+                el.textContent = t.continueBtn;
+            });
+            document.getElementById("t-footer-desc").textContent = t.footerDesc;
+            document.getElementById("nav-home").textContent = t.navHome;
+            document.getElementById("nav-orders").textContent = t.navOrders;
+            document.getElementById("nav-add").textContent = t.navAdd;
+            document.getElementById("nav-support").textContent = t.navSupport;
+            document.getElementById("nav-profile").textContent = t.navProfile;
+            document.getElementById("modal-heading").textContent = t.modalHeading;
+        }
+
+        function applyTheme() {
+            const theme = localStorage.getItem("theme") || "light";
+            if (theme === "dark") {
+                document.documentElement.setAttribute("data-theme", "dark");
+                document.getElementById("dark-badge").textContent = "Active";
+                document.getElementById("light-badge").textContent = "";
+            } else {
+                document.documentElement.removeAttribute("data-theme");
+                document.getElementById("light-badge").textContent = "Active";
+                document.getElementById("dark-badge").textContent = "";
+            }
+        }
+
+        function selectTheme(theme) {
+            localStorage.setItem("theme", theme);
+            applyTheme();
+            closeModal();
+        }
+
+        function handleNumericInput(input, checkRange) {
+            // Allow only English digits 0-9
+            input.value = input.value.replace(/[^0-9]/g, "");
+            if (checkRange) {
+                validateAmount();
+            }
+        }
+
         function pickPreset(btn) {
-            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('amount-input').value = btn.dataset.val;
+            document.querySelectorAll(".preset-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            const input = document.getElementById("amount-input");
+            input.value = btn.dataset.val;
             validateAmount();
         }
 
         function validateAmount() {
-            const amount = Number(document.getElementById('amount-input').value);
-            const errEl = document.getElementById('amount-error');
-            if (!amount || amount < 20 || amount > 10000) {
-                errEl.style.display = 'block';
+            const raw = document.getElementById("amount-input").value;
+            const amount = Number(raw);
+            const errEl = document.getElementById("amount-error");
+            if (!raw || Number.isNaN(amount) || amount < 20 || amount > 10000) {
+                errEl.style.display = "block";
                 return false;
             }
-            errEl.style.display = 'none';
+            errEl.style.display = "none";
             return true;
         }
 
-        function continueToAddMoney() {
-            if (!validateAmount()) return;
+        function sendToInbox(platform) {
+            const isAmountValid = validateAmount();
+            const amount = document.getElementById("amount-input").value.trim();
+            const senderNumber = document.getElementById("sender-number").value.trim();
+            const method = document.getElementById("payment-method").value;
+            const trxId = document.getElementById("trx-id").value.trim();
+            const myAccount = document.getElementById("account-no").value.trim();
 
-            const amount = document.getElementById('amount-input').value.trim();
-            const senderNumber = document.getElementById('sender-number').value.trim();
-            const method = document.getElementById('payment-method').value;
-            const trxId = document.getElementById('trx-id').value.trim();
-            const accountNo = document.getElementById('account-no').value.trim();
-
-            if (!senderNumber || !trxId || !accountNo) {
-                alert('সবগুলো তথ্য পূরণ করুন।');
+            if (!isAmountValid) {
+                document.getElementById("amount-input").focus();
+                return;
+            }
+            if (!senderNumber || !trxId) {
+                alert("সবগুলো তথ্য সঠিকভাবে পূরণ করুন।");
                 return;
             }
 
-            const message =
-`Add Money Request (Game Vault)
-----------------------------
-টাকার পরিমাণ : ${amount}
-যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার : ${senderNumber}
-পেমেন্ট অপশন : ${method}
-ট্রানজেকশন আইডি : ${trxId}
-আ্যকাউন্ট নং : ${accountNo}`;
+            const formattedMessage =
+`💸 Add Money Request (Game Vault BD )
+Web:https://game-vault-bd.theummah234.workers.dev
+-----------------------------------------
 
-            const telegramUrl = `https://t.me/zunayed_islam00?text=${encodeURIComponent(message)}`;
-            window.location.href = telegramUrl;
+টাকার পরিমাণ 🪙  : ${amount}  ৳
+যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার 📞 :
+  ${senderNumber}  
+পেমেন্ট অপশন ⚙️ : ${method}  
+ট্রানজেকশন আইডি :  ${trxId}  
+My Account  :  ${myAccount}`;
+
+            const encoded = encodeURIComponent(formattedMessage);
+
+            if (platform === "whatsapp") {
+                window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+            } else {
+                window.location.href = `https://t.me/${TELEGRAM_USERNAME}?text=${encoded}`;
+            }
         }
 
-        function openModal() { document.getElementById('langModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('langModal').style.display = 'none'; }
+        function openModal() { document.getElementById("langModal").style.display = "flex"; }
+        function closeModal() { document.getElementById("langModal").style.display = "none"; }
         function selectLang(lang) {
-            localStorage.setItem('language', lang);
-            location.reload();
+            localStorage.setItem("language", lang);
+            applyLanguage();
+            closeModal();
         }
 
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        applyTheme();
+        applyLanguage();
     </script>
 </body>
 </html>
