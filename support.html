@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Game Vault - Customer Support</title>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -50,7 +49,6 @@
             transition: background 0.25s ease, color 0.25s ease;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -75,7 +73,6 @@
             gap: 10px;
         }
 
-        /* Icon-only Dark / Bright Theme Button */
         .theme-icon-btn {
             width: 36px;
             height: 36px;
@@ -113,7 +110,6 @@
             transform: scale(0.95);
         }
 
-        /* Icon-only Sign In Button */
         .signin-btn {
             width: 36px;
             height: 36px;
@@ -133,7 +129,6 @@
             transform: scale(0.93);
         }
 
-        /* User Balance Pill */
         .balance-pill {
             display: none;
             align-items: center;
@@ -177,7 +172,6 @@
             text-decoration: none;
         }
 
-        /* Main Container */
         .container {
             max-width: 500px;
             margin: 20px auto;
@@ -185,7 +179,6 @@
             display: block;
         }
 
-        /* Customer Support Green Banner */
         .support-banner {
             background:
                 radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 28%, transparent 29%),
@@ -225,7 +218,6 @@
             opacity: 0.95;
         }
 
-        /* Support Links List Card */
         .support-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -323,7 +315,6 @@
             font-size: 14px;
         }
 
-        /* Bottom Grid Info Boxes */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -372,7 +363,6 @@
             font-weight: 800;
         }
 
-        /* Footer Branding Section */
         .site-footer {
             text-align: center;
             padding: 20px 15px;
@@ -424,6 +414,11 @@
             z-index: 100;
         }
 
+        .bottom-nav.hide-add-money #nav-add-money {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
         .nav-indicator {
             position: absolute;
             top: 6px;
@@ -434,8 +429,8 @@
             border: 1px solid rgba(5, 168, 107, 0.32);
             box-shadow: 0 4px 14px rgba(5, 168, 107, 0.14);
             will-change: transform, width;
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                        width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.44s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             z-index: 0;
         }
@@ -469,7 +464,6 @@
             font-weight: 700;
         }
 
-        /* Language Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -514,7 +508,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo-container">
             <a href="index.html">
@@ -523,7 +516,6 @@
             </a>
         </div>
         <div class="header-right">
-            <!-- Icon-only Dark / Bright Theme Button -->
             <button type="button" class="theme-icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Theme">
                 <i class="fa-solid fa-moon" id="theme-icon"></i>
             </button>
@@ -544,10 +536,7 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <div class="container" id="main-container">
-        
-        <!-- Customer Support Top Banner -->
         <div class="support-banner">
             <div class="support-icon-box">
                 <i class="fa-solid fa-headset"></i>
@@ -558,7 +547,6 @@
             </div>
         </div>
 
-        <!-- Option 1: Telegram Direct Admin -->
         <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer" class="support-card">
             <div class="support-card-left">
                 <div class="app-icon telegram">
@@ -578,7 +566,6 @@
             </div>
         </a>
 
-        <!-- Option 2: Whatsapp Support -->
         <a href="https://wa.me/Ben_Suspend" target="_blank" rel="noopener noreferrer" class="support-card">
             <div class="support-card-left">
                 <div class="app-icon whatsapp">
@@ -598,7 +585,6 @@
             </div>
         </a>
 
-        <!-- Option 3: Telegram Community Page -->
         <a href="https://t.me/brothersgameshopgroupbd" target="_blank" rel="noopener noreferrer" class="support-card">
             <div class="support-card-left">
                 <div class="app-icon telegram">
@@ -617,7 +603,6 @@
             </div>
         </a>
 
-        <!-- Bottom Grid Boxes (Response Time & Support Hours) -->
         <div class="info-grid">
             <div class="info-box time">
                 <div class="info-box-icon">
@@ -636,7 +621,6 @@
             </div>
         </div>
 
-        <!-- Footer Info -->
         <div class="site-footer">
             <div class="footer-logo">
                 <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
@@ -649,11 +633,9 @@
                 Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault</a>
             </div>
         </div>
-
     </div>
 
-    <!-- Persistent Bottom Navigation Bar with Smooth Sliding Pill Indicator -->
-    <nav class="bottom-nav" id="persistent-bottom-nav">
+    <nav class="bottom-nav hide-add-money" id="persistent-bottom-nav">
         <span class="nav-indicator" id="nav-indicator"></span>
         <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item">
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
@@ -663,7 +645,7 @@
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
             <span data-i18n="nav_orders">Orders</span>
         </a>
-        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item" id="nav-add-money" style="display: none;">
+        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item" id="nav-add-money">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
             <span data-i18n="nav_add_money">Add Money</span>
         </a>
@@ -677,7 +659,6 @@
         </a>
     </nav>
 
-    <!-- Language Modal -->
     <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
         <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
@@ -695,7 +676,6 @@
         </div>
     </div>
 
-    <!-- Firebase User Data Display -->
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
@@ -708,14 +688,14 @@
             const headerBalance = document.getElementById("user-balance");
             const balanceAvatar = document.querySelector(".balance-avatar");
             const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
-            const navAddMoney = document.getElementById("nav-add-money");
+            const nav = document.getElementById("persistent-bottom-nav");
 
             if (user && user.email) {
                 const data = getUserProfileData(user) || {};
                 if (headerSigninBtn) headerSigninBtn.style.display = "none";
                 if (headerBalancePill) headerBalancePill.style.display = "flex";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
-                if (navAddMoney) navAddMoney.style.display = "flex";
+                if (nav) nav.classList.remove("hide-add-money");
                 if (headerBalance && data.balance !== undefined) {
                     headerBalance.textContent = Number(data.balance).toFixed(1);
                 }
@@ -727,7 +707,7 @@
                 if (headerSigninBtn) headerSigninBtn.style.display = "flex";
                 if (headerBalancePill) headerBalancePill.style.display = "none";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
-                if (navAddMoney) navAddMoney.style.display = "none";
+                if (nav) nav.classList.add("hide-add-money");
             }
 
             if (window.updateNavIndicator) {
@@ -820,10 +800,7 @@
             const indicator = document.getElementById('nav-indicator');
             if (!nav || !indicator) return;
 
-            const visibleItems = Array.from(nav.querySelectorAll('.nav-item')).filter(
-                el => getComputedStyle(el).display !== 'none'
-            );
-            const activeItem = visibleItems.find(el => el.classList.contains('active'));
+            const activeItem = nav.querySelector('.nav-item.active');
             if (!activeItem) return;
 
             if (instant) {
@@ -860,7 +837,7 @@
                     sessionStorage.setItem('prevNavTarget', currentFile);
                     setTimeout(() => {
                         window.location.href = "login.html";
-                    }, 140);
+                    }, 180);
                     return;
                 }
             }
@@ -869,7 +846,7 @@
             sessionStorage.setItem('prevNavTarget', currentFile);
             setTimeout(() => {
                 window.location.href = targetUrl;
-            }, 150);
+            }, 220);
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
@@ -956,7 +933,7 @@
 
             if (prevTarget) {
                 const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
-                if (prevItem && getComputedStyle(prevItem).display !== 'none') {
+                if (prevItem) {
                     indicator.style.transition = 'none';
                     const navRect = nav.getBoundingClientRect();
                     const prevRect = prevItem.getBoundingClientRect();
