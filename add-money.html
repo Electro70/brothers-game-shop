@@ -531,7 +531,7 @@
     <header>
         <div class="logo-container">
             <a href="index.html">
-                <img src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fallback-logo').style.display='block';};">
+                <img id="header-site-logo" src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fallback-logo').style.display='block';};">
                 <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:var(--accent-color);">GAME VAULT</span>
             </a>
         </div>
@@ -577,9 +577,10 @@
             </div>
 
             <div class="method-grid">
-                <div class="pay-method-box bkash-box active" data-method="BKash" data-number="01857659802" onclick="selectPayMethod(this)">
+                <div class="pay-method-box bkash-box active" id="bkash-method-box" data-method="BKash" data-number="01857659802" onclick="selectPayMethod(this)">
                     <div class="method-badge bkash-badge">
                         <img
+                            id="bkash-method-img"
                             src="bkash.jpg"
                             alt="BKash"
                             onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='bkash.png';}else{this.style.display='none'; this.parentElement.textContent='bK';}"
@@ -588,9 +589,10 @@
                     <span class="method-name" id="method-bkash-name">বিকাশ</span>
                 </div>
 
-                <div class="pay-method-box nagad-box" data-method="Nagad" data-number="01572921586" onclick="selectPayMethod(this)">
+                <div class="pay-method-box nagad-box" id="nagad-method-box" data-method="Nagad" data-number="01572921586" onclick="selectPayMethod(this)">
                     <div class="method-badge nagad-badge">
                         <img
+                            id="nagad-method-img"
                             src="nagad.jpg"
                             alt="Nagad"
                             onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='nagad.png';}else{this.style.display='none'; this.parentElement.textContent='N';}"
@@ -691,7 +693,7 @@
         <!-- Footer Info -->
         <div class="site-footer">
             <div class="footer-logo">
-                <img src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('footer-fallback').style.display='block';};">
+                <img id="footer-site-logo" src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('footer-fallback').style.display='block';};">
                 <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
             </div>
             <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;" id="t-footer-desc">Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.</p>
@@ -773,8 +775,10 @@
     </script>
 
     <script>
-        const WHATSAPP_NUMBER = "8801572921586";
-        const TELEGRAM_USERNAME = "zunayed_islam00";
+        let WHATSAPP_NUMBER = "8801572921586";
+        let TELEGRAM_USERNAME = "zunayed_islam00";
+        let MIN_AMOUNT = 20;
+        let MAX_AMOUNT = 10000;
         let selectedPaymentMethod = "BKash";
         let selectedReceiverNumber = "01857659802";
 
@@ -830,6 +834,76 @@
                 modalHeading: "Language"
             }
         };
+
+        function applyAdminConfigs() {
+            const savedImages = JSON.parse(localStorage.getItem("gv_admin_images") || "{}");
+            const savedPayments = JSON.parse(localStorage.getItem("gv_admin_payments") || "{}");
+
+            if (savedImages.bkashLogo) {
+                const bkashImg = document.getElementById("bkash-method-img");
+                if (bkashImg) {
+                    bkashImg.style.display = "block";
+                    bkashImg.src = savedImages.bkashLogo;
+                }
+            }
+            if (savedImages.nagadLogo) {
+                const nagadImg = document.getElementById("nagad-method-img");
+                if (nagadImg) {
+                    nagadImg.style.display = "block";
+                    nagadImg.src = savedImages.nagadLogo;
+                }
+            }
+            if (savedImages.siteLogo) {
+                const headerLogo = document.getElementById("header-site-logo");
+                const footerLogo = document.getElementById("footer-site-logo");
+                if (headerLogo) {
+                    headerLogo.style.display = "inline-block";
+                    headerLogo.src = savedImages.siteLogo;
+                }
+                if (footerLogo) {
+                    footerLogo.style.display = "inline-block";
+                    footerLogo.src = savedImages.siteLogo;
+                }
+            }
+
+            const bkashBox = document.getElementById("bkash-method-box");
+            const nagadBox = document.getElementById("nagad-method-box");
+
+            if (savedPayments.bkashNumber && bkashBox) {
+                bkashBox.dataset.number = savedPayments.bkashNumber;
+            }
+            if (savedPayments.nagadNumber && nagadBox) {
+                nagadBox.dataset.number = savedPayments.nagadNumber;
+            }
+            if (savedPayments.minAmount) {
+                MIN_AMOUNT = Number(savedPayments.minAmount) || 20;
+            }
+            if (savedPayments.maxAmount) {
+                MAX_AMOUNT = Number(savedPayments.maxAmount) || 10000;
+            }
+            if (savedPayments.whatsappNumber) {
+                WHATSAPP_NUMBER = savedPayments.whatsappNumber;
+            }
+            if (savedPayments.telegramUsername) {
+                TELEGRAM_USERNAME = savedPayments.telegramUsername.replace(/^@/, "");
+            }
+            if (savedPayments.warningNote) {
+                translations.bn.warning = savedPayments.warningNote;
+                translations.en.warning = savedPayments.warningNote;
+            }
+
+            const activeBox = document.querySelector(".pay-method-box.active") || bkashBox;
+            if (activeBox) {
+                selectedPaymentMethod = activeBox.dataset.method;
+                selectedReceiverNumber = activeBox.dataset.number;
+                document.getElementById("receiver-number-text").textContent = selectedReceiverNumber;
+            }
+
+            const errEl = document.getElementById("amount-error");
+            if (errEl) {
+                errEl.textContent = `Min ${MIN_AMOUNT}৳ -Max ${MAX_AMOUNT}৳`;
+            }
+        }
 
         function applyLanguage() {
             const savedLang = localStorage.getItem("language") || "bn";
@@ -938,7 +1012,7 @@
             const raw = document.getElementById("amount-input").value;
             const amount = Number(raw);
             const errEl = document.getElementById("amount-error");
-            if (!raw || Number.isNaN(amount) || amount < 20 || amount > 10000) {
+            if (!raw || Number.isNaN(amount) || amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
                 errEl.style.display = "block";
                 return false;
             }
@@ -996,6 +1070,7 @@ Thank you for choose Game Vault BD https://game-vault-bd.theummah234.workers.dev
         }
 
         applyTheme();
+        applyAdminConfigs();
         applyLanguage();
     </script>
 </body>
