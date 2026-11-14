@@ -14,7 +14,7 @@
             --header-bg: #ffffff;
             --card-bg: #ffffff;
             --border-color: #e5e7eb;
-            --accent-color: #eab308; /* Yellow accent for Game Vault */
+            --accent-color: #eab308;
         }
 
         [data-theme="dark"] {
@@ -39,7 +39,6 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -64,7 +63,6 @@
             gap: 12px;
         }
 
-        /* Language Button */
         .lang-trigger {
             display: flex;
             align-items: center;
@@ -78,7 +76,6 @@
             color: var(--text-color);
         }
 
-        /* Sign In Button */
         .signin-btn {
             background: var(--accent-color);
             color: #000;
@@ -92,7 +89,6 @@
             gap: 6px;
         }
 
-        /* Header Logged-in Wallet Pill (Profile Photo + Balance + Plus) */
         .header-wallet-pill {
             display: none;
             align-items: center;
@@ -151,7 +147,7 @@
             border-radius: 50%;
             background: #10b981;
             color: #ffffff;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             font-size: 11px;
@@ -159,14 +155,12 @@
             flex-shrink: 0;
         }
 
-        /* Main Container */
         .container {
             max-width: 600px;
             margin: 20px auto;
             padding: 0 15px;
         }
 
-        /* Hero Banner Slogan */
         .hero-banner {
             text-align: center;
             margin-bottom: 15px;
@@ -177,7 +171,6 @@
             font-weight: 600;
         }
 
-        /* Image Slider Section (2 Banners) */
         .slider-container {
             position: relative;
             width: 100%;
@@ -210,7 +203,6 @@
             object-fit: cover;
         }
 
-        /* Coin Box Section */
         .coin-box {
             background: linear-gradient(135deg, #059669, #047857);
             color: white;
@@ -298,7 +290,6 @@
             color: #facc15;
         }
 
-        /* Flash Sale Section */
         .flash-sale-box {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -387,7 +378,6 @@
             text-decoration: none;
         }
 
-        /* Products Grid (Weekly & Monthly Membership Cards) */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -475,7 +465,6 @@
             cursor: not-allowed;
         }
 
-        /* FreeFire Topup Section Styles */
         .section-title-wrapper {
             display: flex;
             align-items: center;
@@ -544,7 +533,6 @@
             color: var(--text-color);
         }
 
-        /* Modal Overlay for Language & Dark Mode */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -586,7 +574,6 @@
             color: var(--text-color);
         }
 
-        /* Dark Mode Toggle Row inside Modal */
         .dark-mode-row {
             display: flex;
             justify-content: space-between;
@@ -640,7 +627,6 @@
             transform: translateX(22px);
         }
 
-        /* Language Options List */
         .lang-option {
             display: flex;
             align-items: center;
@@ -665,7 +651,6 @@
             font-weight: 600;
         }
 
-        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -717,25 +702,22 @@
                     <span class="header-wallet-label">Balance</span>
                     <span class="header-wallet-amount">৳ <span id="header-user-balance">0</span></span>
                 </a>
-                <a href="add-money.html" class="header-wallet-plus"><i class="fa-solid fa-plus"></i></a>
+                <a href="add-money.html" class="header-wallet-plus" id="header-add-money-plus" style="display: none;"><i class="fa-solid fa-plus"></i></a>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Hero Slogan -->
         <div class="hero-banner">
             <p data-i18n="slogan">Topup in seconds - available 24/7!</p>
         </div>
 
-        <!-- Image Slider (2 Banners looping - Excluded from auth check) -->
         <div class="slider-container">
             <div class="slide active"><img src="slide1.png" alt="Banner 1"></div>
             <div class="slide"><img src="slide2.png" alt="Banner 2"></div>
         </div>
 
-        <!-- Game Vault Coin Box -->
         <div class="coin-box" onclick="handleProtectedAction('order.html?product=coins')">
             <div class="coin-header-row">
                 <div class="coin-branding">
@@ -760,7 +742,6 @@
             </div>
         </div>
 
-        <!-- Flash Sale Section -->
         <div class="flash-sale-box">
             <div class="flash-left">
                 <div class="flash-icon">
@@ -784,9 +765,7 @@
             <a href="#" class="view-all-btn" data-i18n="view_all">View All</a>
         </div>
 
-        <!-- Products Grid (Weekly & Monthly Membership) -->
         <div class="products-grid">
-            <!-- Weekly Membership Card -->
             <div class="product-card" onclick="handleProtectedAction('order.html?product=weekly')">
                 <div class="product-img-box">
                     <img src="weekly.jpg" alt="Weekly Membership">
@@ -803,7 +782,6 @@
                 </div>
             </div>
 
-            <!-- Monthly Membership Card -->
             <div class="product-card" onclick="handleProtectedAction('order.html?product=monthly')">
                 <div class="product-img-box">
                     <img src="monthly.jpg" alt="Monthly Membership">
@@ -821,14 +799,12 @@
             </div>
         </div>
 
-        <!-- FreeFire Topup Section -->
         <div class="section-title-wrapper">
             <div class="section-title-dot"></div>
             <div class="section-title" data-i18n="ff_topup_title">FreeFire Topup</div>
         </div>
 
         <div class="ff-topup-grid">
-            <!-- Diamonds -->
             <div class="ff-card" onclick="handleProtectedAction('order.html?product=diamond')">
                 <div class="ff-card-img">
                     <img src="diamond.png" alt="Diamonds">
@@ -836,7 +812,6 @@
                 <div class="ff-card-name" data-i18n="diamonds">Diamonds</div>
             </div>
 
-            <!-- Likes -->
             <div class="ff-card" onclick="handleProtectedAction('order.html?product=likes')">
                 <div class="ff-card-img">
                     <img src="likes.png" alt="Likes">
@@ -844,7 +819,6 @@
                 <div class="ff-card-name" data-i18n="likes">Likes</div>
             </div>
 
-            <!-- Indonesia -->
             <div class="ff-card" onclick="handleProtectedAction('order.html?product=indonesia')">
                 <div class="ff-card-img">
                     <img src="indonesia.png" alt="Indonesia">
@@ -852,7 +826,6 @@
                 <div class="ff-card-name" data-i18n="indonesia">Indonesia</div>
             </div>
 
-            <!-- Guild Glory -->
             <div class="ff-card" onclick="handleProtectedAction('order.html?product=guild')">
                 <div class="ff-card-img">
                     <img src="guild.png" alt="Guild Glory">
@@ -860,7 +833,6 @@
                 <div class="ff-card-name" data-i18n="guild_glory">Guild Glory</div>
             </div>
 
-            <!-- Levelup Pass -->
             <div class="ff-card" onclick="handleProtectedAction('order.html?product=levelpass')">
                 <div class="ff-card-img">
                     <img src="levelpass.png" alt="Levelup Pass">
@@ -878,7 +850,6 @@
                 <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Dark Mode Toggle -->
             <div class="dark-mode-row">
                 <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
                     <i class="fa-solid fa-moon"></i> <span data-i18n="dark_mode">Dark Mode</span>
@@ -889,7 +860,6 @@
                 </label>
             </div>
 
-            <!-- Languages -->
             <div class="lang-option selected" id="lang-en-option" onclick="selectLang('en')">
                 <div class="lang-left">
                     <span>🇺🇸</span> English
@@ -930,7 +900,7 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK & User Data Logic (Connected to firebase.js) -->
+    <!-- Firebase SDK & User Data Logic -->
     <script type="module">
         import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
@@ -942,43 +912,45 @@
             const headerWalletPill = document.getElementById("header-wallet-pill");
             const headerUserAvatar = document.getElementById("header-user-avatar");
             const headerUserBalance = document.getElementById("header-user-balance");
+            const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
             const myCoinsCount = document.querySelector(".my-coins-count");
             const navAddMoney = document.getElementById("nav-add-money");
 
-            if (user) {
+            if (user && user.email) {
                 const data = getUserProfileData(user);
                 if (headerSigninBtn) headerSigninBtn.style.display = "none";
                 if (headerWalletPill) headerWalletPill.style.display = "flex";
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
                 if (navAddMoney) navAddMoney.style.display = "flex";
 
-                if (headerUserAvatar && data.photoURL) {
+                if (headerUserAvatar && data && data.photoURL) {
                     headerUserAvatar.innerHTML = `<img src="${data.photoURL}" alt="Profile">`;
                 }
                 if (headerUserBalance) {
-                    headerUserBalance.textContent = Number(data.balance || 0);
+                    headerUserBalance.textContent = Number((data && data.balance) || 0);
                 }
                 if (myCoinsCount) {
-                    myCoinsCount.textContent = `${data.coins} Coins`;
+                    myCoinsCount.textContent = `${(data && data.coins) || 0} Coins`;
                 }
             } else {
                 if (headerSigninBtn) headerSigninBtn.style.display = "flex";
                 if (headerWalletPill) headerWalletPill.style.display = "none";
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
                 if (navAddMoney) navAddMoney.style.display = "none";
             }
         });
 
         window.handleProtectedAction = function(targetUrl) {
-            if (currentUser) {
+            if (currentUser && currentUser.email) {
                 window.location.href = targetUrl;
             } else {
                 localStorage.setItem('redirectUrl', targetUrl);
                 window.location.href = 'login.html';
             }
-        }
+        };
     </script>
 
     <script>
-        // Translations Dictionary
         const translations = {
             en: {
                 title: "Game Vault - Top Up Center",
@@ -1040,7 +1012,6 @@
             }
         };
 
-        // Modal Open/Close Logic
         function openModal() {
             document.getElementById('langModal').style.display = 'flex';
         }
@@ -1048,7 +1019,6 @@
             document.getElementById('langModal').style.display = 'none';
         }
 
-        // Dark Mode Toggle Logic
         function toggleDarkMode() {
             if (document.getElementById('darkModeToggle').checked) {
                 document.documentElement.setAttribute('data-theme', 'dark');
@@ -1059,13 +1029,11 @@
             }
         }
 
-        // Check saved theme on load
         if (localStorage.getItem('theme') === 'dark') {
             document.getElementById('darkModeToggle').checked = true;
             document.documentElement.setAttribute('data-theme', 'dark');
         }
 
-        // Language Switching Logic
         function selectLang(lang) {
             localStorage.setItem('language', lang);
             applyLanguage(lang);
@@ -1096,14 +1064,13 @@
                 document.getElementById('lang-en-option').classList.add('selected');
                 document.getElementById('check-en').style.display = 'block';
                 document.getElementById('lang-bn-option').classList.remove('selected');
-                document.getElementById('check-en').style.display = 'none';
+                document.getElementById('check-bn').style.display = 'none';
             }
         }
 
         const savedLang = localStorage.getItem('language') || 'en';
         applyLanguage(savedLang);
 
-        // Banner Slider Auto-Loop
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         function nextSlide() {
@@ -1113,12 +1080,11 @@
         }
         setInterval(nextSlide, 3500);
 
-        // Flash Sale Logic: Active every Friday from 10:00 AM to 12:00 Midnight (24:00)
         let isSaleActive = false;
 
         function updateSaleStatus() {
             const now = new Date();
-            const day = now.getDay(); // 0: Sun, 5: Fri, 6: Sat
+            const day = now.getDay();
             const hour = now.getHours();
             const minute = now.getMinutes();
 
