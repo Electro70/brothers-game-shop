@@ -152,11 +152,12 @@
             max-width: 480px;
             margin: 24px auto;
             padding: 0 15px;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.18s ease;
         }
 
         .container.is-swapping {
-            opacity: 0.35;
+            opacity: 0;
+            visibility: hidden;
         }
 
         /* Single Login Card Box */
@@ -267,6 +268,186 @@
             color: var(--text-color);
             text-decoration: underline;
             font-weight: 600;
+        }
+
+        /* Pre-loaded Support page styles so fetch-swap never flashes unstyled */
+        .support-banner {
+            background:
+                radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 28%, transparent 29%),
+                radial-gradient(circle at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 48%, transparent 49%),
+                radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 68%, transparent 69%),
+                linear-gradient(135deg, #05a86b 0%, #028a58 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(5, 168, 107, 0.28);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .support-icon-box {
+            background: rgba(255, 255, 255, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .support-titles h2 {
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .support-titles p {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+
+        .support-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .support-card:hover {
+            transform: translateY(-2px);
+            border-color: #05a86b;
+            box-shadow: 0 8px 18px rgba(5, 168, 107, 0.12);
+        }
+
+        .support-card:active {
+            transform: scale(0.98);
+        }
+
+        .support-card-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .app-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .app-icon.telegram { background: #229ED9; }
+        .app-icon.whatsapp { background: #25D366; }
+
+        .app-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .app-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-name {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .status-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .status-pill.active,
+        .status-pill.online {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .app-sub {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .app-handle {
+            font-size: 12px;
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .arrow-icon {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .info-box-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin: 0 auto 10px auto;
+        }
+
+        .info-box.time .info-box-icon {
+            background: rgba(5, 168, 107, 0.15);
+            color: #05a86b;
+        }
+
+        .info-box-title {
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .info-box-value {
+            font-size: 14px;
+            font-weight: 800;
         }
 
         /* Footer */
@@ -795,7 +976,11 @@
             setActiveNavItem(targetUrl);
 
             try {
-                if (mainContainer) mainContainer.classList.add('is-swapping');
+                if (mainContainer) {
+                    mainContainer.style.visibility = 'hidden';
+                    mainContainer.style.opacity = '0';
+                }
+
                 const response = await fetch(targetUrl, { cache: 'no-cache' });
                 if (!response.ok) throw new Error('Failed to load page');
 
@@ -826,8 +1011,13 @@
             } catch (err) {
                 window.location.href = targetUrl;
             } finally {
-                if (mainContainer) mainContainer.classList.remove('is-swapping');
-                requestAnimationFrame(() => updateNavIndicator(false));
+                requestAnimationFrame(() => {
+                    if (mainContainer) {
+                        mainContainer.style.visibility = 'visible';
+                        mainContainer.style.opacity = '1';
+                    }
+                    updateNavIndicator(false);
+                });
             }
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
@@ -867,28 +1057,58 @@
             const t = loginTranslations[lang] || loginTranslations.en;
 
             document.documentElement.lang = lang;
-            document.getElementById('page-title').innerText = t.title;
-            document.getElementById('current-lang-flag').innerText = t.flag;
-            document.getElementById('current-lang-text').innerText = t.langText;
-            document.getElementById('t-heading').innerText = t.heading;
-            document.getElementById('t-subtext').innerText = t.subtext;
-            document.getElementById('t-google-btn').innerText = t.googleBtn;
-            document.getElementById('t-need-help').innerText = t.needHelp;
-            document.getElementById('t-contact-support').innerText = t.contactSupport;
-            document.getElementById('t-card-terms').innerHTML = t.cardTerms;
-            document.getElementById('t-footer-desc').innerText = t.footerDesc;
-            document.getElementById('t-policy-terms').innerText = t.policyTerms;
-            document.getElementById('t-policy-privacy').innerText = t.policyPrivacy;
-            document.getElementById('t-policy-refund').innerText = t.policyRefund;
-            document.getElementById('t-footer-disclaimer').innerHTML = t.footerDisclaimer;
-            document.getElementById('t-footer-copyright').innerText = t.footerCopyright;
-            document.getElementById('t-made-by').innerHTML = t.madeBy;
-            document.getElementById('nav-home').innerText = t.navHome;
-            document.getElementById('nav-orders').innerText = t.navOrders;
-            document.getElementById('nav-add').innerText = t.navAdd;
-            document.getElementById('nav-support').innerText = t.navSupport;
-            document.getElementById('nav-profile').innerText = t.navProfile;
-            document.getElementById('modal-heading').innerText = t.modalHeading;
+            const titleEl = document.getElementById('page-title');
+            if (titleEl) titleEl.innerText = t.title;
+
+            const flagEl = document.getElementById('current-lang-flag');
+            const langTextEl = document.getElementById('current-lang-text');
+            if (flagEl) flagEl.innerText = t.flag;
+            if (langTextEl) langTextEl.innerText = t.langText;
+
+            const map = {
+                't-heading': t.heading,
+                't-subtext': t.subtext,
+                't-google-btn': t.googleBtn,
+                't-need-help': t.needHelp,
+                't-contact-support': t.contactSupport,
+                't-footer-desc': t.footerDesc,
+                't-policy-terms': t.policyTerms,
+                't-policy-privacy': t.policyPrivacy,
+                't-policy-refund': t.policyRefund,
+                't-footer-copyright': t.footerCopyright,
+                'nav-home': t.navHome,
+                'nav-orders': t.navOrders,
+                'nav-add': t.navAdd,
+                'nav-support': t.navSupport,
+                'nav-profile': t.navProfile,
+                'modal-heading': t.modalHeading
+            };
+
+            Object.entries(map).forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = val;
+            });
+
+            const htmlMap = {
+                't-card-terms': t.cardTerms,
+                't-footer-disclaimer': t.footerDisclaimer,
+                't-made-by': t.madeBy
+            };
+
+            Object.entries(htmlMap).forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = val;
+            });
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+
+            document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                const key = el.getAttribute('data-i18n-html');
+                if (t[key]) el.innerHTML = t[key];
+            });
 
             const checkEn = document.getElementById('check-en');
             const checkBn = document.getElementById('check-bn');
