@@ -849,20 +849,28 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK & Authentication Logic (Connected to firebase.js) -->
+    <!-- Firebase SDK & User Data Logic (Connected to firebase.js) -->
     <script type="module">
-        import { auth, onAuthStateChanged } from "./firebase.js";
+        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
         let currentUser = null;
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             const headerSigninBtn = document.getElementById("header-signin-btn");
-            if (headerSigninBtn) {
-                if (user) {
+            const myCoinsCount = document.querySelector(".my-coins-count");
+
+            if (user) {
+                const data = getUserProfileData(user);
+                if (headerSigninBtn) {
                     headerSigninBtn.href = "profile.html";
-                    headerSigninBtn.innerHTML = `<i class="fa-regular fa-user"></i> <span>${user.displayName || user.email.split("@")[0]}</span>`;
-                } else {
+                    headerSigninBtn.innerHTML = `<i class="fa-regular fa-user"></i> <span>${data.name}</span>`;
+                }
+                if (myCoinsCount) {
+                    myCoinsCount.textContent = `${data.coins} Coins`;
+                }
+            } else {
+                if (headerSigninBtn) {
                     headerSigninBtn.href = "login.html";
                     headerSigninBtn.innerHTML = `<i class="fa-regular fa-user"></i> <span data-i18n="signin">Sign In</span>`;
                 }
