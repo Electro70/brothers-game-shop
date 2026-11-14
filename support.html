@@ -113,23 +113,24 @@
             transform: scale(0.95);
         }
 
-        /* Sign In Button */
+        /* Icon-only Sign In Button (No text, no color fill) */
         .signin-btn {
-            background: var(--accent-color);
-            color: #000;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 9px;
+            font-size: 15px;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: transform 0.2s ease;
+            justify-content: center;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .signin-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.93);
         }
 
         /* User Balance Pill */
@@ -546,7 +547,7 @@
                 <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
 
-            <a href="login.html" class="signin-btn" id="header-signin-btn"><i class="fa-regular fa-user"></i> <span>Sign In</span></a>
+            <a href="login.html" class="signin-btn" id="header-signin-btn" aria-label="Sign In"><i class="fa-regular fa-user"></i></a>
 
             <div class="balance-pill" id="header-balance-pill">
                 <div class="balance-avatar">
