@@ -230,7 +230,7 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: opacity 0.75s ease-in-out;
+            transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1);
             pointer-events: none;
         }
 
@@ -745,7 +745,7 @@
             font-weight: 600;
         }
 
-        /* Persistent Sliding Pill Bottom Navigation Bar */
+        /* Persistent Sliding Pill Bottom Navigation Bar (Fixed & Static during slide) */
         .bottom-nav {
             position: fixed;
             bottom: 12px;
@@ -765,7 +765,7 @@
             contain: layout style;
         }
 
-        /* Sign out অবস্থায় Add Money DOM থেকে বাদ থাকবে, ফলে ফাঁকা থাকবে না */
+        /* Sign out অবস্থায় Add Money সম্পূর্ণ hide হয়ে ৪টা পিল দেখাবে */
         .bottom-nav.hide-add-money #nav-add-money {
             display: none;
         }
@@ -780,8 +780,8 @@
             border: 1px solid rgba(5, 168, 107, 0.32);
             box-shadow: 0 4px 14px rgba(5, 168, 107, 0.14);
             will-change: transform, width;
-            transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1),
-                        width 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                        width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
             pointer-events: none;
             z-index: 0;
         }
@@ -1074,7 +1074,6 @@
                 if (nav) nav.classList.add("hide-add-money");
             }
 
-            // শুধুমাত্র লগ-ইন স্টেট বদলালেই পিল সিঙ্ক করবে
             if (lastSignedInState !== isSignedIn) {
                 lastSignedInState = isSignedIn;
                 if (window.updateNavIndicator) {
@@ -1175,7 +1174,7 @@
             const indicator = document.getElementById('nav-indicator');
             if (!nav || !indicator) return;
 
-            const activeItem = nav.querySelector('.nav-item.active:not([style*="display: none"])');
+            const activeItem = nav.querySelector('.nav-item.active');
             if (!activeItem) return;
 
             if (instant) {
