@@ -662,18 +662,41 @@
         </div>
     </div>
 
-    <!-- Firebase Auth Guard & Logout Logic -->
+    <!-- Firebase Auth Guard, User Data Display & Logout Logic -->
     <script type="module">
-        import { auth, onAuthStateChanged, signOut } from "./firebase.js";
+        import { auth, onAuthStateChanged, signOut, getUserProfileData } from "./firebase.js";
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = "login.html";
-            } else {
-                const nameEl = document.getElementById("profile-name");
-                const emailEl = document.getElementById("profile-email");
-                if (nameEl && user.displayName) nameEl.textContent = user.displayName;
-                if (emailEl && user.email) emailEl.textContent = user.email;
+                return;
+            }
+
+            const data = getUserProfileData(user);
+
+            const nameEl = document.getElementById("profile-name");
+            const emailEl = document.getElementById("profile-email");
+            if (nameEl) nameEl.textContent = data.name;
+            if (emailEl) emailEl.textContent = data.email;
+
+            const avatarLarge = document.querySelector(".profile-avatar-large");
+            const balanceAvatar = document.querySelector(".balance-avatar");
+            if (data.photoURL) {
+                if (avatarLarge) avatarLarge.innerHTML = `<img src="${data.photoURL}" alt="Profile" style="width:100%; height:100%; object-fit:cover;">`;
+                if (balanceAvatar) balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
+            }
+
+            const headerBalance = document.getElementById("user-balance");
+            const walletBalance = document.getElementById("wallet-balance-val");
+            if (headerBalance) headerBalance.textContent = Number(data.balance).toFixed(1);
+            if (walletBalance) walletBalance.textContent = Number(data.balance).toFixed(2);
+
+            const coinsStrong = document.querySelector(".coins-row strong");
+            if (coinsStrong) coinsStrong.textContent = `${data.coins} COINS`;
+
+            const metaBadges = document.querySelectorAll(".meta-badge");
+            if (metaBadges[0] && data.memberSince) {
+                metaBadges[0].innerHTML = `<i class="fa-solid fa-calendar-days"></i> Member since: ${data.memberSince}`;
             }
         });
 
