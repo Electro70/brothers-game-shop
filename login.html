@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Vault - Sign In</title>
+    <title id="page-title">Game Vault - Sign In</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -14,7 +14,7 @@
             --header-bg: #ffffff;
             --card-bg: #ffffff;
             --border-color: #e5e7eb;
-            --accent-color: #eab308; /* Game Vault Yellow Accent */
+            --accent-color: #eab308;
         }
 
         [data-theme="dark"] {
@@ -35,7 +35,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 90px;
+            padding-bottom: 95px;
             transition: background 0.3s, color 0.3s;
         }
 
@@ -44,7 +44,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 15px 18px;
             background: var(--header-bg);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             position: sticky;
@@ -62,6 +62,22 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        /* Icon-only Dark / Bright Theme Button */
+        .theme-icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
         }
 
         .lang-trigger {
@@ -122,214 +138,167 @@
 
         /* Main Container */
         .container {
-            max-width: 500px;
-            margin: 20px auto;
+            max-width: 480px;
+            margin: 24px auto;
             padding: 0 15px;
         }
 
-        /* Top Yellow Banner */
-        .welcome-banner {
-            background: linear-gradient(135deg, #eab308, #ca8a04);
-            color: #1f2937;
-            border-radius: 20px;
-            padding: 25px 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(234, 179, 8, 0.3);
-        }
-
-        .welcome-banner h2 {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .welcome-banner p {
-            font-size: 13px;
-            opacity: 0.9;
-            font-weight: 600;
-        }
-
-        /* Social Auth Buttons */
-        .social-btn {
-            width: 100%;
+        /* Single Login Card Box */
+        .login-card-box {
             background: var(--card-bg);
-            color: var(--text-color);
             border: 1px solid var(--border-color);
-            padding: 12px;
+            border-radius: 20px;
+            padding: 28px 22px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+
+        .login-heading {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .login-subtext {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .google-signin-btn {
+            width: 100%;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1.5px solid var(--border-color);
+            padding: 13px 16px;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            gap: 12px;
             transition: 0.2s;
         }
 
-        .social-btn:hover {
+        .google-signin-btn:hover {
             border-color: var(--accent-color);
-        }
-
-        .divider {
-            text-align: center;
-            margin: 18px 0;
-            position: relative;
-            font-size: 12px;
-            color: #94a3b8;
-            font-weight: 600;
-        }
-
-        .divider::before, .divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 42%;
-            height: 1px;
-            background: var(--border-color);
-        }
-
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
-
-        /* Form Card Box */
-        .card-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text-color);
-        }
-
-        .form-group label i {
-            color: #94a3b8;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 14px;
-            color: var(--text-color);
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--accent-color);
-        }
-
-        .label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .forgot-link {
-            font-size: 12px;
-            color: #059669;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        /* Sign In Button */
-        .signin-btn {
-            width: 100%;
-            background: var(--accent-color);
-            color: #1f2937;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
-            transition: 0.2s;
-            margin-top: 10px;
-        }
-
-        .signin-btn:hover {
-            opacity: 0.9;
-        }
-
-        .bottom-links-text {
-            text-align: center;
-            font-size: 13px;
-            color: #64748b;
-            margin-top: 15px;
-        }
-
-        .bottom-links-text a {
-            color: #059669;
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .terms-note {
-            text-align: center;
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 15px;
-            line-height: 1.5;
-        }
-
-        .terms-note a {
-            color: var(--text-color);
-            text-decoration: underline;
+            transform: translateY(-1px);
         }
 
         #error-msg {
             color: #ef4444;
             font-size: 12px;
-            margin-bottom: 10px;
-            text-align: center;
+            margin-top: 12px;
+            font-weight: 600;
+            min-height: 16px;
+        }
+
+        .support-row {
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .support-row a {
+            color: #059669;
+            text-decoration: none;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+        .card-terms-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .card-terms-note a {
+            color: var(--text-color);
+            text-decoration: underline;
             font-weight: 600;
         }
 
         /* Footer */
         .site-footer {
             text-align: center;
-            padding: 20px 15px;
+            padding: 26px 15px 10px;
             color: #94a3b8;
             font-size: 12px;
             border-top: 1px solid var(--border-color);
-            margin-top: 30px;
+            margin-top: 32px;
         }
 
         .footer-logo img {
-            height: 28px;
+            height: 30px;
             object-fit: contain;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .footer-desc {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+            max-width: 440px;
+            margin: 0 auto 16px;
+        }
+
+        .footer-policy-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 18px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .footer-policy-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .footer-disclaimer {
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.6;
+            max-width: 450px;
+            margin: 0 auto 12px;
+        }
+
+        .footer-disclaimer a {
+            color: #16a34a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-copyright {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 10px;
         }
 
         .made-by {
-            margin-top: 12px;
             font-size: 13px;
             font-weight: 700;
+            color: var(--text-color);
         }
 
         .made-by a {
-            color: var(--accent-color);
+            color: #16a34a;
             text-decoration: none;
+            font-weight: 800;
         }
 
         /* Bottom Nav */
@@ -362,6 +331,43 @@
             color: var(--accent-color);
             font-weight: 700;
         }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal-box {
+            background: var(--header-bg);
+            width: 100%;
+            max-width: 380px;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-option {
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            color: var(--text-color);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -375,9 +381,15 @@
             </a>
         </div>
         <div class="header-right">
+            <!-- Icon-only Dark / Bright Theme Button -->
+            <button type="button" class="theme-icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Theme">
+                <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+
             <div class="lang-trigger" onclick="openModal()">
                 <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
             </div>
+
             <div class="balance-pill" id="header-balance-pill">
                 <div class="balance-avatar">
                     <i class="fa-solid fa-user"></i>
@@ -390,52 +402,36 @@
 
     <!-- Main Container -->
     <div class="container">
-        
-        <!-- Top Yellow Welcome Banner -->
-        <div class="welcome-banner">
-            <h2>Welcome Back, Commander!</h2>
-            <p>Sign in to continue your epic journey!</p>
-        </div>
+        <!-- Single Card Box (Options 3, 4, 5, 6) -->
+        <div class="login-card-box">
+            <h2 class="login-heading" id="t-heading">Welcome Back, Gamers !</h2>
+            <p class="login-subtext" id="t-subtext">Sign in to continue your epic journey</p>
 
-        <!-- Social Login Buttons -->
-        <button type="button" id="google-login-btn" class="social-btn">
-            <i class="fa-brands fa-google" style="color: #ea4335;"></i> Continue with Google
-        </button>
-        
-        <button type="button" class="social-btn">
-            <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Continue with Discord
-        </button>
+            <button type="button" id="google-login-btn" class="google-signin-btn">
+                <!-- Official Google Logo SVG -->
+                <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    <path fill="none" d="M0 0h48v48H0z"/>
+                </svg>
+                <span id="t-google-btn">Sign With Google</span>
+            </button>
 
-        <div class="divider">or</div>
+            <div id="error-msg"></div>
 
-        <!-- Login Form Box -->
-        <div class="card-box">
-            <form id="login-form">
-                <div class="form-group">
-                    <label><i class="fa-solid fa-envelope"></i> Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
-                </div>
-
-                <div class="form-group">
-                    <div class="label-row">
-                        <label><i class="fa-solid fa-lock"></i> Password</label>
-                        <a href="#" class="forgot-link">Forgot Password?</a>
-                    </div>
-                    <input type="password" id="password" class="form-control" placeholder="********" required>
-                </div>
-
-                <div id="error-msg"></div>
-
-                <button type="submit" class="signin-btn">Sign In</button>
-            </form>
-
-            <div class="bottom-links-text">
-                Need help? <a href="support.html">Contact Support</a>
+            <div class="support-row">
+                <span id="t-need-help">Need Help?</span>
+                <a href="support.html" id="t-contact-support">Contact Support</a>
             </div>
-        </div>
 
-        <div class="terms-note">
-            By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            <div class="card-terms-note" id="t-card-terms">
+                By signing in, you agree to our
+                <a href="javascript:void(0)" onclick="return false;">Terms of Service</a>
+                and
+                <a href="javascript:void(0)" onclick="return false;">Privacy Policy</a>.
+            </div>
         </div>
 
         <!-- Footer Info -->
@@ -444,65 +440,80 @@
                 <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback').style.display='block';">
                 <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
             </div>
-            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2019.</p>
-            <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2019 - 2026 Game Vault Bangladesh, All trademarks belong to their respective owners.</p>
-            
-            <div class="made-by">
-                <a href="https://t.me/zunayed_islam00" target="_blank">Made by Game Vault 👾</a>
+
+            <p class="footer-desc" id="t-footer-desc">
+                Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory - trusted by gamers worldwide since 2025.
+            </p>
+
+            <div class="footer-policy-links">
+                <a href="javascript:void(0)" onclick="return false;" id="t-policy-terms">Terms of Service</a>
+                <a href="javascript:void(0)" onclick="return false;" id="t-policy-privacy">Privacy Policy</a>
+                <a href="javascript:void(0)" onclick="return false;" id="t-policy-refund">Refund Policy</a>
+            </div>
+
+            <p class="footer-disclaimer" id="t-footer-disclaimer">
+                By using our services, you agree to our
+                <a href="javascript:void(0)" onclick="return false;">Terms of Service</a>
+                and
+                <a href="javascript:void(0)" onclick="return false;">Privacy Policy</a>.
+                This website is an independent entity, not affiliated with, endorsed by, sponsored by, or approved by the companies whose products we sell. Those companies are not responsible for this website or its content.
+            </p>
+
+            <p class="footer-copyright" id="t-footer-copyright">
+                © 2025- 2026 Game Vault Bangladesh, All trademarks belong to their respective owners
+            </p>
+
+            <div class="made-by" id="t-made-by">
+                Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault</a>
             </div>
         </div>
-
     </div>
 
-    <!-- Bottom Navigation Bar (5 Items) -->
+    <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item">
             <i class="fa-solid fa-house" style="font-size: 18px;"></i>
-            <span>Home</span>
+            <span id="nav-home">Home</span>
         </a>
         <a href="orders.html" class="nav-item">
             <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
-            <span>Orders</span>
+            <span id="nav-orders">Orders</span>
         </a>
         <a href="add-money.html" class="nav-item" id="nav-add-money" style="display: none;">
             <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
-            <span>Add Money</span>
+            <span id="nav-add">Add Money</span>
         </a>
         <a href="support.html" class="nav-item">
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
-            <span>Support</span>
+            <span id="nav-support">Support</span>
         </a>
         <a href="profile.html" class="nav-item">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
-            <span>Profile</span>
+            <span id="nav-profile">Profile</span>
         </a>
     </nav>
 
-    <!-- Language & Modal -->
-    <div class="modal-overlay" id="langModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center;">
-        <div class="modal-box" style="background:var(--header-bg); width:100%; max-width:400px; border-radius:16px; padding:20px; border:1px solid var(--border-color);">
+    <!-- Language Modal -->
+    <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
-                <span>Language & Theme</span>
+                <span id="modal-heading">Language</span>
                 <button onclick="closeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div onclick="selectLang('en')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:8px; cursor:pointer; color:var(--text-color);">🇺🇸 English</div>
-            <div onclick="selectLang('bn')" style="padding:10px; border:1px solid var(--border-color); border-radius:8px; cursor:pointer; color:var(--text-color);">🇧🇩 বাংলা</div>
+            <div class="modal-option" onclick="selectLang('en')">
+                <span>🇺🇸 English</span>
+                <i class="fa-solid fa-check" id="check-en" style="color:#16a34a; display:none;"></i>
+            </div>
+            <div class="modal-option" onclick="selectLang('bn')">
+                <span>🇧🇩 বাংলা</span>
+                <i class="fa-solid fa-check" id="check-bn" style="color:#16a34a; display:none;"></i>
+            </div>
         </div>
     </div>
 
     <!-- Firebase Auth Integration Script -->
     <script type="module">
-        import { auth, googleProvider, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged, getUserProfileData } from "./firebase.js";
-
-        function openModal() { document.getElementById('langModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('langModal').style.display = 'none'; }
-        window.openModal = openModal;
-        window.closeModal = closeModal;
-
-        window.selectLang = function(lang) {
-            localStorage.setItem('language', lang);
-            location.reload();
-        }
+        import { auth, googleProvider, signInWithPopup, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
         function completeLoginRedirect() {
             const redirectUrl = localStorage.getItem('redirectUrl');
@@ -540,39 +551,149 @@
             }
         });
 
-        const loginForm = document.getElementById('login-form');
         const googleBtn = document.getElementById('google-login-btn');
         const errorMsg = document.getElementById('error-msg');
 
-        // Email & Password Login
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            errorMsg.innerText = "";
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                completeLoginRedirect();
-            } catch (error) {
-                errorMsg.innerText = "Invalid email or password. Please try again.";
-            }
-        });
-
-        // Google Sign-In
         googleBtn.addEventListener('click', async () => {
+            const lang = localStorage.getItem('language') || 'en';
             errorMsg.innerText = "";
             try {
                 await signInWithPopup(auth, googleProvider);
                 completeLoginRedirect();
             } catch (error) {
-                errorMsg.innerText = "Google Sign-In failed. Please try again.";
+                errorMsg.innerText = lang === 'bn'
+                    ? "গুগল সাইন-ইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"
+                    : "Google Sign-In failed. Please try again.";
             }
         });
+    </script>
 
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
+    <script>
+        const loginTranslations = {
+            en: {
+                flag: "🇺🇸",
+                langText: "EN",
+                title: "Game Vault - Sign In",
+                heading: "Welcome Back, Gamers !",
+                subtext: "Sign in to continue your epic journey",
+                googleBtn: "Sign With Google",
+                needHelp: "Need Help?",
+                contactSupport: "Contact Support",
+                cardTerms: `By signing in, you agree to our <a href="javascript:void(0)" onclick="return false;">Terms of Service</a> and <a href="javascript:void(0)" onclick="return false;">Privacy Policy</a>.`,
+                footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory - trusted by gamers worldwide since 2025.",
+                policyTerms: "Terms of Service",
+                policyPrivacy: "Privacy Policy",
+                policyRefund: "Refund Policy",
+                footerDisclaimer: `By using our services, you agree to our <a href="javascript:void(0)" onclick="return false;">Terms of Service</a> and <a href="javascript:void(0)" onclick="return false;">Privacy Policy</a>. This website is an independent entity, not affiliated with, endorsed by, sponsored by, or approved by the companies whose products we sell. Those companies are not responsible for this website or its content.`,
+                footerCopyright: "© 2025- 2026 Game Vault Bangladesh, All trademarks belong to their respective owners",
+                madeBy: `Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault</a>`,
+                navHome: "Home",
+                navOrders: "Orders",
+                navAdd: "Add Money",
+                navSupport: "Support",
+                navProfile: "Profile",
+                modalHeading: "Language"
+            },
+            bn: {
+                flag: "🇧🇩",
+                langText: "বাংলা",
+                title: "গেম ভল্ট - সাইন ইন",
+                heading: "স্বাগতম, গেমার্স !",
+                subtext: "আপনার যাত্রা চালিয়ে যেতে জিমেইল দিয়ে সাইন ইন করুন",
+                googleBtn: "Sign With Google",
+                needHelp: "সাহায্য প্রয়োজন?",
+                contactSupport: "Contact Support",
+                cardTerms: `সাইন ইন করার মাধ্যমে আপনি আমাদের <a href="javascript:void(0)" onclick="return false;">Terms of Service</a> এবং <a href="javascript:void(0)" onclick="return false;">Privacy Policy</a>-এর সাথে সম্মত হচ্ছেন।`,
+                footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory - trusted by gamers worldwide since 2025.",
+                policyTerms: "Terms of Service",
+                policyPrivacy: "Privacy Policy",
+                policyRefund: "Refund Policy",
+                footerDisclaimer: `By using our services, you agree to our <a href="javascript:void(0)" onclick="return false;">Terms of Service</a> and <a href="javascript:void(0)" onclick="return false;">Privacy Policy</a>. This website is an independent entity, not affiliated with, endorsed by, sponsored by, or approved by the companies whose products we sell. Those companies are not responsible for this website or its content.`,
+                footerCopyright: "© 2025- 2026 Game Vault Bangladesh, All trademarks belong to their respective owners",
+                madeBy: `Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault</a>`,
+                navHome: "হোম",
+                navOrders: "অর্ডার",
+                navAdd: "অ্যাড মানি",
+                navSupport: "সাপোর্ট",
+                navProfile: "প্রোফাইল",
+                modalHeading: "ভাষা"
+            }
+        };
+
+        function applyTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            const icon = document.getElementById('theme-icon');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (icon) {
+                    icon.className = 'fa-solid fa-sun';
+                    icon.style.color = '#eab308';
+                }
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                if (icon) {
+                    icon.className = 'fa-solid fa-moon';
+                    icon.style.color = '';
+                }
+            }
         }
+
+        function toggleTheme() {
+            const current = localStorage.getItem('theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', next);
+            applyTheme();
+        }
+
+        function applyLanguage() {
+            const lang = localStorage.getItem('language') || 'en';
+            const t = loginTranslations[lang] || loginTranslations.en;
+
+            document.documentElement.lang = lang;
+            document.getElementById('page-title').innerText = t.title;
+            document.getElementById('current-lang-flag').innerText = t.flag;
+            document.getElementById('current-lang-text').innerText = t.langText;
+            document.getElementById('t-heading').innerText = t.heading;
+            document.getElementById('t-subtext').innerText = t.subtext;
+            document.getElementById('t-google-btn').innerText = t.googleBtn;
+            document.getElementById('t-need-help').innerText = t.needHelp;
+            document.getElementById('t-contact-support').innerText = t.contactSupport;
+            document.getElementById('t-card-terms').innerHTML = t.cardTerms;
+            document.getElementById('t-footer-desc').innerText = t.footerDesc;
+            document.getElementById('t-policy-terms').innerText = t.policyTerms;
+            document.getElementById('t-policy-privacy').innerText = t.policyPrivacy;
+            document.getElementById('t-policy-refund').innerText = t.policyRefund;
+            document.getElementById('t-footer-disclaimer').innerHTML = t.footerDisclaimer;
+            document.getElementById('t-footer-copyright').innerText = t.footerCopyright;
+            document.getElementById('t-made-by').innerHTML = t.madeBy;
+            document.getElementById('nav-home').innerText = t.navHome;
+            document.getElementById('nav-orders').innerText = t.navOrders;
+            document.getElementById('nav-add').innerText = t.navAdd;
+            document.getElementById('nav-support').innerText = t.navSupport;
+            document.getElementById('nav-profile').innerText = t.navProfile;
+            document.getElementById('modal-heading').innerText = t.modalHeading;
+
+            const checkEn = document.getElementById('check-en');
+            const checkBn = document.getElementById('check-bn');
+            if (checkEn) checkEn.style.display = lang === 'en' ? 'inline-block' : 'none';
+            if (checkBn) checkBn.style.display = lang === 'bn' ? 'inline-block' : 'none';
+        }
+
+        function openModal() {
+            applyLanguage();
+            document.getElementById('langModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('langModal').style.display = 'none';
+        }
+        function selectLang(lang) {
+            localStorage.setItem('language', lang);
+            applyLanguage();
+            closeModal();
+        }
+
+        applyTheme();
+        applyLanguage();
     </script>
 </body>
 </html>
