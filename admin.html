@@ -49,17 +49,34 @@
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
         }
 
-        .login-badge {
-            display: inline-flex;
+        .login-brand-center {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
-            background: rgba(234, 179, 8, 0.14);
-            color: var(--accent-color);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .login-logo-box {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .login-logo-box img {
+            max-height: 42px;
+            max-width: 180px;
+            object-fit: contain;
+        }
+
+        .login-restricted-text {
+            font-size: 13px;
             font-weight: 700;
-            margin-bottom: 12px;
+            color: var(--accent-color);
+            letter-spacing: 0.3px;
         }
 
         .login-card h1 {
@@ -98,6 +115,31 @@
 
         .form-control:focus {
             border-color: var(--accent-color);
+        }
+
+        .password-field-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-field-wrap .form-control {
+            padding-right: 42px;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--muted-color);
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px;
+        }
+
+        .toggle-password-btn:hover {
+            color: var(--text-color);
         }
 
         .btn-primary {
@@ -315,26 +357,39 @@
     <!-- Step 1: Strict Email & Password Login Gate -->
     <div class="login-wrapper" id="loginGate">
         <div class="login-card">
-            <div class="login-badge">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>RESTRICTED ACCESS</span>
+            <div class="login-brand-center">
+                <div class="login-logo-box">
+                    <img
+                        src="logo.jpg"
+                        alt="Game Vault BD"
+                        onerror="if(!this.dataset.triedPng){this.dataset.triedPng='1'; this.src='logo.png';}else{this.style.display='none'; document.getElementById('loginLogoFallback').style.display='block';}"
+                    >
+                    <span id="loginLogoFallback" style="display:none; font-size:20px; font-weight:900; color:var(--accent-color); letter-spacing:0.6px;">GAME VAULT</span>
+                </div>
+                <div class="login-restricted-text">Restricted Access</div>
             </div>
+
             <h1>Admin Login</h1>
             <p>শুধুমাত্র অনুমোদিত অ্যাডমিন জিমেইল এবং পাসওয়ার্ড দিয়ে প্রবেশ করা যাবে।</p>
 
             <form id="adminLoginForm">
                 <div class="form-group">
                     <label for="adminEmail">Admin Gmail</label>
-                    <input type="email" id="adminEmail" class="form-control" placeholder="theummah234@gmail.com" required>
+                    <input type="email" id="adminEmail" class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" class="form-control" placeholder="••••••••" required>
+                    <div class="password-field-wrap">
+                        <input type="password" id="adminPassword" class="form-control" required>
+                        <button type="button" class="toggle-password-btn" id="togglePasswordBtn" aria-label="Toggle Password">
+                            <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-primary" id="loginSubmitBtn">
-                    <i class="fa-solid fa-right-to-bracket"></i> Login to Admin
+                    <i class="fa-solid fa-right-to-bracket"></i> Log in to Admin Panel
                 </button>
             </form>
 
@@ -512,6 +567,15 @@
         const loginSubmitBtn = document.getElementById("loginSubmitBtn");
         const loggedAdminEmail = document.getElementById("loggedAdminEmail");
         const logoutBtn = document.getElementById("logoutBtn");
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+        const togglePasswordIcon = document.getElementById("togglePasswordIcon");
+        const adminPasswordInput = document.getElementById("adminPassword");
+
+        togglePasswordBtn.addEventListener("click", () => {
+            const isHidden = adminPasswordInput.type === "password";
+            adminPasswordInput.type = isHidden ? "text" : "password";
+            togglePasswordIcon.className = isHidden ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+        });
 
         function showError(message) {
             loginAlert.textContent = message;
@@ -552,7 +616,7 @@
             hideError();
 
             const email = document.getElementById("adminEmail").value.trim().toLowerCase();
-            const password = document.getElementById("adminPassword").value;
+            const password = adminPasswordInput.value;
 
             if (!ADMIN_EMAILS.includes(email)) {
                 showError("ভুল জিমেইল অথবা এই জিমেইলে অ্যাডমিন অ্যাক্সেস নেই।");
@@ -572,7 +636,7 @@
                 showError("জিমেইল বা পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করো।");
             } finally {
                 loginSubmitBtn.disabled = false;
-                loginSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin';
+                loginSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Log in to Admin Panel';
             }
         });
 
