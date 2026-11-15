@@ -1125,7 +1125,7 @@
             <i class="fa-solid fa-headset"></i>
             <span id="nav-support">Support</span>
         </a>
-        <a href="login.html" data-nav-target="profile.html" onclick="handleProfileNav(event)" class="nav-item active" id="nav-profile-link">
+        <a href="login.html" data-nav-target="login.html" onclick="handleProfileNav(event)" class="nav-item active" id="nav-profile-link">
             <i class="fa-solid fa-user"></i>
             <span id="nav-profile">Profile</span>
         </a>
@@ -1154,7 +1154,6 @@
         import { auth, googleProvider, signInWithPopup, onAuthStateChanged, getUserProfileData } from "./firebase.js";
 
         let currentUser = null;
-        let lastSignedInState = null;
 
         function completeLoginRedirect() {
             const redirectUrl = localStorage.getItem('redirectUrl');
@@ -1182,7 +1181,10 @@
                 if (headerBalancePill) headerBalancePill.style.display = "flex";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
                 if (nav) nav.classList.remove("hide-add-money");
-                if (navProfileLink) navProfileLink.setAttribute("href", "profile.html");
+                if (navProfileLink) {
+                    navProfileLink.setAttribute("href", "profile.html");
+                    navProfileLink.setAttribute("data-nav-target", "profile.html");
+                }
                 if (headerBalance && data && data.balance !== undefined) {
                     headerBalance.textContent = Number(data.balance).toFixed(1);
                 }
@@ -1194,13 +1196,9 @@
                 if (headerBalancePill) headerBalancePill.style.display = "none";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
                 if (nav) nav.classList.add("hide-add-money");
-                if (navProfileLink) navProfileLink.setAttribute("href", "login.html");
-            }
-
-            if (lastSignedInState !== isSignedIn) {
-                lastSignedInState = isSignedIn;
-                if (window.updateNavIndicator) {
-                    requestAnimationFrame(() => window.updateNavIndicator(true));
+                if (navProfileLink) {
+                    navProfileLink.setAttribute("href", "login.html");
+                    navProfileLink.setAttribute("data-nav-target", "login.html");
                 }
             }
         });
@@ -1537,11 +1535,14 @@
                     indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
                     indicator.getBoundingClientRect();
                     indicator.style.transition = '';
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => updateNavIndicator(false));
+                    });
+                    return;
                 }
-                requestAnimationFrame(() => updateNavIndicator(false));
-            } else {
-                updateNavIndicator(true);
             }
+
+            updateNavIndicator(true);
         }
 
         applyTheme();
