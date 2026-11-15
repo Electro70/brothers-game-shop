@@ -416,7 +416,6 @@
             contain: layout style;
         }
 
-        /* display: none দিয়ে জায়গা ছেড়ে দেবে, ফলে Home-এর মতো ৪টা পিল দেখাবে */
         .bottom-nav.hide-add-money #nav-add-money {
             display: none;
         }
@@ -656,8 +655,7 @@
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
             <span data-i18n="nav_support">Support</span>
         </a>
-        <!-- লগ আউট অবস্থায় Profile ক্লিক করলে সরাসরি login.html এ যাবে -->
-        <a href="login.html" data-nav-target="profile.html" onclick="navigateWithoutBarRefresh(event, 'profile.html', false)" class="nav-item" id="nav-profile-link">
+        <a href="login.html" data-nav-target="profile.html" onclick="handleSupportProfileNav(event)" class="nav-item" id="nav-profile-link">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
             <span data-i18n="nav_profile">Profile</span>
         </a>
@@ -701,10 +699,7 @@
                 if (headerBalancePill) headerBalancePill.style.display = "flex";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
                 if (nav) nav.classList.remove("hide-add-money");
-                if (navProfileLink) {
-                    navProfileLink.setAttribute("href", "profile.html");
-                    navProfileLink.setAttribute("onclick", "navigateWithoutBarRefresh(event, 'profile.html', true)");
-                }
+                if (navProfileLink) navProfileLink.setAttribute("href", "profile.html");
                 if (headerBalance && data.balance !== undefined) {
                     headerBalance.textContent = Number(data.balance).toFixed(1);
                 }
@@ -717,10 +712,7 @@
                 if (headerBalancePill) headerBalancePill.style.display = "none";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
                 if (nav) nav.classList.add("hide-add-money");
-                if (navProfileLink) {
-                    navProfileLink.setAttribute("href", "login.html");
-                    navProfileLink.setAttribute("onclick", "navigateWithoutBarRefresh(event, 'profile.html', false)");
-                }
+                if (navProfileLink) navProfileLink.setAttribute("href", "login.html");
             }
 
             if (window.updateNavIndicator) {
@@ -734,7 +726,7 @@
                 return true;
             } else {
                 localStorage.setItem("redirectUrl", targetUrl);
-                window.location.href = "login.html";
+                window.location.replace("login.html");
                 return false;
             }
         };
@@ -832,10 +824,24 @@
         }
         window.updateNavIndicator = updateNavIndicator;
 
+        function handleSupportProfileNav(event) {
+            if (event) event.preventDefault();
+            const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
+            const isSignedIn = Boolean(user && user.email);
+
+            localStorage.removeItem("redirectUrl");
+            setActiveNavItem('profile.html');
+            sessionStorage.setItem('prevNavTarget', 'support.html');
+
+            window.location.href = isSignedIn ? "profile.html" : "login.html";
+        }
+        window.handleSupportProfileNav = handleSupportProfileNav;
+
         async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
-            const currentFile = window.location.pathname.split('/').pop() || 'support.html';
+            const rawPath = window.location.pathname.split('/').pop() || 'support.html';
+            const currentFile = rawPath.endsWith('.html') ? rawPath : `${rawPath}.html`;
             if (currentFile === targetUrl) {
                 setActiveNavItem(targetUrl);
                 return;
@@ -844,32 +850,17 @@
             const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
             const isSignedIn = Boolean(user && user.email);
 
-            // Profile ট্যাপ করলে লগ আউট অবস্থায় সরাসরি login.html এ যাবে
-            if (targetUrl === 'profile.html' && !isSignedIn) {
-                localStorage.removeItem("redirectUrl");
-                setActiveNavItem('profile.html');
-                sessionStorage.setItem('prevNavTarget', currentFile);
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 420);
-                return;
-            }
-
             if (requiresAuth && !isSignedIn) {
                 localStorage.setItem("redirectUrl", targetUrl);
                 setActiveNavItem('profile.html');
                 sessionStorage.setItem('prevNavTarget', currentFile);
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 420);
+                window.location.href = "login.html";
                 return;
             }
 
             setActiveNavItem(targetUrl);
             sessionStorage.setItem('prevNavTarget', currentFile);
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 420);
+            window.location.href = targetUrl;
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
