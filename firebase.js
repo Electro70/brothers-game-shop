@@ -14,7 +14,8 @@ import {
   doc,
   getDoc,
   setDoc,
-  updateDoc
+  updateDoc,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
@@ -42,29 +43,66 @@ export {
   onAuthStateChanged
 };
 
+const LAST_BALANCE_KEY = "gv_last_wallet_balance";
+let activeBalanceUnsubscribe = null;
+
 function getLocalUserKey(user) {
   return `gv_user_${user.uid}`;
 }
 
 function syncLegacyBalanceKeys(user, balance) {
-  const numBal = Number(balance) || 0;
+  const numBal = Math.max(0, Number(balance) || 0);
   if (user?.email) {
-    localStorage.setItem(`gv_wallet_balance_${user.email}`, String(numBal));
+    localStorage.setItem(`gv_wallet_balance_${user.email.toLowerCase()}`, String(numBal));
   }
   localStorage.setItem("gv_wallet_balance_guest", String(numBal));
+  localStorage.setItem(LAST_BALANCE_KEY, String(numBal));
+}
+
+export function getLastKnownBalance(user = null) {
+  if (user) {
+    const localUser = localStorage.getItem(getLocalUserKey(user));
+    if (localUser) {
+      try {
+        const parsed = JSON.parse(localUser);
+        if (parsed && parsed.balance !== undefined) {
+          return Math.max(0, Number(parsed.balance) || 0);
+        }
+      } catch {}
+    }
+    if (user.email) {
+      const byEmail = localStorage.getItem(`gv_wallet_balance_${user.email.toLowerCase()}`);
+      if (byEmail !== null) return Math.max(0, Number(byEmail) || 0);
+    }
+  }
+  const savedLast = localStorage.getItem(LAST_BALANCE_KEY);
+  return savedLast !== null ? Math.max(0, Number(savedLast) || 0) : 0;
 }
 
 // User Profile & Balance Data Helper
 export function getUserProfileData(user) {
-  if (!user) return null;
+  if (!user) {
+    return {
+      uid: "",
+      name: "User",
+      email: "",
+      photoURL: "",
+      balance: getLastKnownBalance(null),
+      coins: 0,
+      memberSince: ""
+    };
+  }
+
   const key = getLocalUserKey(user);
   const saved = localStorage.getItem(key);
 
   if (saved) {
-    const parsed = JSON.parse(saved);
-    const bal = Number(parsed.balance ?? 0);
-    syncLegacyBalanceKeys(user, bal);
-    return { ...parsed, balance: bal };
+    try {
+      const parsed = JSON.parse(saved);
+      const bal = Math.max(0, Number(parsed.balance ?? getLastKnownBalance(user)) || 0);
+      syncLegacyBalanceKeys(user, bal);
+      return { ...parsed, balance: bal };
+    } catch {}
   }
 
   const today = new Date().toLocaleDateString("en-US", {
@@ -73,37 +111,89 @@ export function getUserProfileData(user) {
     year: "numeric"
   });
 
+  const fallbackBal = getLastKnownBalance(user);
   const initialData = {
     uid: user.uid,
     name: user.displayName || (user.email ? user.email.split("@")[0] : "User"),
-    email: user.email || "",
+    email: (user.email || "").toLowerCase(),
     photoURL: user.photoURL || "",
-    balance: 0.0,
+    balance: fallbackBal,
     coins: 0,
     memberSince: today
   };
 
   localStorage.setItem(key, JSON.stringify(initialData));
-  syncLegacyBalanceKeys(user, 0.0);
+  syncLegacyBalanceKeys(user, fallbackBal);
   return initialData;
 }
 
 export function updateUserProfileData(user, partialData) {
   if (!user) return null;
   const current = getUserProfileData(user);
+  const nextBal =
+    partialData && partialData.balance !== undefined
+      ? Math.max(0, Number(partialData.balance) || 0)
+      : current.balance;
+
   const updated = {
     ...current,
     ...partialData,
-    balance: Number((partialData && partialData.balance !== undefined) ? partialData.balance : current.balance) || 0
+    balance: nextBal
   };
   localStorage.setItem(getLocalUserKey(user), JSON.stringify(updated));
-  syncLegacyBalanceKeys(user, updated.balance);
+  syncLegacyBalanceKeys(user, nextBal);
   return updated;
+}
+
+// Live Firestore balance listener (Cash-In / Purchase সাথে সাথে আপডেট হবে)
+export function subscribeUserBalance(user, callback) {
+  if (typeof activeBalanceUnsubscribe === "function") {
+    activeBalanceUnsubscribe();
+    activeBalanceUnsubscribe = null;
+  }
+
+  if (!user || !user.uid) {
+    if (typeof callback === "function") {
+      callback(getLastKnownBalance(null), null);
+    }
+    return () => {};
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  activeBalanceUnsubscribe = onSnapshot(
+    userRef,
+    (snap) => {
+      if (snap.exists()) {
+        const remote = snap.data();
+        const remoteBal = Math.max(0, Number(remote.balance ?? 0) || 0);
+        const updated = updateUserProfileData(user, {
+          name: remote.name,
+          email: (user.email || remote.email || "").toLowerCase(),
+          photoURL: remote.photoURL,
+          balance: remoteBal,
+          coins: Number(remote.coins ?? 0)
+        });
+        if (typeof callback === "function") {
+          callback(remoteBal, updated);
+        }
+      }
+    },
+    (err) => {
+      console.warn("Live balance snapshot fallback:", err);
+      if (typeof callback === "function") {
+        callback(getLastKnownBalance(user), getUserProfileData(user));
+      }
+    }
+  );
+
+  return activeBalanceUnsubscribe;
 }
 
 // Sync user profile & wallet balance with Firestore
 export async function syncUserWithFirestore(user) {
-  if (!user || !user.uid) return null;
+  if (!user || !user.uid) {
+    return getUserProfileData(null);
+  }
 
   const localData = getUserProfileData(user);
   const userRef = doc(db, "users", user.uid);
@@ -158,6 +248,7 @@ export async function syncUserWithFirestore(user) {
           { merge: true }
         );
       }
+      syncLegacyBalanceKeys(user, payload.balance);
       return payload;
     }
   } catch (err) {
@@ -167,8 +258,12 @@ export async function syncUserWithFirestore(user) {
 }
 
 export async function setRemoteUserBalance(user, newBalance) {
-  if (!user || !user.uid) return null;
   const cleanBal = Math.max(0, Number(newBalance) || 0);
+  if (!user || !user.uid) {
+    localStorage.setItem(LAST_BALANCE_KEY, String(cleanBal));
+    return { balance: cleanBal };
+  }
+
   const updated = updateUserProfileData(user, { balance: cleanBal });
 
   try {
