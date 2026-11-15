@@ -72,7 +72,6 @@
             display: block;
         }
 
-        /* পয়েন্ট ০২: টপ-বারের ৩টি অপশনের সাইজ (উচ্চতা) এক সমান রাখা */
         .header-right {
             display: flex;
             align-items: center;
@@ -626,93 +625,6 @@
             cursor: pointer;
         }
 
-        /* Transaction History Modal */
-        .history-modal-card {
-            background: var(--header-bg);
-            color: var(--text-color);
-            width: 100%;
-            max-width: 440px;
-            max-height: 82vh;
-            border-radius: 18px;
-            padding: 18px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
-        }
-
-        .history-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .history-list {
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-right: 2px;
-        }
-
-        .history-item {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 12.5px;
-        }
-
-        .history-item-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-
-        .history-time {
-            font-size: 11.5px;
-            color: var(--muted-text);
-            margin-top: 4px;
-            line-height: 1.4;
-        }
-
-        .status-tag {
-            padding: 3px 9px;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .status-pending {
-            background: rgba(234, 179, 8, 0.16);
-            color: #ca8a04;
-        }
-
-        .status-confirmed {
-            background: rgba(5, 168, 107, 0.16);
-            color: #05a86b;
-        }
-
-        .status-cancelled {
-            background: rgba(239, 68, 68, 0.16);
-            color: #ef4444;
-        }
-
-        .history-bot-msg {
-            margin-top: 8px;
-            padding: 8px 10px;
-            border-radius: 9px;
-            background: var(--card-bg);
-            border: 1px dashed var(--border-color);
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
         .site-footer {
             text-align: center;
             padding: 20px 15px;
@@ -862,14 +774,12 @@
 <body>
 
     <header>
-        <!-- পয়েন্ট ০১: দ্বিতীয় ছবির লোগো -->
         <div class="logo-container">
             <a href="index.html">
                 <img id="header-site-logo" src="1000115723.png" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fallback-logo').style.display='block';};">
                 <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:#16a34a;">GAME VAULT</span>
             </a>
         </div>
-        <!-- পয়েন্ট ০২: ডার্ক/ব্রাইট, ভাষা, প্রফাইল ৩টার সাইজ সমান -->
         <div class="header-right">
             <button type="button" class="theme-icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Theme">
                 <i class="fa-solid fa-moon" id="theme-icon"></i>
@@ -969,16 +879,19 @@
                 <div id="amount-error" class="error-text">Min 20৳ -Max 10000৳</div>
             </div>
 
+            <!-- পয়েন্ট ০১: Sender Phone নাম্বারে ঠিক ১১ ডিজিট -->
             <div class="form-group">
                 <label for="sender-number" id="t-sender-label">যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার</label>
                 <input
                     type="text"
                     inputmode="numeric"
+                    maxlength="11"
                     id="sender-number"
                     class="form-control"
                     placeholder="01#########"
-                    oninput="handleNumericInput(this, false)"
+                    oninput="handleSenderPhoneInput(this)"
                 >
+                <div id="sender-error" class="error-text">১১ ডিজিটের সঠিক মোবাইল নাম্বার দিন (যেমন: 01XXXXXXXXX)</div>
             </div>
 
             <div class="form-group">
@@ -1010,7 +923,8 @@
                 <span id="t-confirm-btn">Confirm</span>
             </button>
 
-            <button type="button" class="history-open-btn" onclick="openHistoryModal()">
+            <!-- পয়েন্ট ০৩: Transaction History ক্লিক করলে orders.html পেজে যাবে -->
+            <button type="button" class="history-open-btn" onclick="goToOrdersHistory()">
                 <i class="fa-solid fa-clock-rotate-left"></i>
                 <span id="t-history-btn">Transaction History</span>
             </button>
@@ -1030,7 +944,7 @@
         </div>
     </div>
 
-    <!-- Pending Summary Popup (পয়েন্ট ০৬ ও ০৮) -->
+    <!-- Pending Summary Popup -->
     <div class="popup-overlay" id="pendingPopupOverlay" onclick="if(event.target===this) closePendingPopup()">
         <div class="pending-popup-card">
             <div class="popup-top-row">
@@ -1041,7 +955,7 @@
                 <div class="popup-countdown-badge" id="popupCountdownBadge">10s</div>
             </div>
             <h3 class="popup-title" id="popupTitleText">Add Money Request Submitted</h3>
-            <p class="popup-sub" id="popupSubText">আপনার আ্যড মানি রিকোয়েস্ট আ্যডমিনের কাছে পাঠানো হয়েছে । ট্রানজেকশন আইডি যাচাই শেষে ওয়ালেটে অটোমেটিক টাকা যোগ হবে। অনুগ্রহ করে ৫-১০ মিনিট অপেক্ষা করুন।</p>
+            <p class="popup-sub" id="popupSubText">আপনার  আ্যড মানি রিকোয়েস্ট আ্যডমিনের কাছে পাঠানো হয়েছে । ট্রানজেকশন আইডি  যাচাই শেষে ওয়ালেটে অটোমেটিক  টাকা যোগ হবে। অনুগ্রহ করে ৫-১০ মিনিট অপেক্ষা করুন।</p>
 
             <div class="popup-summary-box" id="popupSummaryBox"></div>
 
@@ -1054,19 +968,6 @@
                     Close
                 </button>
             </div>
-        </div>
-    </div>
-
-    <!-- Transaction History Modal -->
-    <div class="popup-overlay" id="historyModalOverlay" onclick="if(event.target===this) closeHistoryModal()">
-        <div class="history-modal-card">
-            <div class="history-head">
-                <h3 style="font-size:16px; font-weight:800;" id="historyModalTitle">Transaction History</h3>
-                <button type="button" onclick="closeHistoryModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="history-list" id="historyListBox"></div>
         </div>
     </div>
 
@@ -1137,7 +1038,6 @@
             const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
             const nav = document.getElementById("persistent-bottom-nav");
 
-            // সাইন আউট বা রিফ্রেশ যাই হোক, সর্বশেষ ব্যালেন্স অপরিবর্তিত রাখবে
             renderBalanceValue(getLastKnownBalance(user));
 
             if (user && user.email) {
@@ -1153,7 +1053,6 @@
                     balanceAvatar.innerHTML = `<img src="${localData.photoURL}" alt="Profile">`;
                 }
 
-                // Firestore থেকে সিঙ্ক ও লাইভ ব্যালেন্স আপডেট
                 const synced = await syncUserWithFirestore(user);
                 if (synced && synced.balance !== undefined) {
                     renderBalanceValue(synced.balance);
@@ -1195,7 +1094,6 @@
     <script>
         const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
         const DEPOSIT_ENDPOINT = `${WORKER_URL}/add-money`;
-        const DEPOSIT_STATUS_ENDPOINT = `${WORKER_URL}/add-money-status`;
         const DEPOSIT_HISTORY_KEY = "gv_add_money_history";
 
         let MIN_AMOUNT = 20;
@@ -1204,7 +1102,6 @@
         let selectedReceiverNumber = "01857659802";
         let popupCountdownTimer = null;
 
-        // পয়েন্ট ১০: নির্ধারিত Bot মেসেজসমূহ
         const BOT_MESSAGES = {
             pending: "আপনার রিকোয়েস্টটি পেন্ডিং রয়েছে, আ্যডমিন চেক করে কনফার্ম করার পর অটোমেটিক টাকা ওয়ালেটে যুক্ত হবে ৷ অনুগ্রহ করে অপেক্ষা করুন",
             confirmed: (amount) => `আপনার ${amount} ৳ ওয়ালেটে সফলভাবে যুক্ত হয়েছে, অপেক্ষা করার জন্য ধন্যবাদ`,
@@ -1221,6 +1118,7 @@
                 chooseAmount: "পরিমাণ নির্বাচন করুন",
                 amountLabel: "টাকার পরিমাণ",
                 senderLabel: "যে নাম্বার থেকে টাকা পাঠিয়েছেন তার নাম্বার",
+                senderError: "১১ ডিজিটের সঠিক মোবাইল নাম্বার দিন (যেমন: 01XXXXXXXXX)",
                 methodLabel: "পেমেন্ট মেথড",
                 bkashName: "বিকাশ",
                 nagadName: "নগদ",
@@ -1235,14 +1133,6 @@
                 popupSub: "আপনার  আ্যড মানি রিকোয়েস্ট আ্যডমিনের কাছে পাঠানো হয়েছে । ট্রানজেকশন আইডি  যাচাই শেষে ওয়ালেটে অটোমেটিক  টাকা যোগ হবে। অনুগ্রহ করে ৫-১০ মিনিট অপেক্ষা করুন।",
                 popupHistoryBtn: "Transaction History",
                 popupCloseBtn: "Close",
-                historyModalTitle: "Transaction History",
-                loadingHistory: "হিস্ট্রি লোড হচ্ছে...",
-                noHistory: "এখনো কোনো ট্রানজেকশন নেই।",
-                requestedText: "রিকোয়েস্টকৃত",
-                creditedText: "যুক্ত হয়েছে",
-                cancelledText: "বাতিল হয়েছে",
-                createdTimeLabel: "রিকোয়েস্টের সময়",
-                resolvedTimeLabel: "আপডেটের সময়",
                 fillAllError: "সবগুলো তথ্য সঠিকভাবে পূরণ করুন।",
                 signInFirstError: "আগে আপনার অ্যাকাউন্টে সাইন ইন করুন।",
                 requestFailedError: "রিকোয়েস্ট পাঠানো যায়নি। আবার চেষ্টা করো।",
@@ -1263,6 +1153,7 @@
                 chooseAmount: "Choose Amount",
                 amountLabel: "Amount (BDT)",
                 senderLabel: "Sender Phone Number",
+                senderError: "Enter a valid 11-digit mobile number (e.g., 01XXXXXXXXX)",
                 methodLabel: "Payment Method",
                 bkashName: "BKash",
                 nagadName: "Nagad",
@@ -1277,14 +1168,6 @@
                 popupSub: "আপনার  আ্যড মানি রিকোয়েস্ট আ্যডমিনের কাছে পাঠানো হয়েছে । ট্রানজেকশন আইডি  যাচাই শেষে ওয়ালেটে অটোমেটিক  টাকা যোগ হবে। অনুগ্রহ করে ৫-১০ মিনিট অপেক্ষা করুন।",
                 popupHistoryBtn: "Transaction History",
                 popupCloseBtn: "Close",
-                historyModalTitle: "Transaction History",
-                loadingHistory: "Loading history...",
-                noHistory: "No transactions yet.",
-                requestedText: "Requested",
-                creditedText: "Credited",
-                cancelledText: "Cancelled",
-                createdTimeLabel: "Requested Time",
-                resolvedTimeLabel: "Updated Time",
                 fillAllError: "Please fill in all required fields.",
                 signInFirstError: "Please sign in to your account first.",
                 requestFailedError: "Could not send request. Please try again.",
@@ -1303,23 +1186,6 @@
             return translations[savedLang] || translations.bn;
         }
 
-        // পয়েন্ট ১০: সময়, তারিখ, মাস, বছর ফরম্যাট
-        function formatFullDateTime(dateInput = new Date()) {
-            const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
-            if (Number.isNaN(d.getTime())) return String(dateInput || "");
-            const lang = localStorage.getItem("language") || "bn";
-            const locale = lang === "en" ? "en-GB" : "bn-BD";
-            return d.toLocaleString(locale, {
-                timeZone: "Asia/Dhaka",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            });
-        }
-
         function getDepositHistory() {
             try {
                 const list = JSON.parse(localStorage.getItem(DEPOSIT_HISTORY_KEY) || "[]");
@@ -1332,6 +1198,13 @@
         function saveDepositHistory(list) {
             localStorage.setItem(DEPOSIT_HISTORY_KEY, JSON.stringify(list));
         }
+
+        // পয়েন্ট ০৩: Transaction History ক্লিক করলে orders.html পেজে যাবে
+        function goToOrdersHistory() {
+            sessionStorage.setItem("openOrdersHistoryTab", "deposits");
+            window.location.href = "orders.html";
+        }
+        window.goToOrdersHistory = goToOrdersHistory;
 
         function setActiveNavItem(targetUrl) {
             const nav = document.getElementById('persistent-bottom-nav');
@@ -1416,7 +1289,6 @@
                     nagadImg.src = savedImages.nagadLogo;
                 }
             }
-            // পয়েন্ট ০১: দ্বিতীয় ছবির লোগো (1000115723.png)
             const siteLogoSrc = savedImages.siteLogo || "1000115723.png";
             const headerLogo = document.getElementById("header-site-logo");
             const footerLogo = document.getElementById("footer-site-logo");
@@ -1469,7 +1341,6 @@
         }
         window.applyAdminConfigs = applyAdminConfigs;
 
-        // পয়েন্ট ০৩: ভাষা পরিবর্তন যেনো ঠিকভাবে কাজ করে
         function applyLanguage() {
             const savedLang = localStorage.getItem("language") || "bn";
             localStorage.setItem("language", savedLang);
@@ -1484,6 +1355,8 @@
             document.getElementById("t-choose-amount").textContent = t.chooseAmount;
             document.getElementById("t-amount-label").textContent = t.amountLabel;
             document.getElementById("t-sender-label").textContent = t.senderLabel;
+            const senderErr = document.getElementById("sender-error");
+            if (senderErr) senderErr.textContent = t.senderError;
             document.getElementById("t-method-label").textContent = t.methodLabel;
             document.getElementById("method-bkash-name").textContent = t.bkashName;
             document.getElementById("method-nagad-name").textContent = t.nagadName;
@@ -1505,13 +1378,11 @@
             const popupSub = document.getElementById("popupSubText");
             const popupHistBtn = document.getElementById("popupHistoryBtnText");
             const popupCloseBtn = document.getElementById("popupCloseBtnText");
-            const historyModalTitle = document.getElementById("historyModalTitle");
 
             if (popupTitle) popupTitle.textContent = t.popupTitle;
             if (popupSub) popupSub.textContent = t.popupSub;
             if (popupHistBtn) popupHistBtn.textContent = t.popupHistoryBtn;
             if (popupCloseBtn) popupCloseBtn.textContent = t.popupCloseBtn;
-            if (historyModalTitle) historyModalTitle.textContent = t.historyModalTitle;
 
             const bnOpt = document.getElementById("opt-lang-bn");
             const enOpt = document.getElementById("opt-lang-en");
@@ -1527,7 +1398,6 @@
         }
         window.applyLanguage = applyLanguage;
 
-        // পয়েন্ট ০৪: ডার্ক ও ব্রাইট মোড ঠিকভাবে কাজ করা
         function applyTheme() {
             const theme = localStorage.getItem("theme") || "light";
             const icon = document.getElementById("theme-icon");
@@ -1554,6 +1424,22 @@
             if (checkRange) {
                 validateAmount();
             }
+        }
+
+        // পয়েন্ট ০১: Sender Phone নাম্বারে ঠিক ১১ ডিজিট সীমাবদ্ধ করা
+        function handleSenderPhoneInput(input) {
+            input.value = input.value.replace(/[^0-9]/g, "").slice(0, 11);
+            validateSenderPhone();
+        }
+
+        function validateSenderPhone() {
+            const val = document.getElementById("sender-number").value.trim();
+            const errEl = document.getElementById("sender-error");
+            const isValid = /^[0-9]{11}$/.test(val);
+            if (errEl) {
+                errEl.style.display = (val.length > 0 && !isValid) ? "block" : "none";
+            }
+            return isValid;
         }
 
         function handleTrxInput(input) {
@@ -1600,16 +1486,17 @@
             return true;
         }
 
-        // পয়েন্ট ০৯: পপআপ ক্লোজ করার সাথে সাথে ফর্ম রিফ্রেশ/রিসেট
         function resetAddMoneyForm() {
             const amountInput = document.getElementById("amount-input");
             const senderInput = document.getElementById("sender-number");
             const trxInput = document.getElementById("trx-id");
             const errEl = document.getElementById("amount-error");
+            const senderErr = document.getElementById("sender-error");
 
             if (senderInput) senderInput.value = "";
             if (trxInput) trxInput.value = "";
             if (errEl) errEl.style.display = "none";
+            if (senderErr) senderErr.style.display = "none";
 
             const firstPreset = document.querySelector(".preset-btn");
             if (firstPreset) {
@@ -1626,7 +1513,6 @@
             }
         }
 
-        // পয়েন্ট ০৬ ও ০৮: পপআপ সাবটেক্সট + ১০ সেকেন্ড কাউনডাউন
         function openPendingPopup(record) {
             const t = getCurrentLangPack();
             document.getElementById("popupTitleText").textContent = t.popupTitle;
@@ -1676,155 +1562,13 @@
 
         function openHistoryFromPopup() {
             closePendingPopup();
-            openHistoryModal();
-        }
-
-        async function refreshDepositStatuses() {
-            const list = getDepositHistory();
-            if (!list.length) return list;
-
-            try {
-                const res = await fetch(DEPOSIT_STATUS_ENDPOINT, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        requestIds: list.map(item => item.requestId),
-                        customerEmail: document.getElementById("account-no").value.trim()
-                    })
-                });
-                const data = await res.json().catch(() => null);
-                if (res.ok && data && Array.isArray(data.items)) {
-                    const map = new Map(data.items.map(i => [i.requestId, i]));
-                    let creditedDelta = 0;
-
-                    const updated = list.map(item => {
-                        const remote = map.get(item.requestId);
-                        if (!remote) return item;
-
-                        const nextStatus = (remote.status || item.status || "PENDING").toUpperCase();
-                        const finalAmount = Number(remote.creditedAmount || item.amount || 0);
-
-                        if (nextStatus === "CONFIRMED" && (item.status || "").toUpperCase() !== "CONFIRMED") {
-                            creditedDelta += finalAmount;
-                        }
-
-                        let customBotMsg = BOT_MESSAGES.pending;
-                        if (nextStatus === "CONFIRMED") {
-                            customBotMsg = BOT_MESSAGES.confirmed(finalAmount);
-                        } else if (nextStatus === "CANCELLED") {
-                            customBotMsg = BOT_MESSAGES.cancelled;
-                        }
-
-                        const resolvedTime =
-                            remote.resolvedAt ||
-                            item.resolvedAt ||
-                            (nextStatus !== "PENDING" ? formatFullDateTime(new Date()) : "");
-
-                        return {
-                            ...item,
-                            status: nextStatus,
-                            creditedAmount: finalAmount,
-                            resolvedAt: resolvedTime,
-                            botMessage: customBotMsg
-                        };
-                    });
-
-                    saveDepositHistory(updated);
-
-                    const itemEmail = document.getElementById("account-no").value.trim().toLowerCase();
-                    if (creditedDelta > 0) {
-                        const balKey = itemEmail ? `gv_wallet_balance_${itemEmail}` : "gv_last_wallet_balance";
-                        const currentBal = Number(localStorage.getItem(balKey) || localStorage.getItem("gv_last_wallet_balance") || 0);
-                        const nextBal = currentBal + creditedDelta;
-                        if (itemEmail) localStorage.setItem(balKey, String(nextBal));
-                        localStorage.setItem("gv_last_wallet_balance", String(nextBal));
-                        if (window.renderWalletBalance) {
-                            window.renderWalletBalance(nextBal);
-                        } else {
-                            const headerBal = document.getElementById("user-balance");
-                            if (headerBal) headerBal.textContent = nextBal.toFixed(1);
-                        }
-                    }
-
-                    return updated;
-                }
-            } catch {}
-
-            return list.map(item => {
-                const st = (item.status || "PENDING").toUpperCase();
-                let customBotMsg = BOT_MESSAGES.pending;
-                if (st === "CONFIRMED") {
-                    customBotMsg = BOT_MESSAGES.confirmed(item.creditedAmount || item.amount);
-                } else if (st === "CANCELLED") {
-                    customBotMsg = BOT_MESSAGES.cancelled;
-                }
-                return { ...item, botMessage: customBotMsg };
-            });
-        }
-
-        // পয়েন্ট ১০: Transaction History-তে সময়, তারিখ, মাস, বছর ও নির্ধারিত Bot মেসেজ
-        async function openHistoryModal() {
-            const t = getCurrentLangPack();
-            const overlay = document.getElementById("historyModalOverlay");
-            const box = document.getElementById("historyListBox");
-            document.getElementById("historyModalTitle").textContent = t.historyModalTitle;
-            overlay.classList.add("open");
-            box.innerHTML = `<div style="padding:12px; color:var(--muted-text); font-size:13px;">${t.loadingHistory}</div>`;
-
-            const list = await refreshDepositStatuses();
-            if (!list.length) {
-                box.innerHTML = `<div style="padding:14px; color:var(--muted-text); font-size:13px; text-align:center;">${t.noHistory}</div>`;
-                return;
-            }
-
-            box.innerHTML = list.map(item => {
-                const st = (item.status || "PENDING").toUpperCase();
-                let badgeClass = "status-pending";
-                let statusLabel = "Pending";
-                let amountLine = `${t.requestedText}: <strong>${item.amount} ৳</strong>`;
-                let botMsg = BOT_MESSAGES.pending;
-
-                if (st === "CONFIRMED") {
-                    badgeClass = "status-confirmed";
-                    statusLabel = "Confirmed";
-                    const creditedVal = item.creditedAmount || item.amount;
-                    amountLine = `${t.creditedText}: <strong style="color:#05a86b;">+${creditedVal} ৳</strong>`;
-                    botMsg = BOT_MESSAGES.confirmed(creditedVal);
-                } else if (st === "CANCELLED") {
-                    badgeClass = "status-cancelled";
-                    statusLabel = "Cancelled";
-                    amountLine = `${t.cancelledText}: <strong>${item.amount} ৳</strong>`;
-                    botMsg = BOT_MESSAGES.cancelled;
-                }
-
-                const createdFormatted = item.createdAt ? formatFullDateTime(item.createdAt) : formatFullDateTime(new Date());
-                const resolvedLine = item.resolvedAt
-                    ? `<div class="history-time">${t.resolvedTimeLabel}: <strong>${formatFullDateTime(item.resolvedAt)}</strong></div>`
-                    : "";
-
-                return `
-                    <div class="history-item">
-                        <div class="history-item-top">
-                            <strong>#${item.requestId} • ${item.method}</strong>
-                            <span class="status-tag ${badgeClass}">${statusLabel}</span>
-                        </div>
-                        <div>${amountLine}</div>
-                        <div style="color:var(--muted-text); margin-top:3px;">TrxID: <strong>${item.trxId}</strong></div>
-                        <div class="history-time">${t.createdTimeLabel}: <strong>${createdFormatted}</strong></div>
-                        ${resolvedLine}
-                        <div class="history-bot-msg"><strong>Bot :</strong> ${botMsg}</div>
-                    </div>
-                `;
-            }).join("");
-        }
-
-        function closeHistoryModal() {
-            document.getElementById("historyModalOverlay").classList.remove("open");
+            goToOrdersHistory();
         }
 
         async function submitDepositRequest() {
             const t = getCurrentLangPack();
             const isAmountValid = validateAmount();
+            const isSenderValid = validateSenderPhone();
             const amount = document.getElementById("amount-input").value.trim();
             const senderNumber = document.getElementById("sender-number").value.trim();
             const trxId = document.getElementById("trx-id").value.trim();
@@ -1834,8 +1578,15 @@
                 document.getElementById("amount-input").focus();
                 return;
             }
-            if (!senderNumber || !trxId) {
+            if (!isSenderValid) {
+                const senderErr = document.getElementById("sender-error");
+                if (senderErr) senderErr.style.display = "block";
+                document.getElementById("sender-number").focus();
+                return;
+            }
+            if (!trxId) {
                 alert(t.fillAllError);
+                document.getElementById("trx-id").focus();
                 return;
             }
             if (!customerEmail) {
