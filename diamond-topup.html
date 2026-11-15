@@ -67,7 +67,7 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 40px;
+      padding-bottom: 48px;
       transition: background 0.2s ease, color 0.2s ease;
     }
 
@@ -876,6 +876,212 @@
       color: #ffffff;
     }
 
+    /* Wallet Order Summary Card */
+    .summary-card {
+      display: none;
+      margin-top: 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--verified-border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary-card.show {
+      display: block;
+    }
+
+    .summary-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .summary-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .summary-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .summary-player-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+
+    .summary-player-strip strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .summary-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13.5px;
+    }
+
+    .summary-row-label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .summary-row-val {
+      color: var(--text);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .qty-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px 6px;
+    }
+
+    .qty-btn {
+      width: 24px;
+      height: 24px;
+      border: none;
+      border-radius: 7px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .qty-btn:hover {
+      color: var(--green);
+    }
+
+    .qty-num {
+      min-width: 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .summary-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+
+    .summary-total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .summary-total-val {
+      font-size: 17px;
+      color: var(--green);
+    }
+
+    .summary-alert {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(220, 38, 38, 0.08);
+      border: 1px solid rgba(220, 38, 38, 0.25);
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 600;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .summary-alert.show {
+      display: flex;
+    }
+
+    .add-money-inline-btn {
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: none;
+      background: var(--green);
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pay-wallet-btn {
+      width: 100%;
+      margin-top: 14px;
+      height: 46px;
+      border: none;
+      border-radius: 12px;
+      background: var(--green);
+      color: #ffffff;
+      font-size: 14.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .pay-wallet-btn:hover {
+      background: var(--green-dark);
+    }
+
+    .pay-wallet-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .order-receipt {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--verified-bg);
+      border: 1px solid var(--verified-border);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .order-receipt.show {
+      display: block;
+    }
+
     @media (max-width: 480px) {
       .brand-text {
         font-size: 15px;
@@ -914,7 +1120,7 @@
   <!-- Header -->
   <header class="header">
     <div class="header-inner">
-      <a href="#" class="brand" aria-label="Game Vault">
+      <a href="index.html" class="brand" aria-label="Game Vault">
         <div class="brand-logo">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2 3 7v10l9 5 9-5V7l-9-5zm0 2.3L18.8 8 12 11.7 5.2 8 12 4.3zM5 9.8l6 3.3v6.5l-6-3.3V9.8zm14 6.5-6 3.3v-6.5l6-3.3v6.5z"/>
@@ -960,7 +1166,7 @@
           />
           <div class="balance-info">
             <span class="balance-lbl" id="balanceLbl">Balance</span>
-            <span class="balance-amt">৳ 0</span>
+            <span class="balance-amt" id="headerBalanceAmt">৳ 100</span>
           </div>
           <button type="button" class="add-balance-btn" id="addBalanceBtn" aria-label="Add Balance">+</button>
         </div>
@@ -1067,7 +1273,7 @@
       </div>
 
       <div class="payment-methods-grid" id="paymentMethodsGrid">
-        <button type="button" class="method-option selected" data-method="wallet">
+        <button type="button" class="method-option" data-method="wallet">
           <div class="method-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
@@ -1076,7 +1282,7 @@
           </div>
           <div class="method-meta">
             <div class="method-name" id="walletMethodName">Wallet Balance</div>
-            <div class="method-desc" id="walletMethodDesc">৳ 0</div>
+            <div class="method-desc" id="walletMethodDesc">৳ 100</div>
           </div>
           <div class="method-check">✓</div>
         </button>
@@ -1095,6 +1301,61 @@
           <div class="method-check">✓</div>
         </button>
       </div>
+
+      <!-- Wallet Balance Order Summary -->
+      <div class="summary-card" id="walletSummaryCard">
+        <div class="summary-head">
+          <h3 class="summary-title" id="summaryTitle">Order Summary</h3>
+          <span class="summary-badge" id="summaryBadge">Wallet Balance</span>
+        </div>
+
+        <div class="summary-player-strip">
+          <span id="summaryPlayerLabel">Player</span>
+          <strong id="summaryPlayerValue">Not Verified</strong>
+        </div>
+
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span class="summary-row-label" id="lblSelectedPkg">Selected Package</span>
+            <span class="summary-row-val" id="valSelectedPkg">-</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-row-label" id="lblPkgQty">Package Quantity</span>
+            <div class="qty-control">
+              <button type="button" class="qty-btn" id="qtyMinusBtn" aria-label="Decrease quantity">−</button>
+              <span class="qty-num" id="valPkgQty">1</span>
+              <button type="button" class="qty-btn" id="qtyPlusBtn" aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-row-label" id="lblPkgPrice">Package Price</span>
+            <span class="summary-row-val" id="valPkgPrice">0 ৳</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-row-label" id="lblWalletBal">Wallet Balance</span>
+            <span class="summary-row-val" id="valWalletBal">100 ৳</span>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total-row">
+          <span id="lblTotal">Total</span>
+          <span class="summary-total-val" id="valTotal">0 ৳</span>
+        </div>
+
+        <div class="summary-alert" id="insufficientAlert">
+          <span id="insufficientMsg">Wallet balance is not enough.</span>
+          <a href="add-money.html" class="add-money-inline-btn" id="addMoneyInlineBtn">Add Money</a>
+        </div>
+
+        <button type="button" class="pay-wallet-btn" id="payWalletBtn">Pay Now</button>
+
+        <div class="order-receipt" id="orderReceipt"></div>
+      </div>
     </section>
   </main>
 
@@ -1102,8 +1363,9 @@
     const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
     const RECENT_KEY = "gv_recent_uids";
     const PACKAGES_KEY = "gv_diamond_packages";
+    const ORDERS_KEY = "gv_diamond_orders";
+    const WALLET_KEY = "gv_wallet_balance";
 
-    // Default packages matching screenshot (can be overridden by Admin Panel via localStorage/API later)
     const DEFAULT_PACKAGES = [
       { id: "pkg_25", diamonds: 25, price: 20, oldPrice: null, save: null, bonus: null },
       { id: "pkg_50", diamonds: 50, price: 35, oldPrice: null, save: null, bonus: null },
@@ -1132,6 +1394,22 @@
       return DEFAULT_PACKAGES;
     }
 
+    function getWalletBalance() {
+      const saved = localStorage.getItem(WALLET_KEY);
+      if (saved === null || saved === "") {
+        localStorage.setItem(WALLET_KEY, "100");
+        return 100;
+      }
+      const num = Number(saved);
+      return Number.isFinite(num) ? num : 100;
+    }
+
+    function setWalletBalance(val) {
+      const clean = Math.max(0, Number(val) || 0);
+      localStorage.setItem(WALLET_KEY, String(clean));
+      syncWalletDisplay();
+    }
+
     const translations = {
       en: {
         balance: "Balance",
@@ -1155,7 +1433,20 @@
         paymentSubtext: "Orders are delivered automatically right after payment.",
         walletName: "Wallet Balance",
         manualName: "Direct Payment (Manual)",
-        manualDesc: "bKash / Nagad / Rocket"
+        manualDesc: "bKash / Nagad / Rocket",
+        summaryTitle: "Order Summary",
+        summaryBadge: "Wallet Balance",
+        playerLabel: "Player",
+        notVerified: "Not Verified",
+        selectedPkg: "Selected Package",
+        pkgQty: "Package Quantity",
+        pkgPrice: "Package Price",
+        walletBal: "Wallet Balance",
+        total: "Total",
+        insufficient: "Insufficient wallet balance.",
+        addMoney: "Add Money",
+        payNow: "Pay Now",
+        verifyFirst: "Please verify your Player ID first."
       },
       bn: {
         balance: "ব্যালেন্স",
@@ -1179,13 +1470,28 @@
         paymentSubtext: "পেমেন্টের পরপরই অর্ডার স্বয়ংক্রিয়ভাবে ডেলিভারি হয়।",
         walletName: "ওয়ালেট ব্যালেন্স",
         manualName: "ডিরেক্ট পেমেন্ট (ম্যানুয়াল)",
-        manualDesc: "বিকাশ / নগদ / রকেট"
+        manualDesc: "বিকাশ / নগদ / রকেট",
+        summaryTitle: "অর্ডার সামারি",
+        summaryBadge: "ওয়ালেট ব্যালেন্স",
+        playerLabel: "প্লেয়ার",
+        notVerified: "ভেরিফাই করা হয়নি",
+        selectedPkg: "সিলেক্টেড প্যাকেজ",
+        pkgQty: "প্যাকেজ কোয়ান্টিটি",
+        pkgPrice: "প্যাকেজ প্রাইস",
+        walletBal: "ওয়ালেট ব্যালেন্স",
+        total: "মোট",
+        insufficient: "ওয়ালেট ব্যালেন্স পর্যাপ্ত নয়।",
+        addMoney: "অ্যাড মানি",
+        payNow: "পে নাউ",
+        verifyFirst: "আগে Player ID ভেরিফাই করো।"
       }
     };
 
     let currentLang = "en";
-    let selectedPackageId = "pkg_610";
-    let selectedPaymentMethod = "wallet";
+    let selectedPackageId = "pkg_25";
+    let selectedPaymentMethod = null;
+    let packageQuantity = 1;
+    let verifiedPlayerData = null;
 
     const langBtn = document.getElementById("langBtn");
     const langMenu = document.getElementById("langMenu");
@@ -1216,6 +1522,54 @@
     const packagesGrid = document.getElementById("packagesGrid");
     const paymentMethodsGrid = document.getElementById("paymentMethodsGrid");
 
+    const walletSummaryCard = document.getElementById("walletSummaryCard");
+    const summaryPlayerValue = document.getElementById("summaryPlayerValue");
+    const valSelectedPkg = document.getElementById("valSelectedPkg");
+    const valPkgQty = document.getElementById("valPkgQty");
+    const qtyMinusBtn = document.getElementById("qtyMinusBtn");
+    const qtyPlusBtn = document.getElementById("qtyPlusBtn");
+    const valPkgPrice = document.getElementById("valPkgPrice");
+    const valWalletBal = document.getElementById("valWalletBal");
+    const valTotal = document.getElementById("valTotal");
+    const insufficientAlert = document.getElementById("insufficientAlert");
+    const payWalletBtn = document.getElementById("payWalletBtn");
+    const orderReceipt = document.getElementById("orderReceipt");
+
+    function getSelectedPackage() {
+      const list = getDiamondPackages();
+      return list.find((p) => p.id === selectedPackageId) || list[0];
+    }
+
+    function syncWalletDisplay() {
+      const bal = getWalletBalance();
+      document.getElementById("headerBalanceAmt").textContent = `৳ ${bal}`;
+      document.getElementById("walletMethodDesc").textContent = `৳ ${bal}`;
+      valWalletBal.textContent = `${bal} ৳`;
+      updateWalletSummary();
+    }
+
+    function updateWalletSummary() {
+      const t = translations[currentLang];
+      const pkg = getSelectedPackage();
+      const walletBal = getWalletBalance();
+      const total = pkg.price * packageQuantity;
+
+      summaryPlayerValue.textContent = verifiedPlayerData
+        ? `${verifiedPlayerData.nickname} (${verifiedPlayerData.uid})`
+        : t.notVerified;
+
+      valSelectedPkg.textContent = `${pkg.diamonds} ${t.diamondsUnit}`;
+      valPkgQty.textContent = String(packageQuantity);
+      valPkgPrice.textContent = `${pkg.price} ৳`;
+      valWalletBal.textContent = `${walletBal} ৳`;
+      valTotal.textContent = `${total} ৳`;
+
+      const hasEnough = walletBal >= total;
+      insufficientAlert.classList.toggle("show", !hasEnough);
+      payWalletBtn.disabled = !hasEnough;
+      payWalletBtn.textContent = `${t.payNow} (${total} ৳)`;
+    }
+
     function renderPackages() {
       const packages = getDiamondPackages();
       const t = translations[currentLang];
@@ -1244,12 +1598,15 @@
           `;
         })
         .join("");
+
+      updateWalletSummary();
     }
 
     packagesGrid.addEventListener("click", (e) => {
       const card = e.target.closest(".pkg-card");
       if (!card) return;
       selectedPackageId = card.dataset.pkgId;
+      orderReceipt.classList.remove("show");
       renderPackages();
     });
 
@@ -1257,9 +1614,86 @@
       const opt = e.target.closest(".method-option");
       if (!opt) return;
       selectedPaymentMethod = opt.dataset.method;
+
       document.querySelectorAll(".method-option").forEach((el) => {
         el.classList.toggle("selected", el.dataset.method === selectedPaymentMethod);
       });
+
+      if (selectedPaymentMethod === "wallet") {
+        walletSummaryCard.classList.add("show");
+        updateWalletSummary();
+      } else {
+        walletSummaryCard.classList.remove("show");
+      }
+    });
+
+    qtyMinusBtn.addEventListener("click", () => {
+      if (packageQuantity > 1) {
+        packageQuantity -= 1;
+        orderReceipt.classList.remove("show");
+        updateWalletSummary();
+      }
+    });
+
+    qtyPlusBtn.addEventListener("click", () => {
+      if (packageQuantity < 20) {
+        packageQuantity += 1;
+        orderReceipt.classList.remove("show");
+        updateWalletSummary();
+      }
+    });
+
+    payWalletBtn.addEventListener("click", () => {
+      const t = translations[currentLang];
+      if (!verifiedPlayerData) {
+        verifyCard.style.display = "block";
+        verifiedCard.classList.remove("show");
+        uidInput.focus();
+        setSubtext(t.verifyFirst, true);
+        return;
+      }
+
+      const pkg = getSelectedPackage();
+      const total = pkg.price * packageQuantity;
+      const currentBal = getWalletBalance();
+
+      if (currentBal < total) {
+        updateWalletSummary();
+        return;
+      }
+
+      payWalletBtn.disabled = true;
+      const newBal = currentBal - total;
+      setWalletBalance(newBal);
+
+      const orderId = "GV" + Date.now().toString().slice(-8);
+      const orderRecord = {
+        id: orderId,
+        uid: verifiedPlayerData.uid,
+        nickname: verifiedPlayerData.nickname,
+        package: `${pkg.diamonds} Diamonds`,
+        quantity: packageQuantity,
+        unitPrice: pkg.price,
+        total,
+        method: "Wallet Balance",
+        status: "Completed",
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        const prevOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
+        prevOrders.unshift(orderRecord);
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(prevOrders));
+      } catch {}
+
+      orderReceipt.innerHTML = `
+        <strong>Order Confirmed (#${orderId})</strong><br/>
+        Player: ${verifiedPlayerData.nickname} (${verifiedPlayerData.uid})<br/>
+        Package: ${pkg.diamonds} Diamonds × ${packageQuantity} = ${total} ৳<br/>
+        Remaining Balance: ${newBal} ৳
+      `;
+      orderReceipt.classList.add("show");
+      updateWalletSummary();
     });
 
     function applyLanguage(lang) {
@@ -1286,6 +1720,17 @@
       document.getElementById("walletMethodName").textContent = t.walletName;
       document.getElementById("manualMethodName").textContent = t.manualName;
       document.getElementById("manualMethodDesc").textContent = t.manualDesc;
+
+      document.getElementById("summaryTitle").textContent = t.summaryTitle;
+      document.getElementById("summaryBadge").textContent = t.summaryBadge;
+      document.getElementById("summaryPlayerLabel").textContent = t.playerLabel;
+      document.getElementById("lblSelectedPkg").textContent = t.selectedPkg;
+      document.getElementById("lblPkgQty").textContent = t.pkgQty;
+      document.getElementById("lblPkgPrice").textContent = t.pkgPrice;
+      document.getElementById("lblWalletBal").textContent = t.walletBal;
+      document.getElementById("lblTotal").textContent = t.total;
+      document.getElementById("insufficientMsg").textContent = t.insufficient;
+      document.getElementById("addMoneyInlineBtn").textContent = t.addMoney;
 
       renderRecentDropdown();
       renderPackages();
@@ -1320,8 +1765,10 @@
     });
 
     backBtn.addEventListener("click", () => {
-      if (window.history.length > 1) {
+      if (document.referrer && new URL(document.referrer).origin === window.location.origin) {
         window.history.back();
+      } else {
+        window.location.href = "index.html";
       }
     });
 
@@ -1417,8 +1864,16 @@
           data?.data?.outfitImageUrl ||
           `https://noobs-api.top/api/ff-info-pic?uid=${encodeURIComponent(uid)}`;
 
+        verifiedPlayerData = {
+          uid: String(basic.accountId || uid),
+          nickname,
+          level,
+          region,
+          likes
+        };
+
         playerNickname.textContent = nickname;
-        verifiedUid.textContent = String(basic.accountId || uid);
+        verifiedUid.textContent = verifiedPlayerData.uid;
         levelPill.textContent = `★ ${t.levelPrefix} ${level}`;
         regionPill.textContent = `📍 ${region}`;
         likesPill.textContent = `👍 ${likes}`;
@@ -1430,11 +1885,12 @@
           avatarWrap.classList.remove("has-img");
         }
 
-        saveRecentUid(String(basic.accountId || uid), nickname);
+        saveRecentUid(verifiedPlayerData.uid, nickname);
 
         verifyCard.style.display = "none";
         verifiedCard.classList.add("show");
         setSubtext(t.subtext, false);
+        updateWalletSummary();
       } catch {
         setSubtext(t.netError, true);
       } finally {
@@ -1452,13 +1908,17 @@
     });
 
     changeBtn.addEventListener("click", () => {
+      verifiedPlayerData = null;
       verifiedCard.classList.remove("show");
       verifyCard.style.display = "block";
+      orderReceipt.classList.remove("show");
+      updateWalletSummary();
       uidInput.focus();
     });
 
     renderRecentDropdown();
     renderPackages();
+    syncWalletDisplay();
   </script>
 </body>
 </html>
