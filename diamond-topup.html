@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Game Vault — Diamond Top-Up</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
       --bg: #f6faf7;
@@ -201,7 +202,7 @@
       background: var(--surface-soft);
     }
 
-    /* Theme Icon Toggle (No text) */
+    /* Theme Icon Toggle */
     .theme-btn {
       width: 38px;
       height: 38px;
@@ -272,6 +273,94 @@
       font-size: 15px;
       font-weight: 700;
       line-height: 1;
+      cursor: pointer;
+    }
+
+    .google-login-btn {
+      height: 38px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .google-login-btn:hover {
+      border-color: var(--green);
+    }
+
+    /* Connected Profile Banner */
+    .account-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+    }
+
+    .account-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .account-left img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .account-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .account-email {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .account-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .wallet-chip {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .logout-mini-btn {
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 600;
       cursor: pointer;
     }
 
@@ -1156,20 +1245,21 @@
           </svg>
         </button>
 
-        <!-- Profile + Balance + + -->
-        <div class="profile-pill">
-          <img
-            class="profile-avatar"
-            id="profileAvatar"
-            src="https://noobs-api.top/api/ff-info-pic?uid=2911395896"
-            alt="Profile"
-          />
+        <!-- Profile + Balance Pill (Shown when logged in) -->
+        <div class="profile-pill" id="profilePill" style="display: none;">
+          <img class="profile-avatar" id="profileAvatar" src="" alt="Profile" />
           <div class="balance-info">
             <span class="balance-lbl" id="balanceLbl">Balance</span>
-            <span class="balance-amt" id="headerBalanceAmt">৳ 100</span>
+            <span class="balance-amt" id="headerBalanceAmt">৳ 0</span>
           </div>
           <button type="button" class="add-balance-btn" id="addBalanceBtn" aria-label="Add Balance">+</button>
         </div>
+
+        <!-- Google Login Button (Shown when logged out) -->
+        <button type="button" class="google-login-btn" id="googleLoginTrigger">
+          <span>G</span>
+          <span id="googleBtnText">Sign in with Google</span>
+        </button>
       </div>
     </div>
   </header>
@@ -1180,6 +1270,21 @@
       <span>‹</span>
       <span id="backText">Back</span>
     </button>
+
+    <!-- Connected Gmail Profile Strip -->
+    <section class="account-strip" id="accountStrip">
+      <div class="account-left">
+        <img id="stripAvatar" src="https://noobs-api.top/api/ff-info-pic?uid=2911395896" alt="User" />
+        <div>
+          <div class="account-name" id="stripName">Guest User</div>
+          <div class="account-email" id="stripEmail">Not signed in with Gmail</div>
+        </div>
+      </div>
+      <div class="account-right">
+        <span class="wallet-chip" id="stripWalletChip">Wallet: ৳ 0</span>
+        <button type="button" class="logout-mini-btn" id="logoutBtn" style="display: none;">Logout</button>
+      </div>
+    </section>
 
     <!-- Step 1: Player Verification -->
     <div class="step-row">
@@ -1282,7 +1387,7 @@
           </div>
           <div class="method-meta">
             <div class="method-name" id="walletMethodName">Wallet Balance</div>
-            <div class="method-desc" id="walletMethodDesc">৳ 100</div>
+            <div class="method-desc" id="walletMethodDesc">৳ 0</div>
           </div>
           <div class="method-check">✓</div>
         </button>
@@ -1336,7 +1441,7 @@
 
           <div class="summary-row">
             <span class="summary-row-label" id="lblWalletBal">Wallet Balance</span>
-            <span class="summary-row-val" id="valWalletBal">100 ৳</span>
+            <span class="summary-row-val" id="valWalletBal">0 ৳</span>
           </div>
         </div>
 
@@ -1360,12 +1465,14 @@
   </main>
 
   <script>
-    const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
+    const GOOGLE_CLIENT_ID = "115821325968-g5t364t4nl4uc9b6r4hrepggiikssn7h.apps.googleusercontent.com";
+    const WORKER_URL = "https://game-vault-bd.theummah234.workers.dev";
     const ORDER_ENDPOINT = `${WORKER_URL}/order`;
+
     const RECENT_KEY = "gv_recent_uids";
     const PACKAGES_KEY = "gv_diamond_packages";
     const ORDERS_KEY = "gv_diamond_orders";
-    const WALLET_KEY = "gv_wallet_balance";
+    const PROFILE_KEY = "gv_user_profile";
 
     const DEFAULT_PACKAGES = [
       { id: "pkg_25", diamonds: 25, price: 20, oldPrice: null, save: null, bonus: null },
@@ -1387,18 +1494,33 @@
       { id: "pkg_10120", diamonds: 10120, price: 6120, oldPrice: 6360, save: 240, bonus: "Free 220 Likes" }
     ];
 
-    function getDiamondPackages() {
+    function getUserProfile() {
       try {
-        const saved = JSON.parse(localStorage.getItem(PACKAGES_KEY) || "null");
-        if (Array.isArray(saved) && saved.length) return saved;
-      } catch {}
-      return DEFAULT_PACKAGES;
+        return JSON.parse(localStorage.getItem(PROFILE_KEY) || "null");
+      } catch {
+        return null;
+      }
+    }
+
+    function setUserProfile(profile) {
+      if (profile) {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+      } else {
+        localStorage.removeItem(PROFILE_KEY);
+      }
+      renderProfileUI();
+    }
+
+    function getWalletKey() {
+      const profile = getUserProfile();
+      return profile?.email ? `gv_wallet_balance_${profile.email}` : "gv_wallet_balance_guest";
     }
 
     function getWalletBalance() {
-      const saved = localStorage.getItem(WALLET_KEY);
+      const key = getWalletKey();
+      const saved = localStorage.getItem(key);
       if (saved === null || saved === "") {
-        localStorage.setItem(WALLET_KEY, "100");
+        localStorage.setItem(key, "100");
         return 100;
       }
       const num = Number(saved);
@@ -1406,9 +1528,102 @@
     }
 
     function setWalletBalance(val) {
+      const key = getWalletKey();
       const clean = Math.max(0, Number(val) || 0);
-      localStorage.setItem(WALLET_KEY, String(clean));
-      syncWalletDisplay();
+      localStorage.setItem(key, String(clean));
+      renderProfileUI();
+    }
+
+    let googleTokenClient = null;
+
+    function initGoogleAuth() {
+      if (!window.google?.accounts?.oauth2 || !GOOGLE_CLIENT_ID) return;
+      googleTokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: "openid email profile",
+        callback: async (tokenResponse) => {
+          if (!tokenResponse?.access_token) return;
+          try {
+            const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+              headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+            });
+            const info = await res.json();
+            if (info?.email) {
+              setUserProfile({
+                name: info.name || info.email.split("@")[0],
+                email: info.email,
+                picture: info.picture || ""
+              });
+            }
+          } catch {}
+        }
+      });
+    }
+
+    function renderProfileUI() {
+      const profile = getUserProfile();
+      const bal = getWalletBalance();
+
+      const profilePill = document.getElementById("profilePill");
+      const profileAvatar = document.getElementById("profileAvatar");
+      const headerBalanceAmt = document.getElementById("headerBalanceAmt");
+      const googleLoginTrigger = document.getElementById("googleLoginTrigger");
+
+      const stripAvatar = document.getElementById("stripAvatar");
+      const stripName = document.getElementById("stripName");
+      const stripEmail = document.getElementById("stripEmail");
+      const stripWalletChip = document.getElementById("stripWalletChip");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      headerBalanceAmt.textContent = `৳ ${bal}`;
+      document.getElementById("walletMethodDesc").textContent = `৳ ${bal}`;
+      document.getElementById("valWalletBal").textContent = `${bal} ৳`;
+      stripWalletChip.textContent = `Wallet: ৳ ${bal}`;
+
+      if (profile?.email) {
+        profilePill.style.display = "flex";
+        googleLoginTrigger.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+
+        const avatarSrc = profile.picture || "https://noobs-api.top/api/ff-info-pic?uid=2911395896";
+        profileAvatar.src = avatarSrc;
+        stripAvatar.src = avatarSrc;
+        stripName.textContent = profile.name || "Gmail User";
+        stripEmail.textContent = profile.email;
+      } else {
+        profilePill.style.display = "none";
+        googleLoginTrigger.style.display = "inline-flex";
+        logoutBtn.style.display = "none";
+
+        stripAvatar.src = "https://noobs-api.top/api/ff-info-pic?uid=2911395896";
+        stripName.textContent = "Guest User";
+        stripEmail.textContent = "Not signed in with Gmail";
+      }
+
+      updateWalletSummary();
+    }
+
+    document.getElementById("googleLoginTrigger").addEventListener("click", () => {
+      if (googleTokenClient) {
+        googleTokenClient.requestAccessToken();
+      } else {
+        initGoogleAuth();
+        if (googleTokenClient) {
+          googleTokenClient.requestAccessToken();
+        }
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      setUserProfile(null);
+    });
+
+    function getDiamondPackages() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(PACKAGES_KEY) || "null");
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch {}
+      return DEFAULT_PACKAGES;
     }
 
     const translations = {
@@ -1545,14 +1760,6 @@
       return list.find((p) => p.id === selectedPackageId) || list[0];
     }
 
-    function syncWalletDisplay() {
-      const bal = getWalletBalance();
-      document.getElementById("headerBalanceAmt").textContent = `৳ ${bal}`;
-      document.getElementById("walletMethodDesc").textContent = `৳ ${bal}`;
-      valWalletBal.textContent = `${bal} ৳`;
-      updateWalletSummary();
-    }
-
     function updateWalletSummary() {
       const t = translations[currentLang];
       const pkg = getSelectedPackage();
@@ -1661,6 +1868,7 @@
       const pkg = getSelectedPackage();
       const total = pkg.price * packageQuantity;
       const currentBal = getWalletBalance();
+      const profile = getUserProfile();
 
       if (currentBal < total) {
         updateWalletSummary();
@@ -1688,7 +1896,9 @@
             quantity: packageQuantity,
             unitPrice: pkg.price,
             total,
-            method: "Wallet Balance"
+            method: "Wallet Balance",
+            customerEmail: profile?.email || "Guest",
+            customerName: profile?.name || "Guest"
           })
         });
 
@@ -1709,6 +1919,7 @@
           unitPrice: pkg.price,
           total,
           method: "Wallet Balance",
+          customerEmail: profile?.email || "Guest",
           status: "Sent to Moderator",
           createdAt: new Date().toISOString()
         };
@@ -1954,9 +2165,12 @@
       uidInput.focus();
     });
 
-    renderRecentDropdown();
-    renderPackages();
-    syncWalletDisplay();
+    window.addEventListener("load", () => {
+      initGoogleAuth();
+      renderRecentDropdown();
+      renderPackages();
+      renderProfileUI();
+    });
   </script>
 </body>
 </html>
