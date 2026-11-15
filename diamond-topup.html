@@ -1361,6 +1361,7 @@
 
   <script>
     const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
+    const ORDER_ENDPOINT = `${WORKER_URL}/order`;
     const RECENT_KEY = "gv_recent_uids";
     const PACKAGES_KEY = "gv_diamond_packages";
     const ORDERS_KEY = "gv_diamond_orders";
@@ -1446,6 +1447,8 @@
         insufficient: "Insufficient wallet balance.",
         addMoney: "Add Money",
         payNow: "Pay Now",
+        sendingOrder: "Sending order to moderators...",
+        orderFailed: "Could not send order. Please try again.",
         verifyFirst: "Please verify your Player ID first."
       },
       bn: {
@@ -1483,6 +1486,8 @@
         insufficient: "ওয়ালেট ব্যালেন্স পর্যাপ্ত নয়।",
         addMoney: "অ্যাড মানি",
         payNow: "পে নাউ",
+        sendingOrder: "মডারেটরদের কাছে অর্ডার পাঠানো হচ্ছে...",
+        orderFailed: "অর্ডার পাঠানো যায়নি। আবার চেষ্টা করো।",
         verifyFirst: "আগে Player ID ভেরিফাই করো।"
       }
     };
@@ -1643,7 +1648,7 @@
       }
     });
 
-    payWalletBtn.addEventListener("click", () => {
+    payWalletBtn.addEventListener("click", async () => {
       const t = translations[currentLang];
       if (!verifiedPlayerData) {
         verifyCard.style.display = "block";
@@ -1662,38 +1667,71 @@
         return;
       }
 
-      payWalletBtn.disabled = true;
-      const newBal = currentBal - total;
-      setWalletBalance(newBal);
-
       const orderId = "GV" + Date.now().toString().slice(-8);
-      const orderRecord = {
-        id: orderId,
-        uid: verifiedPlayerData.uid,
-        nickname: verifiedPlayerData.nickname,
-        package: `${pkg.diamonds} Diamonds`,
-        quantity: packageQuantity,
-        unitPrice: pkg.price,
-        total,
-        method: "Wallet Balance",
-        status: "Completed",
-        createdAt: new Date().toISOString()
-      };
+      const pkgName = `${pkg.diamonds} Diamonds`;
+
+      payWalletBtn.disabled = true;
+      payWalletBtn.textContent = t.sendingOrder;
+      orderReceipt.classList.remove("show");
 
       try {
-        const prevOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
-        prevOrders.unshift(orderRecord);
-        localStorage.setItem(ORDERS_KEY, JSON.stringify(prevOrders));
-      } catch {}
+        const res = await fetch(ORDER_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId,
+            uid: verifiedPlayerData.uid,
+            nickname: verifiedPlayerData.nickname,
+            region: verifiedPlayerData.region,
+            level: verifiedPlayerData.level,
+            pkgName,
+            quantity: packageQuantity,
+            unitPrice: pkg.price,
+            total,
+            method: "Wallet Balance"
+          })
+        });
 
-      orderReceipt.innerHTML = `
-        <strong>Order Confirmed (#${orderId})</strong><br/>
-        Player: ${verifiedPlayerData.nickname} (${verifiedPlayerData.uid})<br/>
-        Package: ${pkg.diamonds} Diamonds × ${packageQuantity} = ${total} ৳<br/>
-        Remaining Balance: ${newBal} ৳
-      `;
-      orderReceipt.classList.add("show");
-      updateWalletSummary();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data?.ok) {
+          throw new Error(data?.error || t.orderFailed);
+        }
+
+        const newBal = currentBal - total;
+        setWalletBalance(newBal);
+
+        const orderRecord = {
+          id: orderId,
+          uid: verifiedPlayerData.uid,
+          nickname: verifiedPlayerData.nickname,
+          package: pkgName,
+          quantity: packageQuantity,
+          unitPrice: pkg.price,
+          total,
+          method: "Wallet Balance",
+          status: "Sent to Moderator",
+          createdAt: new Date().toISOString()
+        };
+
+        try {
+          const prevOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
+          prevOrders.unshift(orderRecord);
+          localStorage.setItem(ORDERS_KEY, JSON.stringify(prevOrders));
+        } catch {}
+
+        orderReceipt.innerHTML = `
+          <strong>Order Sent (#${orderId})</strong><br/>
+          Player: ${verifiedPlayerData.nickname} (${verifiedPlayerData.uid})<br/>
+          Package: ${pkgName} × ${packageQuantity} = ${total} ৳<br/>
+          Remaining Balance: ${newBal} ৳
+        `;
+        orderReceipt.classList.add("show");
+        updateWalletSummary();
+      } catch (err) {
+        orderReceipt.innerHTML = `<span style="color: var(--danger); font-weight: 700;">${err.message || t.orderFailed}</span>`;
+        orderReceipt.classList.add("show");
+        updateWalletSummary();
+      }
     });
 
     function applyLanguage(lang) {
