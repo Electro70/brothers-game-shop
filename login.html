@@ -1328,12 +1328,8 @@
             const rawPath = window.location.pathname.split('/').pop() || 'login.html';
             const currentFile = rawPath.endsWith('.html') ? rawPath : `${rawPath}.html`;
             sessionStorage.setItem('prevNavTarget', currentFile);
-            setActiveNavItem('profile.html');
             const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
-            const target = (user && user.email) ? 'profile.html' : 'login.html';
-            setTimeout(() => {
-                window.location.href = target;
-            }, 260);
+            window.location.href = (user && user.email) ? 'profile.html' : 'login.html';
         }
         window.handleProfileNav = handleProfileNav;
 
@@ -1353,20 +1349,14 @@
                 if (!user || !user.email) {
                     localStorage.setItem("redirectUrl", targetUrl);
                     sessionStorage.setItem('prevNavTarget', currentFile);
-                    setActiveNavItem('profile.html');
-                    setTimeout(() => {
-                        window.location.href = "login.html";
-                    }, 260);
+                    window.location.href = "login.html";
                     return;
                 }
             }
 
             if (targetUrl === 'index.html' || window.location.protocol === 'file:') {
                 sessionStorage.setItem('prevNavTarget', currentFile);
-                setActiveNavItem(targetUrl);
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 560);
+                window.location.href = targetUrl;
                 return;
             }
 
