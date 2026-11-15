@@ -655,7 +655,7 @@
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
             <span data-i18n="nav_support">Support</span>
         </a>
-        <a href="login.html" data-nav-target="profile.html" class="nav-item" id="nav-profile-link">
+        <a href="login.html" data-nav-target="profile.html" onclick="handleSupportProfileNav(event)" class="nav-item" id="nav-profile-link">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
             <span data-i18n="nav_profile">Profile</span>
         </a>
@@ -825,6 +825,19 @@
         }
         window.updateNavIndicator = updateNavIndicator;
 
+        function handleSupportProfileNav(event) {
+            if (event) event.preventDefault();
+            localStorage.removeItem('redirectUrl');
+            sessionStorage.setItem('prevNavTarget', 'support.html');
+            setActiveNavItem('profile.html');
+            const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
+            const target = (user && user.email) ? 'profile.html' : 'login.html';
+            setTimeout(() => {
+                window.location.href = target;
+            }, 260);
+        }
+        window.handleSupportProfileNav = handleSupportProfileNav;
+
         async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
@@ -840,13 +853,19 @@
 
             if (requiresAuth && !isSignedIn) {
                 localStorage.setItem("redirectUrl", targetUrl);
-                window.location.href = "login.html";
+                sessionStorage.setItem('prevNavTarget', 'support.html');
+                setActiveNavItem('profile.html');
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 260);
                 return;
             }
 
             setActiveNavItem(targetUrl);
             sessionStorage.setItem('prevNavTarget', currentFile);
-            window.location.href = targetUrl;
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 260);
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
