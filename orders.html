@@ -1,1108 +1,763 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Game Vault - Orders & History</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-color: #f8f9fa;
-            --text-color: #1f2937;
-            --muted-text: #64748b;
-            --header-bg: #ffffff;
-            --card-bg: #ffffff;
-            --border-color: #e5e7eb;
-            --accent-color: #eab308;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="pageTitle">Game Vault - অর্ডার ও হিস্ট্রি</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #f6faf7;
+      --surface: #ffffff;
+      --surface-soft: #f2f7f4;
+      --border: #e2ece6;
+      --text: #14221b;
+      --muted-text: #687b71;
+      --green: #0f9d58;
+      --green-soft: rgba(15, 157, 88, 0.12);
+      --accent-color: #eab308;
+      --danger: #dc2626;
+      --shadow: 0 2px 10px rgba(15, 45, 28, 0.04);
+    }
 
-        [data-theme="dark"] {
-            --bg-color: #0f172a;
-            --text-color: #f8fafc;
-            --muted-text: #94a3b8;
-            --header-bg: #1e293b;
-            --card-bg: #1e293b;
-            --border-color: #334155;
-        }
+    [data-theme="dark"] {
+      --bg: #08120d;
+      --surface: #0f1d16;
+      --surface-soft: #15281f;
+      --border: #1e372b;
+      --text: #e8f5ee;
+      --muted-text: #8ea89b;
+      --green: #16a34a;
+      --green-soft: rgba(22, 163, 74, 0.18);
+      --danger: #f87171;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        html:not(.page-ready) #main-container {
-            opacity: 0;
-            visibility: hidden;
-        }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 84px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
 
-        html.page-ready #main-container {
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.16s ease;
-        }
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding-bottom: 105px;
-            transition: background 0.25s ease, color 0.25s ease;
-        }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 18px;
-            background: var(--header-bg);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-        }
+    .logo-container img {
+      height: 32px;
+      max-width: 140px;
+      object-fit: contain;
+      display: block;
+    }
 
-        .logo-container img {
-            height: 36px;
-            max-width: 150px;
-            object-fit: contain;
-            border-radius: 6px;
-            display: block;
-        }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .icon-btn {
+      height: 38px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .theme-icon-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 9px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 15px;
-            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
-        }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 16px 14px;
+    }
 
-        .theme-icon-btn:active {
-            transform: scale(0.93);
-        }
+    .page-head {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
 
-        .lang-trigger {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--border-color);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--text-color);
-            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+    .page-head h1 {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
 
-        .lang-trigger:active {
-            transform: scale(0.95);
-        }
+    .page-head p {
+      font-size: 13px;
+      color: var(--muted-text);
+    }
 
-        .balance-pill {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--border-color);
-            padding: 4px 10px 4px 6px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-        }
+    .filter-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
 
-        .balance-avatar {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: #cbd5e1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #334155;
-            overflow: hidden;
-        }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 180px;
+      flex: 1;
+    }
 
-        .balance-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .filter-group label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted-text);
+    }
 
-        .add-balance-btn {
-            background: #10b981;
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            text-decoration: none;
-        }
+    .filter-select,
+    .search-input {
+      height: 42px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--text);
+      font-size: 13.5px;
+      outline: none;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
+    .search-btn {
+      height: 42px;
+      padding: 0 18px;
+      border: none;
+      border-radius: 12px;
+      background: var(--green);
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      align-self: flex-end;
+    }
 
-        .history-banner {
-            background:
-                radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 28%, transparent 29%),
-                radial-gradient(circle at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 48%, transparent 49%),
-                radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 68%, transparent 69%),
-                linear-gradient(135deg, #05a86b 0%, #028a58 100%);
-            color: white;
-            border-radius: 20px;
-            padding: 22px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(5, 168, 107, 0.25);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .orders-history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        .banner-icon-box {
-            background: rgba(255, 255, 255, 0.2);
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            flex-shrink: 0;
-        }
+    .history-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
-        .banner-texts h2 {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
+    .history-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
 
-        .banner-texts p {
-            font-size: 13px;
-            opacity: 0.92;
-        }
+    .status-tag {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
 
-        .filter-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
+    .status-pending {
+      background: rgba(234, 179, 8, 0.16);
+      color: #b45309;
+    }
 
-        .filter-label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: block;
-        }
+    [data-theme="dark"] .status-pending {
+      color: #facc15;
+    }
 
-        .select-wrapper {
-            position: relative;
-            margin-bottom: 15px;
-        }
+    .status-confirmed {
+      background: rgba(15, 157, 88, 0.15);
+      color: #0f9d58;
+    }
 
-        .service-select {
-            width: 100%;
-            padding: 12px 15px;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 14px;
-            color: var(--text-color);
-            appearance: none;
-            outline: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
+    [data-theme="dark"] .status-confirmed {
+      color: #4ade80;
+    }
 
-        .select-wrapper::after {
-            content: '\f078';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 12px;
-            color: #94a3b8;
-            pointer-events: none;
-        }
+    .status-cancelled {
+      background: rgba(220, 38, 38, 0.14);
+      color: #dc2626;
+    }
 
-        .search-btn {
-            width: 100%;
-            background: #05a86b;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-        }
+    [data-theme="dark"] .status-cancelled {
+      color: #f87171;
+    }
 
-        .search-btn:active {
-            transform: scale(0.98);
-        }
+    .history-time {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted-text);
+    }
 
-        .search-btn:hover {
-            opacity: 0.92;
-        }
+    .history-bot-msg {
+      margin-top: 8px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      background: var(--surface-soft);
+      border-left: 3px solid var(--green);
+      font-size: 12.5px;
+    }
 
-        .history-cards-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
+    .empty-box {
+      display: none;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 16px;
+      color: var(--muted-text);
+      font-size: 14px;
+      box-shadow: var(--shadow);
+    }
 
-        .history-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 14px;
-            font-size: 13px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        }
+    .footer {
+      max-width: 960px;
+      margin: 28px auto 0;
+      padding: 0 14px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted-text);
+      line-height: 1.6;
+    }
 
-        .history-item-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
+    .footer a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 700;
+    }
 
-        .history-time {
-            font-size: 11.5px;
-            color: var(--muted-text);
-            margin-top: 4px;
-            line-height: 1.4;
-        }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      z-index: 30;
+    }
 
-        .status-tag {
-            padding: 3px 9px;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: 800;
-        }
+    .bottom-nav a {
+      padding: 9px 4px;
+      text-decoration: none;
+      color: var(--muted-text);
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
 
-        .status-pending {
-            background: rgba(234, 179, 8, 0.16);
-            color: #ca8a04;
-        }
-
-        .status-confirmed {
-            background: rgba(5, 168, 107, 0.16);
-            color: #05a86b;
-        }
-
-        .status-cancelled {
-            background: rgba(239, 68, 68, 0.16);
-            color: #ef4444;
-        }
-
-        .history-bot-msg {
-            margin-top: 8px;
-            padding: 8px 10px;
-            border-radius: 9px;
-            background: var(--bg-color);
-            border: 1px dashed var(--border-color);
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .empty-result-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            transition: opacity 0.15s ease;
-        }
-
-        .empty-icon-circle {
-            width: 60px;
-            height: 60px;
-            background: rgba(5, 168, 107, 0.12);
-            color: #05a86b;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin: 0 auto 15px auto;
-        }
-
-        .empty-text {
-            color: var(--muted-text);
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .site-footer {
-            text-align: center;
-            padding: 20px 15px;
-            color: var(--muted-text);
-            font-size: 12px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 30px;
-        }
-
-        .footer-logo img {
-            height: 32px;
-            max-width: 150px;
-            object-fit: contain;
-            margin-bottom: 8px;
-            border-radius: 6px;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 12px 0;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 11px;
-        }
-
-        .made-by {
-            margin-top: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-color);
-        }
-
-        .made-by a {
-            color: #05a86b;
-            text-decoration: none;
-            font-weight: 800;
-            transition: 0.2s;
-        }
-
-        .made-by a:hover {
-            text-decoration: underline;
-        }
-
-        /* Persistent Sliding Pill Bottom Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 24px);
-            max-width: 600px;
-            background: var(--header-bg);
-            display: flex;
-            align-items: center;
-            padding: 6px;
-            border-radius: 24px;
-            box-shadow: 0 10px 28px rgba(0,0,0,0.14);
-            border: 1px solid var(--border-color);
-            z-index: 100;
-        }
-
-        .bottom-nav.hide-add-money #nav-add-money {
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .nav-indicator {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            height: calc(100% - 12px);
-            border-radius: 18px;
-            background: linear-gradient(135deg, rgba(5, 168, 107, 0.2), rgba(5, 168, 107, 0.07));
-            border: 1px solid rgba(5, 168, 107, 0.32);
-            box-shadow: 0 4px 14px rgba(5, 168, 107, 0.14);
-            will-change: transform, width;
-            transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1),
-                        width 0.44s cubic-bezier(0.16, 1, 0.3, 1);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .nav-item {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-            text-align: center;
-            color: var(--muted-text);
-            text-decoration: none;
-            font-size: 11px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 4px;
-            border-radius: 18px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            transition: color 0.26s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-item:active {
-            transform: scale(0.94);
-        }
-
-        .nav-item.active {
-            color: #05a86b;
-            font-weight: 700;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-
-        .modal-box {
-            background: var(--header-bg);
-            width: 100%;
-            max-width: 380px;
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-        }
-
-        .modal-option {
-            padding: 12px 14px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.15s ease, border-color 0.2s ease;
-        }
-
-        .modal-option:active {
-            transform: scale(0.98);
-        }
-    </style>
+    .bottom-nav a.active {
+      color: var(--green);
+    }
+  </style>
 </head>
 <body>
-
-    <header>
-        <div class="logo-container">
-            <a href="index.html">
-                <img id="header-site-logo" src="1000115723.png" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fallback-logo').style.display='block';};">
-                <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:#16a34a;">GAME VAULT</span>
-            </a>
-        </div>
-        <div class="header-right">
-            <button type="button" class="theme-icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Theme">
-                <i class="fa-solid fa-moon" id="theme-icon"></i>
-            </button>
-
-            <div class="lang-trigger" onclick="openModal()">
-                <span id="current-lang-flag">🇺🇸</span> <span id="current-lang-text">EN</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
-            </div>
-
-            <div class="balance-pill">
-                <div class="balance-avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <span>৳ <span id="user-balance">0.0</span></span>
-                <a href="add-money.html" class="add-balance-btn"><i class="fa-solid fa-plus"></i></a>
-            </div>
-        </div>
-    </header>
-
-    <div class="container" id="main-container">
-        <div class="history-banner">
-            <div class="banner-icon-box">
-                <i class="fa-solid fa-file-lines"></i>
-            </div>
-            <div class="banner-texts">
-                <h2 data-i18n="history_title">Transaction History</h2>
-                <p data-i18n="history_sub">View all your purchases and deposits</p>
-            </div>
-        </div>
-
-        <div class="filter-box">
-            <label class="filter-label" data-i18n="select_service">Select Service</label>
-            <div class="select-wrapper">
-                <select class="service-select" id="service-filter" onchange="renderOrdersHistory()">
-                    <option value="all" data-i18n="all_services">All Services / Packs</option>
-                    <option value="add_money" data-i18n="add_money_service">Add Money / Deposits</option>
-                    <option value="weekly">Weekly Membership</option>
-                    <option value="monthly">Monthly Membership</option>
-                    <option value="diamonds">FreeFire Diamonds</option>
-                    <option value="likes">FreeFire Likes</option>
-                </select>
-            </div>
-            <button type="button" class="search-btn" onclick="filterOrders()" data-i18n="search_btn">Search</button>
-        </div>
-
-        <div class="history-cards-wrap" id="orders-history-list"></div>
-
-        <div class="empty-result-box" id="orders-result-box" style="display: none;">
-            <div class="empty-icon-circle">
-                <i class="fa-solid fa-file-lines"></i>
-            </div>
-            <div class="empty-text" data-i18n="no_transactions">No transactions found</div>
-        </div>
-
-        <div class="site-footer">
-            <div class="footer-logo">
-                <img id="footer-site-logo" src="1000115723.png" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('footer-fallback').style.display='block';};">
-                <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
-            </div>
-            <p style="font-size: 11px; color: var(--muted-text); margin-bottom: 10px;" data-i18n="footer_desc">Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.</p>
-            <div class="footer-links">
-                <a href="javascript:void(0)" onclick="return false;">Terms of Service</a>
-                <a href="javascript:void(0)" onclick="return false;">Privacy Policy</a>
-                <a href="javascript:void(0)" onclick="return false;">Refund Policy</a>
-            </div>
-            <p style="font-size: 10px; color: var(--muted-text); margin-top: 10px;" data-i18n="footer_copy">© 2025 - 2026 Game Vault Bangladesh, All trademarks and copyrights belong to their respective owners.</p>
-            
-            <div class="made-by" data-i18n-html="made_by">
-                Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault 👾</a>
-            </div>
-        </div>
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo-container" style="text-decoration:none; display:flex; align-items:center;">
+        <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+        <span id="fallback-logo" style="display:none; font-weight:800; font-size:20px; color:var(--accent-color);">GAME VAULT</span>
+      </a>
+      <div class="header-right">
+        <button type="button" class="icon-btn" id="langToggleBtn">🇧🇩 বাংলা</button>
+        <button type="button" class="icon-btn" id="themeToggleBtn" aria-label="Theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <nav class="bottom-nav" id="persistent-bottom-nav">
-        <span class="nav-indicator" id="nav-indicator"></span>
-        <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item">
-            <i class="fa-solid fa-house" style="font-size: 18px;"></i>
-            <span data-i18n="nav_home">Home</span>
-        </a>
-        <a href="orders.html" data-nav-target="orders.html" onclick="navigateWithoutBarRefresh(event, 'orders.html', true)" class="nav-item active">
-            <i class="fa-solid fa-file-lines" style="font-size: 18px;"></i>
-            <span data-i18n="nav_orders">Orders</span>
-        </a>
-        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item" id="nav-add-money">
-            <i class="fa-solid fa-circle-plus" style="font-size: 18px;"></i>
-            <span data-i18n="nav_add_money">Add Money</span>
-        </a>
-        <a href="support.html" data-nav-target="support.html" onclick="navigateWithoutBarRefresh(event, 'support.html', false)" class="nav-item">
-            <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
-            <span data-i18n="nav_support">Support</span>
-        </a>
-        <a href="profile.html" data-nav-target="profile.html" onclick="navigateWithoutBarRefresh(event, 'profile.html', true)" class="nav-item">
-            <i class="fa-solid fa-user" style="font-size: 18px;"></i>
-            <span data-i18n="nav_profile">Profile</span>
-        </a>
-    </nav>
+  <main class="container">
+    <section class="page-head">
+      <h1 id="historyTitle">ট্রানজেকশন হিস্ট্রি</h1>
+      <p id="historySub">আপনার সব কেনাকাটা ও ডিপোজিট দেখুন</p>
+    </section>
 
-    <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
-        <div class="modal-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:bold; color:var(--text-color);">
-                <span data-i18n="modal_lang">Language</span>
-                <button onclick="closeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div onclick="selectLang('en')" class="modal-option">
-                <span>🇺🇸 English</span>
-                <i class="fa-solid fa-check" id="check-en" style="color: #22c55e;"></i>
-            </div>
-            <div onclick="selectLang('bn')" class="modal-option">
-                <span>🇧🇩 বাংলা</span>
-                <i class="fa-solid fa-check" id="check-bn" style="color: #22c55e; display: none;"></i>
-            </div>
-        </div>
-    </div>
+    <section class="filter-bar">
+      <div class="filter-group">
+        <label for="service-filter" id="selectServiceLabel">সার্ভিস নির্বাচন করুন</label>
+        <select id="service-filter" class="filter-select">
+          <option value="all" id="optAllServices">সব সার্ভিস / প্যাক</option>
+          <option value="diamonds">Diamonds</option>
+          <option value="weekly">Weekly Membership</option>
+          <option value="monthly">Monthly Membership</option>
+          <option value="likes">Likes</option>
+          <option value="add_money" id="optAddMoney">অ্যাড মানি / ডিপোজিট</option>
+        </select>
+      </div>
 
-    <script type="module">
-        import {
-            auth,
-            onAuthStateChanged,
-            getUserProfileData,
-            syncUserWithFirestore,
-            subscribeUserBalance,
-            getLastKnownBalance
-        } from "./firebase.js";
+      <div class="filter-group">
+        <label for="search-input" id="searchLabel">UID / Order ID / TrxID</label>
+        <input type="text" id="search-input" class="search-input" placeholder="Search..." />
+      </div>
 
-        let currentUser = null;
+      <button type="button" class="search-btn" id="search-btn">সার্চ করুন</button>
+    </section>
 
-        onAuthStateChanged(auth, async (user) => {
-            currentUser = user;
-            const nav = document.getElementById("persistent-bottom-nav");
-            const headerBalance = document.getElementById("user-balance");
-            const balanceAvatar = document.querySelector(".balance-avatar");
+    <section class="orders-history-list" id="orders-history-list"></section>
+    <section class="empty-box" id="orders-result-box">কোনো ট্রানজেকশন পাওয়া যায়নি</section>
+  </main>
 
-            if (headerBalance) {
-                headerBalance.textContent = getLastKnownBalance(user).toFixed(1);
-            }
+  <footer class="footer">
+    <p id="footerDesc">ইনস্ট্যান্ট গেম টপ-আপ, লাইক এবং গিল্ড গ্লোরি — ২০২৫ সাল থেকে বিশ্বজুড়ে গেমারদের বিশ্বস্ত।</p>
+    <p id="footerCopy">© ২০২৫ - ২০২৬ Game Vault Bangladesh, সকল ট্রেডমার্ক ও কপিরাইট তাদের নিজ নিজ মালিকদের।</p>
+    <p id="madeBy">তৈরি করেছে <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault 👾</a></p>
+  </footer>
 
-            if (!user || !user.email) {
-                if (nav) nav.classList.add("hide-add-money");
-                localStorage.setItem("redirectUrl", "orders.html");
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 180);
-                return;
-            }
+  <nav class="bottom-nav">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span id="navHome">হোম</span></a>
+    <a href="orders.html" class="active"><i class="fa-solid fa-receipt"></i><span id="navOrders">অর্ডার</span></a>
+    <a href="add-money.html"><i class="fa-solid fa-wallet"></i><span id="navAddMoney">অ্যাড মানি</span></a>
+    <a href="support.html"><i class="fa-solid fa-headset"></i><span id="navSupport">সাপোর্ট</span></a>
+    <a href="profile.html"><i class="fa-solid fa-user"></i><span id="navProfile">প্রোফাইল</span></a>
+  </nav>
 
-            if (nav) nav.classList.remove("hide-add-money");
-            const data = getUserProfileData(user);
-            if (headerBalance && data && data.balance !== undefined) {
-                headerBalance.textContent = Number(data.balance).toFixed(1);
-            }
-            if (data && data.photoURL && balanceAvatar) {
-                balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Avatar">`;
-            }
+  <script type="module">
+    import { auth, onAuthStateChanged } from "./firebase.js";
 
-            const synced = await syncUserWithFirestore(user);
-            if (synced && headerBalance && synced.balance !== undefined) {
-                headerBalance.textContent = Number(synced.balance).toFixed(1);
-            }
+    onAuthStateChanged(auth, (user) => {
+      window.getCurrentAuthUser = () => user || null;
+      if (window.refreshOrdersDepositHistory) {
+        window.refreshOrdersDepositHistory(user?.email || "");
+      }
+    });
+  </script>
 
-            subscribeUserBalance(user, (liveBal, liveProfile) => {
-                if (headerBalance) {
-                    headerBalance.textContent = Number(liveBal).toFixed(1);
-                }
-                if (liveProfile && liveProfile.photoURL && balanceAvatar) {
-                    balanceAvatar.innerHTML = `<img src="${liveProfile.photoURL}" alt="Avatar">`;
-                }
-            });
+  <script>
+    const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
+    const DEPOSIT_STATUS_ENDPOINT = `${WORKER_URL}/add-money-status`;
+    const ORDERS_STATUS_ENDPOINT = `${WORKER_URL}/orders-status`;
+    const DEPOSIT_HISTORY_KEY = "gv_add_money_history";
+    const DIAMOND_ORDERS_KEY = "gv_diamond_orders";
 
-            if (window.refreshOrdersDepositHistory) {
-                window.refreshOrdersDepositHistory(user.email.toLowerCase());
-            }
+    const BOT_MESSAGES = {
+      pending: "আপনার রিকোয়েস্টটি পেন্ডিং রয়েছে, আ্যডমিন চেক করে কনফার্ম করার পর অটোমেটিক টাকা ওয়ালেটে যুক্ত হবে ৷ অনুগ্রহ করে অপেক্ষা করুন",
+      confirmed: (amount) => `আপনার ${amount} ৳ ওয়ালেটে সফলভাবে যুক্ত হয়েছে, অপেক্ষা করার জন্য ধন্যবাদ`,
+      cancelled: "ইতিপূর্বেই এই ট্রানজেকশন আইডি ব্যবহার করেছেন বা এই ট্রানজেকশন আইডি ভুল, অন্য ট্রানজেকশন আইডি দিয়ে আবার চেষ্টা করুন। বার বার ভিন্ন ট্রানজেকশন আইডি দিয়ে স্প্যাম করলে সাসপেন্ড করা হবে এবং আপনার ওয়ালেট ব্যালেন্স বাজেয়াপ্ত করা হবে",
+      orderPending: "আপনার অর্ডারটি পেন্ডিং রয়েছে, আ্যডমিন চেক করে কনফার্ম করার পর ডেলিভারি সম্পন্ন হবে।",
+      orderConfirmed: (orderNo) => `আপনার অর্ডার (#${orderNo}) সফলভাবে সম্পন্ন হয়েছে। ধন্যবাদ!`,
+      orderCancelled: (orderNo, total) => `আপনার অর্ডার (#${orderNo}) ক্যানসেল করা হয়েছে এবং ${total} ৳ ওয়ালেটে রিফান্ড করা হয়েছে।`
+    };
 
-            if (window.updateNavIndicator) {
-                requestAnimationFrame(() => window.updateNavIndicator(false));
-            }
+    const orderTranslations = {
+      en: {
+        title: "Game Vault - Orders & History",
+        history_title: "Transaction History",
+        history_sub: "View all your purchases and deposits",
+        select_service: "Select Service",
+        all_services: "All Services / Packs",
+        add_money_service: "Add Money / Deposits",
+        search_btn: "Search",
+        no_transactions: "No transactions found",
+        requestedText: "Requested",
+        creditedText: "Credited",
+        cancelledText: "Cancelled",
+        createdTimeLabel: "Requested Time",
+        resolvedTimeLabel: "Updated Time",
+        footer_desc: "Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
+        footer_copy: "© 2025 - 2026 Game Vault Bangladesh, All trademarks and copyrights belong to their respective owners.",
+        made_by: `Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault 👾</a>`,
+        nav_home: "Home",
+        nav_orders: "Orders",
+        nav_add_money: "Add Money",
+        nav_support: "Support",
+        nav_profile: "Profile",
+        langBtn: "🇺🇸 EN"
+      },
+      bn: {
+        title: "Game Vault - অর্ডার ও হিস্ট্রি",
+        history_title: "ট্রানজেকশন হিস্ট্রি",
+        history_sub: "আপনার সব কেনাকাটা ও ডিপোজিট দেখুন",
+        select_service: "সার্ভিস নির্বাচন করুন",
+        all_services: "সব সার্ভিস / প্যাক",
+        add_money_service: "অ্যাড মানি / ডিপোজিট",
+        search_btn: "সার্চ করুন",
+        no_transactions: "কোনো ট্রানজেকশন পাওয়া যায়নি",
+        requestedText: "রিকোয়েস্টকৃত",
+        creditedText: "যুক্ত হয়েছে",
+        cancelledText: "বাতিল হয়েছে",
+        createdTimeLabel: "রিকোয়েস্টের সময়",
+        resolvedTimeLabel: "আপডেটের সময়",
+        footer_desc: "ইনস্ট্যান্ট গেম টপ-আপ, লাইক এবং গিল্ড গ্লোরি — ২০২৫ সাল থেকে বিশ্বজুড়ে গেমারদের বিশ্বস্ত।",
+        footer_copy: "© ২০২৫ - ২০২৬ Game Vault Bangladesh, সকল ট্রেডমার্ক ও কপিরাইট তাদের নিজ নিজ মালিকদের।",
+        made_by: `তৈরি করেছে <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault 👾</a>`,
+        nav_home: "হোম",
+        nav_orders: "অর্ডার",
+        nav_add_money: "অ্যাড মানি",
+        nav_support: "সাপোর্ট",
+        nav_profile: "প্রোফাইল",
+        langBtn: "🇧🇩 বাংলা"
+      }
+    };
+
+    function formatFullDateTime(dateInput = new Date()) {
+      const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
+      if (Number.isNaN(d.getTime())) return String(dateInput || "");
+      const lang = localStorage.getItem("language") || "bn";
+      const locale = lang === "en" ? "en-GB" : "bn-BD";
+      return d.toLocaleString(locale, {
+        timeZone: "Asia/Dhaka",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+    function getDepositHistory() {
+      try {
+        const list = JSON.parse(localStorage.getItem(DEPOSIT_HISTORY_KEY) || "[]");
+        return Array.isArray(list) ? list : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveDepositHistory(list) {
+      localStorage.setItem(DEPOSIT_HISTORY_KEY, JSON.stringify(list));
+    }
+
+    function getDiamondOrdersHistory() {
+      try {
+        const list = JSON.parse(localStorage.getItem(DIAMOND_ORDERS_KEY) || "[]");
+        return Array.isArray(list) ? list : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveDiamondOrdersHistory(list) {
+      localStorage.setItem(DIAMOND_ORDERS_KEY, JSON.stringify(list));
+    }
+
+    function renderOrdersHistory() {
+      const lang = localStorage.getItem("language") || "bn";
+      const t = orderTranslations[lang] || orderTranslations.bn;
+      const filterVal = document.getElementById("service-filter")?.value || "all";
+      const searchQuery = (document.getElementById("search-input")?.value || "").trim().toLowerCase();
+      const listBox = document.getElementById("orders-history-list");
+      const emptyBox = document.getElementById("orders-result-box");
+      if (!listBox || !emptyBox) return;
+
+      const showDeposits = filterVal === "all" || filterVal === "add_money";
+      const showOrders = filterVal !== "add_money";
+
+      const deposits = showDeposits ? getDepositHistory().map(d => ({ ...d, __type: "deposit" })) : [];
+      const rawOrders = showOrders ? getDiamondOrdersHistory() : [];
+      const orders = rawOrders
+        .filter(o => {
+          if (filterVal === "all") return true;
+          const srv = String(o.service || "").toLowerCase();
+          const pkg = String(o.pkgName || o.package || "").toLowerCase();
+          if (filterVal === "weekly") return pkg.includes("weekly");
+          if (filterVal === "monthly") return pkg.includes("monthly");
+          if (filterVal === "likes") return srv.includes("like") || pkg.includes("like");
+          if (filterVal === "diamonds") return srv.includes("diamond") || pkg.includes("diamond");
+          return true;
+        })
+        .map(o => ({ ...o, __type: "order" }));
+
+      let combined = [...orders, ...deposits];
+
+      if (searchQuery) {
+        combined = combined.filter(item => {
+          const hay = [
+            item.orderNo,
+            item.orderId,
+            item.id,
+            item.requestId,
+            item.uid,
+            item.nickname,
+            item.trxId,
+            item.pkgName,
+            item.package
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return hay.includes(searchQuery);
         });
+      }
 
-        window.getCurrentAuthUser = () => currentUser;
-    </script>
+      if (!combined.length) {
+        listBox.innerHTML = "";
+        emptyBox.style.display = "block";
+        return;
+      }
 
-    <script>
-        const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
-        const DEPOSIT_STATUS_ENDPOINT = `${WORKER_URL}/add-money-status`;
-        const DEPOSIT_HISTORY_KEY = "gv_add_money_history";
+      emptyBox.style.display = "none";
+      listBox.innerHTML = combined.map(item => {
+        if (item.__type === "order") {
+          const st = (item.status || "PENDING").toUpperCase();
+          let badgeClass = "status-pending";
+          let statusLabel = "Pending";
+          let botMsg = BOT_MESSAGES.orderPending;
 
-        const BOT_MESSAGES = {
-            pending: "আপনার রিকোয়েস্টটি পেন্ডিং রয়েছে, আ্যডমিন চেক করে কনফার্ম করার পর অটোমেটিক টাকা ওয়ালেটে যুক্ত হবে ৷ অনুগ্রহ করে অপেক্ষা করুন",
-            confirmed: (amount) => `আপনার ${amount} ৳ ওয়ালেটে সফলভাবে যুক্ত হয়েছে, অপেক্ষা করার জন্য ধন্যবাদ`,
-            cancelled: "ইতিপূর্বেই এই ট্রানজেকশন আইডি ব্যবহার করেছেন বা এই ট্রানজেকশন আইডি ভুল, অন্য ট্রানজেকশন আইডি দিয়ে আবার চেষ্টা করুন। বার বার ভিন্ন ট্রানজেকশন আইডি দিয়ে স্প্যাম করলে সাসপেন্ড করা হবে এবং আপনার ওয়ালেট ব্যালেন্স বাজেয়াপ্ত করা হবে"
-        };
+          if (st === "CONFIRMED") {
+            badgeClass = "status-confirmed";
+            statusLabel = "Order Completed";
+            botMsg = BOT_MESSAGES.orderConfirmed(item.orderNo || item.orderId);
+          } else if (st === "CANCELLED") {
+            badgeClass = "status-cancelled";
+            statusLabel = "Order Cancelled";
+            botMsg = BOT_MESSAGES.orderCancelled(item.orderNo || item.orderId, item.total);
+          }
 
-        const orderTranslations = {
-            en: {
-                title: "Game Vault - Orders & History",
-                history_title: "Transaction History",
-                history_sub: "View all your purchases and deposits",
-                select_service: "Select Service",
-                all_services: "All Services / Packs",
-                add_money_service: "Add Money / Deposits",
-                search_btn: "Search",
-                no_transactions: "No transactions found",
-                requestedText: "Requested",
-                creditedText: "Credited",
-                cancelledText: "Cancelled",
-                createdTimeLabel: "Requested Time",
-                resolvedTimeLabel: "Updated Time",
-                footer_desc: "Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
-                footer_copy: "© 2025 - 2026 Game Vault Bangladesh, All trademarks and copyrights belong to their respective owners.",
-                made_by: `Made by <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault 👾</a>`,
-                nav_home: "Home",
-                nav_orders: "Orders",
-                nav_add_money: "Add Money",
-                nav_support: "Support",
-                nav_profile: "Profile",
-                modal_lang: "Language"
-            },
-            bn: {
-                title: "Game Vault - অর্ডার ও হিস্ট্রি",
-                history_title: "ট্রানজেকশন হিস্ট্রি",
-                history_sub: "আপনার সব কেনাকাটা ও ডিপোজিট দেখুন",
-                select_service: "সার্ভিস নির্বাচন করুন",
-                all_services: "সব সার্ভিস / প্যাক",
-                add_money_service: "অ্যাড মানি / ডিপোজিট",
-                search_btn: "সার্চ করুন",
-                no_transactions: "কোনো ট্রানজেকশন পাওয়া যায়নি",
-                requestedText: "রিকোয়েস্টকৃত",
-                creditedText: "যুক্ত হয়েছে",
-                cancelledText: "বাতিল হয়েছে",
-                createdTimeLabel: "রিকোয়েস্টের সময়",
-                resolvedTimeLabel: "আপডেটের সময়",
-                footer_desc: "ইনস্ট্যান্ট গেম টপ-আপ, লাইক এবং গিল্ড গ্লোরি — ২০২৫ সাল থেকে বিশ্বজুড়ে গেমারদের বিশ্বস্ত।",
-                footer_copy: "© ২০২৫ - ২০২৬ Game Vault Bangladesh, সকল ট্রেডমার্ক ও কপিরাইট তাদের নিজ নিজ মালিকদের।",
-                made_by: `তৈরি করেছে <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault 👾</a>`,
-                nav_home: "হোম",
-                nav_orders: "অর্ডার",
-                nav_add_money: "অ্যাড মানি",
-                nav_support: "সাপোর্ট",
-                nav_profile: "প্রোফাইল",
-                modal_lang: "ভাষা"
-            }
-        };
+          const createdFormatted = item.createdAt ? formatFullDateTime(item.createdAt) : formatFullDateTime(new Date());
+          const resolvedLine = item.resolvedAt
+            ? `<div class="history-time">${t.resolvedTimeLabel}: <strong>${formatFullDateTime(item.resolvedAt)}</strong></div>`
+            : "";
 
-        function formatFullDateTime(dateInput = new Date()) {
-            const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
-            if (Number.isNaN(d.getTime())) return String(dateInput || "");
-            const lang = localStorage.getItem("language") || "bn";
-            const locale = lang === "en" ? "en-GB" : "bn-BD";
-            return d.toLocaleString(locale, {
-                timeZone: "Asia/Dhaka",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
+          return `
+            <div class="history-item">
+              <div class="history-item-top">
+                <strong>#${item.orderNo || item.orderId} • ${item.pkgName || item.package}</strong>
+                <span class="status-tag ${badgeClass}">${statusLabel}</span>
+              </div>
+              <div>UID: <strong>${item.uid}</strong> (${item.nickname || ""})</div>
+              <div style="color:var(--muted-text); margin-top:3px;">Total: <strong>${item.total} ৳</strong> • Method: <strong>${item.method}</strong></div>
+              <div class="history-time">${t.createdTimeLabel}: <strong>${createdFormatted}</strong></div>
+              ${resolvedLine}
+              <div class="history-bot-msg"><strong>Bot :</strong> ${botMsg}</div>
+            </div>
+          `;
+        }
+
+        const st = (item.status || "PENDING").toUpperCase();
+        let badgeClass = "status-pending";
+        let statusLabel = "Pending";
+        let amountLine = `${t.requestedText}: <strong>${item.amount} ৳</strong>`;
+        let botMsg = BOT_MESSAGES.pending;
+
+        if (st === "CONFIRMED") {
+          badgeClass = "status-confirmed";
+          statusLabel = "Confirmed";
+          const creditedVal = item.creditedAmount || item.amount;
+          amountLine = `${t.creditedText}: <strong style="color:#05a86b;">+${creditedVal} ৳</strong>`;
+          botMsg = BOT_MESSAGES.confirmed(creditedVal);
+        } else if (st === "CANCELLED") {
+          badgeClass = "status-cancelled";
+          statusLabel = "Cancelled";
+          amountLine = `${t.cancelledText}: <strong>${item.amount} ৳</strong>`;
+          botMsg = BOT_MESSAGES.cancelled;
+        }
+
+        const createdFormatted = item.createdAt ? formatFullDateTime(item.createdAt) : formatFullDateTime(new Date());
+        const resolvedLine = item.resolvedAt
+          ? `<div class="history-time">${t.resolvedTimeLabel}: <strong>${formatFullDateTime(item.resolvedAt)}</strong></div>`
+          : "";
+
+        return `
+          <div class="history-item">
+            <div class="history-item-top">
+              <strong>#${item.requestId} • ${item.method}</strong>
+              <span class="status-tag ${badgeClass}">${statusLabel}</span>
+            </div>
+            <div>${amountLine}</div>
+            <div style="color:var(--muted-text); margin-top:3px;">TrxID: <strong>${item.trxId}</strong></div>
+            <div class="history-time">${t.createdTimeLabel}: <strong>${createdFormatted}</strong></div>
+            ${resolvedLine}
+            <div class="history-bot-msg"><strong>Bot :</strong> ${botMsg}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function refreshOrdersDepositHistory(emailOverride = "") {
+      const depList = getDepositHistory();
+      const ordList = getDiamondOrdersHistory();
+      const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
+      const customerEmail = (emailOverride || user?.email || "").toLowerCase();
+
+      renderOrdersHistory();
+
+      if (depList.length || customerEmail) {
+        try {
+          const res = await fetch(DEPOSIT_STATUS_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              requestIds: depList.map(item => item.requestId),
+              customerEmail
+            })
+          });
+          const data = await res.json().catch(() => null);
+          if (res.ok && data && Array.isArray(data.items) && data.items.length) {
+            const existingMap = new Map(depList.map(i => [i.requestId, i]));
+            const merged = data.items.map(remote => {
+              const prev = existingMap.get(remote.requestId) || {};
+              const nextStatus = (remote.status || prev.status || "PENDING").toUpperCase();
+              const finalAmount = Number(remote.creditedAmount || prev.amount || remote.amount || 0);
+              let customBotMsg = BOT_MESSAGES.pending;
+              if (nextStatus === "CONFIRMED") customBotMsg = BOT_MESSAGES.confirmed(finalAmount);
+              else if (nextStatus === "CANCELLED") customBotMsg = BOT_MESSAGES.cancelled;
+
+              return {
+                ...prev,
+                ...remote,
+                status: nextStatus,
+                creditedAmount: finalAmount,
+                resolvedAt: remote.resolvedAt || prev.resolvedAt || (nextStatus !== "PENDING" ? new Date().toISOString() : ""),
+                botMessage: customBotMsg
+              };
             });
-        }
+            saveDepositHistory(merged);
+          }
+        } catch {}
+      }
 
-        function getDepositHistory() {
-            try {
-                const list = JSON.parse(localStorage.getItem(DEPOSIT_HISTORY_KEY) || "[]");
-                return Array.isArray(list) ? list : [];
-            } catch {
-                return [];
-            }
-        }
+      if (ordList.length || customerEmail) {
+        try {
+          const res = await fetch(ORDERS_STATUS_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              orderIds: ordList.map(item => item.orderId || item.id),
+              customerEmail
+            })
+          });
+          const data = await res.json().catch(() => null);
+          if (res.ok && data && Array.isArray(data.items) && data.items.length) {
+            const existingMap = new Map(ordList.map(i => [i.orderId || i.id, i]));
+            const merged = data.items.map(remote => {
+              const prev = existingMap.get(remote.orderId) || {};
+              const nextStatus = (remote.status || prev.status || "PENDING").toUpperCase();
+              let customBotMsg = BOT_MESSAGES.orderPending;
+              if (nextStatus === "CONFIRMED") {
+                customBotMsg = BOT_MESSAGES.orderConfirmed(remote.orderNo || remote.orderId);
+              } else if (nextStatus === "CANCELLED") {
+                customBotMsg = BOT_MESSAGES.orderCancelled(remote.orderNo || remote.orderId, remote.total);
+              }
 
-        function saveDepositHistory(list) {
-            localStorage.setItem(DEPOSIT_HISTORY_KEY, JSON.stringify(list));
-        }
-
-        function renderOrdersHistory() {
-            const lang = localStorage.getItem("language") || "bn";
-            const t = orderTranslations[lang] || orderTranslations.bn;
-            const filterVal = document.getElementById("service-filter")?.value || "all";
-            const listBox = document.getElementById("orders-history-list");
-            const emptyBox = document.getElementById("orders-result-box");
-            if (!listBox || !emptyBox) return;
-
-            const showDeposits = filterVal === "all" || filterVal === "add_money";
-            const deposits = showDeposits ? getDepositHistory() : [];
-
-            if (!deposits.length) {
-                listBox.innerHTML = "";
-                emptyBox.style.display = "block";
-                return;
-            }
-
-            emptyBox.style.display = "none";
-            listBox.innerHTML = deposits.map(item => {
-                const st = (item.status || "PENDING").toUpperCase();
-                let badgeClass = "status-pending";
-                let statusLabel = "Pending";
-                let amountLine = `${t.requestedText}: <strong>${item.amount} ৳</strong>`;
-                let botMsg = BOT_MESSAGES.pending;
-
-                if (st === "CONFIRMED") {
-                    badgeClass = "status-confirmed";
-                    statusLabel = "Confirmed";
-                    const creditedVal = item.creditedAmount || item.amount;
-                    amountLine = `${t.creditedText}: <strong style="color:#05a86b;">+${creditedVal} ৳</strong>`;
-                    botMsg = BOT_MESSAGES.confirmed(creditedVal);
-                } else if (st === "CANCELLED") {
-                    badgeClass = "status-cancelled";
-                    statusLabel = "Cancelled";
-                    amountLine = `${t.cancelledText}: <strong>${item.amount} ৳</strong>`;
-                    botMsg = BOT_MESSAGES.cancelled;
-                }
-
-                const createdFormatted = item.createdAt ? formatFullDateTime(item.createdAt) : formatFullDateTime(new Date());
-                const resolvedLine = item.resolvedAt
-                    ? `<div class="history-time">${t.resolvedTimeLabel}: <strong>${formatFullDateTime(item.resolvedAt)}</strong></div>`
-                    : "";
-
-                return `
-                    <div class="history-item">
-                        <div class="history-item-top">
-                            <strong>#${item.requestId} • ${item.method}</strong>
-                            <span class="status-tag ${badgeClass}">${statusLabel}</span>
-                        </div>
-                        <div>${amountLine}</div>
-                        <div style="color:var(--muted-text); margin-top:3px;">TrxID: <strong>${item.trxId}</strong></div>
-                        <div class="history-time">${t.createdTimeLabel}: <strong>${createdFormatted}</strong></div>
-                        ${resolvedLine}
-                        <div class="history-bot-msg"><strong>Bot :</strong> ${botMsg}</div>
-                    </div>
-                `;
-            }).join("");
-        }
-
-        async function refreshOrdersDepositHistory(emailOverride = "") {
-            const list = getDepositHistory();
-            const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
-            const customerEmail = (emailOverride || user?.email || "").toLowerCase();
-
-            renderOrdersHistory();
-
-            if (!list.length && !customerEmail) return;
-
-            try {
-                const res = await fetch(DEPOSIT_STATUS_ENDPOINT, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        requestIds: list.map(item => item.requestId),
-                        customerEmail
-                    })
-                });
-                const data = await res.json().catch(() => null);
-                if (res.ok && data && Array.isArray(data.items) && data.items.length) {
-                    const existingMap = new Map(list.map(i => [i.requestId, i]));
-                    const merged = data.items.map(remote => {
-                        const prev = existingMap.get(remote.requestId) || {};
-                        const nextStatus = (remote.status || prev.status || "PENDING").toUpperCase();
-                        const finalAmount = Number(remote.creditedAmount || prev.amount || remote.amount || 0);
-
-                        let customBotMsg = BOT_MESSAGES.pending;
-                        if (nextStatus === "CONFIRMED") {
-                            customBotMsg = BOT_MESSAGES.confirmed(finalAmount);
-                        } else if (nextStatus === "CANCELLED") {
-                            customBotMsg = BOT_MESSAGES.cancelled;
-                        }
-
-                        return {
-                            ...prev,
-                            ...remote,
-                            status: nextStatus,
-                            creditedAmount: finalAmount,
-                            resolvedAt: remote.resolvedAt || prev.resolvedAt || (nextStatus !== "PENDING" ? new Date().toISOString() : ""),
-                            botMessage: customBotMsg
-                        };
-                    });
-
-                    saveDepositHistory(merged);
-                    renderOrdersHistory();
-                }
-            } catch {}
-        }
-        window.refreshOrdersDepositHistory = refreshOrdersDepositHistory;
-
-        function filterOrders() {
-            const box = document.getElementById('orders-result-box');
-            const listBox = document.getElementById('orders-history-list');
-            const target = listBox && listBox.innerHTML.trim() ? listBox : box;
-            renderOrdersHistory();
-            if (target) {
-                target.style.opacity = '0.4';
-                setTimeout(() => {
-                    target.style.opacity = '1';
-                }, 140);
-            }
-        }
-
-        function setActiveNavItem(targetUrl) {
-            const nav = document.getElementById('persistent-bottom-nav');
-            if (!nav) return;
-            nav.querySelectorAll('.nav-item').forEach(item => {
-                const isMatch = item.getAttribute('data-nav-target') === targetUrl;
-                item.classList.toggle('active', isMatch);
+              return {
+                ...prev,
+                ...remote,
+                status: nextStatus,
+                resolvedAt: remote.resolvedAt || prev.resolvedAt || (nextStatus !== "PENDING" ? new Date().toISOString() : ""),
+                botMessage: customBotMsg
+              };
             });
-            updateNavIndicator(false);
-        }
+            saveDiamondOrdersHistory(merged);
+          }
+        } catch {}
+      }
 
-        function updateNavIndicator(instant = false) {
-            const nav = document.getElementById('persistent-bottom-nav');
-            const indicator = document.getElementById('nav-indicator');
-            if (!nav || !indicator) return;
+      renderOrdersHistory();
+    }
+    window.refreshOrdersDepositHistory = refreshOrdersDepositHistory;
 
-            const activeItem = nav.querySelector('.nav-item.active');
-            if (!activeItem) return;
+    function applyOrdersLanguage(lang) {
+      const t = orderTranslations[lang] || orderTranslations.bn;
+      document.documentElement.lang = lang;
+      localStorage.setItem("language", lang);
 
-            if (instant) {
-                indicator.style.transition = 'none';
-            }
+      document.getElementById("pageTitle").textContent = t.title;
+      document.getElementById("historyTitle").textContent = t.history_title;
+      document.getElementById("historySub").textContent = t.history_sub;
+      document.getElementById("selectServiceLabel").textContent = t.select_service;
+      document.getElementById("optAllServices").textContent = t.all_services;
+      document.getElementById("optAddMoney").textContent = t.add_money_service;
+      document.getElementById("search-btn").textContent = t.search_btn;
+      document.getElementById("orders-result-box").textContent = t.no_transactions;
+      document.getElementById("footerDesc").textContent = t.footer_desc;
+      document.getElementById("footerCopy").textContent = t.footer_copy;
+      document.getElementById("madeBy").innerHTML = t.made_by;
+      document.getElementById("navHome").textContent = t.nav_home;
+      document.getElementById("navOrders").textContent = t.nav_orders;
+      document.getElementById("navAddMoney").textContent = t.nav_add_money;
+      document.getElementById("navSupport").textContent = t.nav_support;
+      document.getElementById("navProfile").textContent = t.nav_profile;
+      document.getElementById("langToggleBtn").textContent = t.langBtn;
 
-            const navRect = nav.getBoundingClientRect();
-            const itemRect = activeItem.getBoundingClientRect();
-            indicator.style.width = `${itemRect.width}px`;
-            indicator.style.transform = `translate3d(${itemRect.left - navRect.left - 6}px, 0, 0)`;
+      renderOrdersHistory();
+    }
 
-            if (instant) {
-                indicator.getBoundingClientRect();
-                indicator.style.transition = '';
-            }
-        }
-        window.updateNavIndicator = updateNavIndicator;
+    function applySavedTheme() {
+      const saved = localStorage.getItem("theme");
+      const icon = document.getElementById("themeIcon");
+      if (saved === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+        if (icon) icon.className = "fa-solid fa-sun";
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        if (icon) icon.className = "fa-solid fa-moon";
+      }
+    }
 
-        async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
-            if (event) event.preventDefault();
+    document.getElementById("langToggleBtn").addEventListener("click", () => {
+      const next = (localStorage.getItem("language") || "bn") === "bn" ? "en" : "bn";
+      applyOrdersLanguage(next);
+    });
 
-            const currentFile = window.location.pathname.split('/').pop() || 'orders.html';
-            if (currentFile === targetUrl) {
-                setActiveNavItem(targetUrl);
-                return;
-            }
+    document.getElementById("themeToggleBtn").addEventListener("click", () => {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      localStorage.setItem("theme", isDark ? "light" : "dark");
+      applySavedTheme();
+    });
 
-            if (requiresAuth) {
-                const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
-                localStorage.removeItem("redirectUrl");
-                if (!user || !user.email) {
-                    localStorage.setItem("redirectUrl", targetUrl);
-                    setActiveNavItem('profile.html');
-                    sessionStorage.setItem('prevNavTarget', currentFile);
-                    setTimeout(() => {
-                        window.location.href = "login.html";
-                    }, 180);
-                    return;
-                }
-            }
+    document.getElementById("service-filter").addEventListener("change", renderOrdersHistory);
+    document.getElementById("search-btn").addEventListener("click", renderOrdersHistory);
+    document.getElementById("search-input").addEventListener("input", renderOrdersHistory);
 
-            setActiveNavItem(targetUrl);
-            sessionStorage.setItem('prevNavTarget', currentFile);
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 220);
-        }
-        window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
-
-        function applyTheme() {
-            const theme = localStorage.getItem('theme') || 'light';
-            const icon = document.getElementById('theme-icon');
-            if (theme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                if (icon) {
-                    icon.className = 'fa-solid fa-sun';
-                    icon.style.color = '#eab308';
-                }
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-                if (icon) {
-                    icon.className = 'fa-solid fa-moon';
-                    icon.style.color = '';
-                }
-            }
-        }
-
-        function toggleTheme() {
-            const current = localStorage.getItem('theme') || 'light';
-            const next = current === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', next);
-            applyTheme();
-        }
-
-        function openModal() { document.getElementById('langModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('langModal').style.display = 'none'; }
-
-        function selectLang(lang) {
-            localStorage.setItem('language', lang);
-            applyLanguage(lang);
-            renderOrdersHistory();
-            closeModal();
-        }
-
-        function applyLanguage(lang) {
-            const t = orderTranslations[lang] || orderTranslations.bn;
-            document.documentElement.lang = lang;
-
-            const titleEl = document.getElementById('page-title');
-            if (titleEl) titleEl.innerText = t.title;
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.innerText = t[key];
-            });
-
-            document.querySelectorAll('[data-i18n-html]').forEach(el => {
-                const key = el.getAttribute('data-i18n-html');
-                if (t[key]) el.innerHTML = t[key];
-            });
-
-            if (lang === 'bn') {
-                document.getElementById('current-lang-flag').innerText = '🇧🇩';
-                document.getElementById('current-lang-text').innerText = 'বাংলা';
-                document.getElementById('check-bn').style.display = 'block';
-                document.getElementById('check-en').style.display = 'none';
-            } else {
-                document.getElementById('current-lang-flag').innerText = '🇺🇸';
-                document.getElementById('current-lang-text').innerText = 'EN';
-                document.getElementById('check-en').style.display = 'block';
-                document.getElementById('check-bn').style.display = 'none';
-            }
-
-            requestAnimationFrame(() => updateNavIndicator(false));
-        }
-
-        function initSmoothNav() {
-            const nav = document.getElementById('persistent-bottom-nav');
-            const indicator = document.getElementById('nav-indicator');
-            if (!nav || !indicator) return;
-
-            const prevTarget = sessionStorage.getItem('prevNavTarget');
-            sessionStorage.removeItem('prevNavTarget');
-
-            if (prevTarget) {
-                const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
-                if (prevItem) {
-                    indicator.style.transition = 'none';
-                    const navRect = nav.getBoundingClientRect();
-                    const prevRect = prevItem.getBoundingClientRect();
-                    indicator.style.width = `${prevRect.width}px`;
-                    indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
-                    indicator.getBoundingClientRect();
-                    indicator.style.transition = '';
-                }
-                requestAnimationFrame(() => updateNavIndicator(false));
-            } else {
-                updateNavIndicator(true);
-            }
-
-            document.documentElement.classList.add('page-ready');
-        }
-
-        applyTheme();
-        applyLanguage(localStorage.getItem('language') || 'bn');
-        renderOrdersHistory();
-
-        if (document.readyState === 'complete') {
-            initSmoothNav();
-        } else {
-            window.addEventListener('load', initSmoothNav, { once: true });
-            setTimeout(() => {
-                if (!document.documentElement.classList.contains('page-ready')) {
-                    initSmoothNav();
-                }
-            }, 300);
-        }
-
-        window.addEventListener('resize', () => updateNavIndicator(true));
-    </script>
+    window.addEventListener("DOMContentLoaded", () => {
+      applySavedTheme();
+      applyOrdersLanguage(localStorage.getItem("language") || "bn");
+      refreshOrdersDepositHistory();
+    });
+  </script>
 </body>
 </html>
