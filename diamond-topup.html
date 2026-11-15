@@ -1405,6 +1405,7 @@
         const photoURL = (profileData && profileData.photoURL) || user.photoURL || "";
 
         window.__gvCurrentUser = {
+          uid: user.uid,
           name: displayName,
           email: user.email,
           photoURL,
@@ -1488,6 +1489,43 @@
       const stripChip = document.getElementById("stripWalletChip");
       if (headerAmt) headerAmt.textContent = String(clean);
       if (stripChip) stripChip.textContent = `Wallet: ৳ ${clean}`;
+    }
+
+    async function syncWalletBalanceToFirestore(newBal) {
+      const email = window.__gvCurrentUser?.email;
+      const uid = window.__gvCurrentUser?.uid;
+      if (!email || email === "Guest") return;
+
+      const projectId = "gamevault-f38b3";
+      const baseUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents`;
+      const emailDocUrl = `${baseUrl}/users_by_email/${encodeURIComponent(email.toLowerCase())}`;
+
+      try {
+        await fetch(`${emailDocUrl}?updateMask.fieldPaths=balance`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fields: {
+              balance: { doubleValue: Number(newBal || 0) }
+            }
+          })
+        });
+      } catch {}
+
+      if (uid) {
+        try {
+          const userDocUrl = `${baseUrl}/users/${encodeURIComponent(uid)}`;
+          await fetch(`${userDocUrl}?updateMask.fieldPaths=balance`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fields: {
+                balance: { doubleValue: Number(newBal || 0) }
+              }
+            })
+          });
+        } catch {}
+      }
     }
 
     function getDiamondPackages() {
@@ -1731,6 +1769,7 @@
       }
     });
 
+    // অর্ডার করা মাত্রই ওয়ালেট থেকে টাকা কেটে নেওয়া হবে; কনফার্ম হলে Completed, ক্যানসেল হলে রিফান্ড হবে
     payWalletBtn.addEventListener("click", async () => {
       const t = translations[currentLang];
       if (!verifiedPlayerData) {
@@ -1752,12 +1791,16 @@
 
       const orderId = "GV" + Date.now().toString().slice(-8);
       const pkgName = `${pkg.diamonds} Diamonds`;
-      const newBal = currentBal - total;
+      const newBal = Math.max(0, currentBal - total);
       const customerEmail = window.__gvCurrentUser?.email || "Guest";
 
       payWalletBtn.disabled = true;
       payWalletBtn.textContent = t.sendingOrder;
       orderReceipt.classList.remove("show");
+
+      // অর্ডার সাবমিট করার সাথে সাথেই ব্যালেন্স কেটে নেওয়া হচ্ছে যাতে বারবার অর্ডার না দেওয়া যায়
+      setCurrentWalletBalance(newBal);
+      syncWalletBalanceToFirestore(newBal);
 
       try {
         const res = await fetch(ORDER_ENDPOINT, {
@@ -1785,14 +1828,14 @@
           throw new Error(data?.error || t.orderFailed);
         }
 
-        setCurrentWalletBalance(newBal);
-
         const orderRecord = {
+          orderId,
           id: orderId,
           orderNo: data.orderNo ?? null,
           uid: verifiedPlayerData.uid,
           nickname: verifiedPlayerData.nickname,
           service: "Diamonds",
+          pkgName,
           package: pkgName,
           quantity: packageQuantity,
           unitPrice: pkg.price,
@@ -1800,7 +1843,8 @@
           oddBal: newBal,
           method: "Wallet Balance",
           customerEmail,
-          status: "Sent to Moderator",
+          status: "PENDING",
+          botMessage: "আপনার অর্ডারটি পেন্ডিং রয়েছে, আ্যডমিন চেক করে কনফার্ম করার পর ডেলিভারি সম্পন্ন হবে।",
           createdAt: new Date().toISOString()
         };
 
@@ -1812,14 +1856,18 @@
 
         const orderNoLine = data.orderNo ? `Order No: #${data.orderNo}<br/>` : "";
         orderReceipt.innerHTML = `
-          <strong>Order Sent (#${orderId})</strong><br/>
+          <strong>Order Pending (#${orderId})</strong><br/>
           ${orderNoLine}Player: ${verifiedPlayerData.nickname} (${verifiedPlayerData.uid})<br/>
           Package: ${pkgName} × ${packageQuantity} = ${total} ৳<br/>
-          Remaining Balance: ${newBal} ৳
+          Deducted Balance: ${newBal} ৳
         `;
         orderReceipt.classList.add("show");
         updateWalletSummary();
       } catch (err) {
+        // নেটওয়ার্ক বা সার্ভার এরর হলে কাটা ব্যালেন্স সাথে সাথে ফেরত দেওয়া হচ্ছে
+        setCurrentWalletBalance(currentBal);
+        syncWalletBalanceToFirestore(currentBal);
+
         orderReceipt.innerHTML = `<span style="color: var(--danger); font-weight: 700;">${err.message || t.orderFailed}</span>`;
         orderReceipt.classList.add("show");
         updateWalletSummary();
