@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="page-title">Game Vault - Terms of Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #1f2937;
+            --header-bg: #ffffff;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --accent-color: #eab308;
+            --subtext-color: #64748b;
+            --banner-bg: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+            --banner-border: rgba(5, 168, 107, 0.25);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --header-bg: #1e293b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --subtext-color: #94a3b8;
+            --banner-bg: linear-gradient(135deg, #1e293b 0%, rgba(5, 168, 107, 0.16) 100%);
+            --banner-border: rgba(5, 168, 107, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 105px;
+            transition: background 0.25s ease, color 0.25s ease;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .logo-container {
+            min-width: 0;
+            flex-shrink: 1;
+        }
+
+        .logo-container a {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .logo-container img {
+            height: 32px;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Dark Mode, Language Switcher, and Sign In Logo - Identical Size */
+        .header-ctrl-item {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .header-ctrl-item:active {
+            transform: scale(0.94);
+        }
+
+        .signin-logo-btn {
+            background: transparent;
+            color: var(--text-color);
+            border-color: var(--border-color);
+        }
+
+        .header-wallet-pill {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px 4px 5px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: var(--text-color);
+            flex-shrink: 0;
+        }
+
+        .header-wallet-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .header-wallet-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .header-wallet-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+            padding-right: 2px;
+            text-decoration: none;
+        }
+
+        .header-wallet-label {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .header-wallet-amount {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+
+        .header-wallet-plus {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #10b981;
+            color: #ffffff;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            text-decoration: none;
+            flex-shrink: 0;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .header-wallet-plus:active {
+            transform: scale(0.9);
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 18px auto 0;
+            padding: 0 15px;
+            overflow-x: hidden;
+        }
+
+        /* Back Option in White Box */
+        .back-box {
+            background: #ffffff;
+            color: #1f2937;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #1f2937;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #05a86b;
+        }
+
+        .back-link:active {
+            transform: scale(0.96);
+        }
+
+        /* Terms of Service + Last update in White + Light Green Box */
+        .terms-header-box {
+            background: var(--banner-bg);
+            border: 1px solid var(--banner-border);
+            border-radius: 18px;
+            padding: 22px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 18px rgba(5, 168, 107, 0.08);
+        }
+
+        .terms-header-box h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            line-height: 1.25;
+        }
+
+        .terms-last-updated {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #059669;
+            background: rgba(5, 168, 107, 0.12);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        [data-theme="dark"] .terms-last-updated {
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.14);
+        }
+
+        /* Terms Box (1 to 7) */
+        .terms-body-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 22px 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+
+        .terms-block + .terms-block {
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .terms-block h2 {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .terms-block p {
+            font-size: 14px;
+            line-height: 1.65;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .terms-list {
+            list-style: disc;
+            padding-left: 20px;
+            margin: 10px 0 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .terms-list li {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .refund-policy-link {
+            color: #10b981;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        [data-theme="dark"] .refund-policy-link {
+            color: #6ee7b7;
+        }
+
+        .terms-notice-red {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #dc2626;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        [data-theme="dark"] .terms-notice-red {
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.3);
+            color: #fca5a5;
+        }
+
+        /* Below Terms Box: Logo + About + Copyright + Made By */
+        .terms-brand-footer {
+            margin-top: 26px;
+            padding: 24px 18px 16px;
+            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+        }
+
+        .terms-brand-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .terms-brand-logo img {
+            height: 36px;
+            max-width: 160px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .terms-brand-desc {
+            font-size: 13.5px;
+            line-height: 1.65;
+            color: var(--subtext-color);
+            margin-bottom: 10px;
+        }
+
+        .terms-brand-copy {
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: var(--subtext-color);
+            margin-bottom: 14px;
+        }
+
+        .terms-made-by {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--subtext-color);
+        }
+
+        .terms-made-by a {
+            color: #6ee7b7;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        [data-theme="light"] .terms-made-by a {
+            color: #10b981;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--header-bg);
+            width: 100%;
+            max-width: 380px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .lang-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-weight: 600;
+            transition: transform 0.15s ease, border-color 0.2s ease;
+        }
+
+        .lang-option:active {
+            transform: scale(0.98);
+        }
+
+        .lang-option.selected {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.06);
+        }
+
+        /* Persistent Sliding Pill Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+            width: calc(100% - 24px);
+            max-width: 480px;
+            background: var(--header-bg);
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            border-radius: 24px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+            border: 1px solid var(--border-color);
+            z-index: 100;
+            will-change: transform;
+            contain: layout style;
+        }
+
+        .bottom-nav.hide-add-money #nav-add-money {
+            display: none;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            height: calc(100% - 12px);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(5, 168, 107, 0.2), rgba(5, 168, 107, 0.07));
+            border: 1px solid rgba(5, 168, 107, 0.32);
+            box-shadow: 0 4px 14px rgba(5, 168, 107, 0.14);
+            will-change: transform, width;
+            transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1),
+                        width 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 1;
+            flex: 1 1 0%;
+            min-width: 0;
+            text-align: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 4px;
+            border-radius: 18px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: color 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
+        }
+
+        .nav-item.active {
+            color: #05a86b;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='block';">
+                <span id="fallback-logo" style="display:none; font-weight:800; font-size:20px; color:var(--accent-color);">GAME VAULT</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <!-- Dark Mode Logo Only -->
+            <button type="button" class="header-ctrl-item" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Theme">
+                <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+
+            <!-- Language Switcher Logo Only -->
+            <button type="button" class="header-ctrl-item" onclick="openModal()" aria-label="Language">
+                <i class="fa-solid fa-globe"></i>
+            </button>
+
+            <!-- Signed Out -> Sign In Logo Only (No Text, No Background) -->
+            <a href="login.html" class="header-ctrl-item signin-logo-btn" id="header-signin-btn" aria-label="Sign In">
+                <i class="fa-regular fa-user"></i>
+            </a>
+
+            <!-- Signed In -> Avatar + Balance ৳ -->
+            <div class="header-wallet-pill" id="header-wallet-pill">
+                <a href="profile.html" class="header-wallet-avatar" id="header-user-avatar">
+                    <i class="fa-regular fa-user" style="font-size: 13px; color: var(--text-color);"></i>
+                </a>
+                <a href="profile.html" class="header-wallet-info">
+                    <span class="header-wallet-label" data-i18n="balance_label">Balance</span>
+                    <span class="header-wallet-amount">৳ <span id="header-user-balance">0</span></span>
+                </a>
+                <a href="add-money.html" class="header-wallet-plus" id="header-add-money-plus" style="display: none;">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" id="main-container">
+
+        <!-- Back Option in White Box -->
+        <div class="back-box">
+            <a href="index.html" onclick="handleBackNav(event)" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span data-i18n="back">Back</span>
+            </a>
+        </div>
+
+        <!-- Terms of Service + Last update in White + Light Green Box -->
+        <div class="terms-header-box">
+            <h1 data-i18n="terms_title">Terms of Service</h1>
+            <div class="terms-last-updated">
+                <i class="fa-regular fa-clock"></i>
+                <span data-i18n="last_update">Last update : 15 November, 2026</span>
+            </div>
+        </div>
+
+        <!-- Terms Box (1 to 7) -->
+        <div class="terms-body-box">
+            <!-- 1. Introduction -->
+            <section class="terms-block">
+                <h2 data-i18n="t1_heading">1. Introduction</h2>
+                <p data-i18n="t1_p1">Welcome to Game Vault Bangladesh . These Terms of Service ("Terms") govern your use of our website, mobile experience,  and all related services (together, the "Services"). By creating an account, funding a wallet, placing an order, you agree to these Terms and our Privacy Policy. If you do not agree, Don't  use the Services.</p>
+                <p data-i18n="t1_p2">You must be at least 13 years old to use the Services. If you are between 13 and 18, you confirm that a parent or legal guardian has reviewed and agreed to these Terms on your behalf.</p>
+            </section>
+
+            <!-- 2. Services Provided -->
+            <section class="terms-block">
+                <h2 data-i18n="t2_heading">2. Services Provided</h2>
+                <p data-i18n="t2_p1">Game Vault Bangladesh  provides the following services, subject to availability and the product settings shown on the site:</p>
+                <ul class="terms-list">
+                    <li data-i18n="t2_li1">Diamond Top-up (Bangladesh) : In-game diamonds for Free Fire accounts on the BD server.</li>
+                    <li data-i18n="t2_li2">Indonesia Top-up : Diamonds, Weekly/Monthly Membership and Booyah Pass for the Indonesia server.</li>
+                    <li data-i18n="t2_li3">Weekly Lite : Budget diamond package delivered through the Weekly Lite system.</li>
+                    <li data-i18n="t2_li4">Level-up Pass : Provider-defined level-up packs delivered to a Free Fire account.</li>
+                    <li data-i18n="t2_li5">Like Packages : Likes delivered to a Free Fire player profile.</li>
+                    <li data-i18n="t2_li6">Auto Likes : Daily automated like-delivery subscriptions.</li>
+                    <li data-i18n="t2_li7">Guild Glory : Bot packs that play for your guild and earn guild glory (each pack grants 8 hours of bot play time).</li>
+                    <li data-i18n="t2_li8">Account Tools : Player verification, account information, player search, account statistics.</li>
+                    <li data-i18n="t2_li9">Promotions and Other Products : Flash sales, coin store items, personalized offers and special/product orders.</li>
+                </ul>
+                <div class="terms-notice-red" data-i18n="t2_red">
+                    We may add, modify, suspend, or discontinue any Service or package at any time. Prices, availability and delivery methods may change without prior notice.
+                </div>
+            </section>
+
+            <!-- 3. User Accounts and Registration -->
+            <section class="terms-block">
+                <h2 data-i18n="t3_heading">3. User Accounts and Registration</h2>
+                <p data-i18n="t3_p1">To access most Services you must create an account. By registering, you agree to:</p>
+                <ul class="terms-list">
+                    <li data-i18n="t3_li1">Provide accurate, current and complete information during registration and keep it up to date.</li>
+                    <li data-i18n="t3_li2">Keep your password  and other account credentials confidential.</li>
+                    <li data-i18n="t3_li3">Notify us immediately of any unauthorized use of your account .</li>
+                    <li data-i18n="t3_li4">Accept responsibility for all activity that occurs under your account.</li>
+                    <li data-i18n="t3_li5">Not share, sell or transfer your account  to another person.</li>
+                    <li data-i18n="t3_li6">Not create multiple accounts to abuse promotions, evade limits or commit fraud.</li>
+                    <li data-i18n="t3_li7">Use only the login methods you control, such as  Google.</li>
+                </ul>
+                <div class="terms-notice-red" data-i18n="t3_red">
+                    You are responsible for any activity performed with your credentials until you notify us that they have been compromised.
+                </div>
+            </section>
+
+            <!-- 4. Wallet, Payments and Refunds -->
+            <section class="terms-block">
+                <h2 data-i18n="t4_heading">4. Wallet, Payments and Refunds</h2>
+                <p data-i18n="t4_p1">Purchases are paid from your wallet balance. Wallet top-ups are processed by third-party payment providers: bKash, Nagad and Rocket through our manually payment gateway. By making a payment, you agree to:</p>
+                <ul class="terms-list">
+                    <li data-i18n="t4_li1">Pay all charges incurred under your account.</li>
+                    <li data-i18n="t4_li2">Provide valid and accurate payment information.</li>
+                    <li data-i18n="t4_li3">Authorize us and our payment providers to process the selected payment.</li>
+                    <li data-i18n="t4_li4">Accept that prices, fees and exchange rates may change without prior notice.</li>
+                </ul>
+                <p data-i18n-html="t4_refund">For refunds of failed, undelivered or duplicate orders, see our <a href="javascript:void(0)" onclick="return false;" class="refund-policy-link">Refund Policy</a>.</p>
+                <div class="terms-notice-red" data-i18n="t4_red">
+                    Chargebacks, payment disputes or fraudulent payment methods may result in suspension of your account and forfeiture of any remaining balance, where permitted by law.
+                </div>
+            </section>
+
+            <!-- 5. Delivery Policy -->
+            <section class="terms-block">
+                <h2 data-i18n="t5_heading">5. Delivery Policy</h2>
+                <p data-i18n="t5_p1">We aim to deliver every order promptly. Typical delivery times are:</p>
+                <ul class="terms-list">
+                    <li data-i18n="t5_li1">Diamonds, Indonesia Top-up and Level-up Pass : Usually 1-5 minutes after payment confirmation, but provider delays can occur.</li>
+                    <li data-i18n="t5_li2">Likes : Delivered immediately after purchase, subject to provider availability.</li>
+                    <li data-i18n="t5_li3">Auto Likes : Delivered automatically each day during the active subscription period.</li>
+                    <li data-i18n="t5_li4">Guild Glory: Activated after admin confirmation, usually within a few hours.</li>
+                    <li data-i18n="t5_li5">Redeem Codes: Generated and provided instantly when available.</li>
+                    <li data-i18n="t5_li6">Special and Product Orders: Processed within 24 hours with admin confirmation.</li>
+                </ul>
+                <p data-i18n="t5_p2">A pending order is not a failed order. If delivery cannot be confirmed automatically, the order is queued for manual processing. We are not responsible for:</p>
+                <ul class="terms-list">
+                    <li data-i18n="t5_li7">In-game bugs, errors or server issues.</li>
+                    <li data-i18n="t5_li8">Actions taken by Garena or Free Fire administrators.</li>
+                    <li data-i18n="t5_li9">Incorrect information supplied by you, such as a wrong Player ID, UID or Guild ID.</li>
+                    <li data-i18n="t5_li10">Technical issues beyond our reasonable control.</li>
+                    <li data-i18n="t5_li11">Force majeure events or provider outages.</li>
+                </ul>
+                <div class="terms-notice-red" data-i18n="t5_red">
+                    If a Service is not delivered as described, contact support with the Order ID so we can investigate and complete it.
+                </div>
+            </section>
+
+            <!-- 6. Responsibilities and Conduct -->
+            <section class="terms-block">
+                <h2 data-i18n="t6_heading">6. Responsibilities and Conduct</h2>
+                <p data-i18n="t6_p1">As a user, you agree to:</p>
+                <ul class="terms-list">
+                    <li data-i18n="t6_li1">Provide accurate and truthful information at all times.</li>
+                    <li data-i18n="t6_li2">Double-check Player IDs, UIDs, Guild IDs and regions before placing an order.</li>
+                    <li data-i18n="t6_li3">Make sure your guild has enough space and appropriate join settings before purchasing Guild Glory.</li>
+                    <li data-i18n="t6_li4">Use the Services in compliance with all applicable laws and platform rules.</li>
+                    <li data-i18n="t6_li5">Respect the intellectual property rights of others.</li>
+                    <li data-i18n="t6_li6">Not interfere with, overload or disrupt our Services, servers or networks.</li>
+                    <li data-i18n="t6_li7">Not use the Services for any unlawful, fraudulent or deceptive purpose.</li>
+                    <li data-i18n="t6_li8">Not attempt to gain unauthorized access to our systems, accounts or data.</li>
+                </ul>
+            </section>
+
+            <!-- 7. Prohibited Activities -->
+            <section class="terms-block">
+                <h2 data-i18n="t7_heading">7. Prohibited Activities</h2>
+                <p data-i18n="t7_p1">The following activities are strictly prohibited and may result in suspension or termination:</p>
+                <ul class="terms-list">
+                    <li data-i18n="t7_li1">Fraud: Fraudulent payments, stolen payment methods, identity theft or false disputes.</li>
+                    <li data-i18n="t7_li2">Abuse: Exploiting bugs, promotions or limits, or abusing staff or other users.</li>
+                    <li data-i18n="t7_li3">Harassment: Harassing, threatening or abusing our staff or other users.</li>
+                    <li data-i18n="t7_li4">Reverse Engineering: Attempting to reverse engineer, decompile or copy our platform</li>
+                    <li data-i18n="t7_li5">Malicious Content: Uploading viruses, malware or harmful code.</li>
+                    <li data-i18n="t7_li6">Multiple Accounts: Creating multiple accounts for abuse, evasion or fraud.</li>
+                    <li data-i18n="t7_li7">Illegal Activities: Using the Services for any illegal purpose</li>
+                    <li data-i18n="t7_li8">Data Harvesting: Scraping or harvesting user data without permission.</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Below Terms Box: Logo + About + Copyright + Made By -->
+        <div class="terms-brand-footer">
+            <div class="terms-brand-logo">
+                <img src="logo.png" alt="Game Vault" onerror="this.style.display='none'; document.getElementById('footer-fallback-logo').style.display='block';">
+                <span id="footer-fallback-logo" style="display:none; font-weight:800; font-size:22px; color:var(--accent-color);">GAME VAULT</span>
+            </div>
+            <p class="terms-brand-desc" data-i18n="footer_desc">Game Vault is a cheapest &amp; fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.</p>
+            <p class="terms-brand-copy" data-i18n="footer_copy">© 2025- 2026 Game Vault Bangladesh, All trademarks belong to their respective owners</p>
+            <p class="terms-made-by" data-i18n-html="footer_made_by">Made By <a href="https://t.me/zunayed_islam00" target="_blank" rel="noopener noreferrer">Game Vault</a></p>
+        </div>
+
+    </div>
+
+    <!-- Language Modal -->
+    <div class="modal-overlay" id="langModal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span data-i18n="modal_lang_title">Language</span>
+                <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="lang-option" id="lang-en-option" onclick="selectLang('en')">
+                <span>🇺🇸 English</span>
+                <i class="fa-solid fa-check" id="check-en" style="color: #22c55e; display: none;"></i>
+            </div>
+            <div class="lang-option" id="lang-bn-option" onclick="selectLang('bn')">
+                <span>🇧🇩 বাংলা</span>
+                <i class="fa-solid fa-check" id="check-bn" style="color: #22c55e; display: none;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persistent Bottom Navigation Bar -->
+    <nav class="bottom-nav hide-add-money" id="persistent-bottom-nav">
+        <span class="nav-indicator" id="nav-indicator"></span>
+        <a href="index.html" data-nav-target="index.html" onclick="navigateWithoutBarRefresh(event, 'index.html', false)" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span data-i18n="nav_home">Home</span>
+        </a>
+        <a href="orders.html" data-nav-target="orders.html" onclick="navigateWithoutBarRefresh(event, 'orders.html', true)" class="nav-item">
+            <i class="fa-solid fa-file-lines"></i>
+            <span data-i18n="nav_orders">Orders</span>
+        </a>
+        <a href="add-money.html" data-nav-target="add-money.html" onclick="navigateWithoutBarRefresh(event, 'add-money.html', true)" class="nav-item" id="nav-add-money">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span data-i18n="nav_add_money">Add Money</span>
+        </a>
+        <a href="support.html" data-nav-target="support.html" onclick="navigateWithoutBarRefresh(event, 'support.html', false)" class="nav-item">
+            <i class="fa-solid fa-headset"></i>
+            <span data-i18n="nav_support">Support</span>
+        </a>
+        <a href="profile.html" data-nav-target="profile.html" onclick="navigateWithoutBarRefresh(event, 'profile.html', true)" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            <span data-i18n="nav_profile">Profile</span>
+        </a>
+    </nav>
+
+    <!-- Firebase Auth Integration -->
+    <script type="module">
+        import { auth, onAuthStateChanged, getUserProfileData } from "./firebase.js";
+
+        onAuthStateChanged(auth, (user) => {
+            const isSignedIn = Boolean(user && user.email);
+
+            const headerSigninBtn = document.getElementById("header-signin-btn");
+            const headerWalletPill = document.getElementById("header-wallet-pill");
+            const headerUserAvatar = document.getElementById("header-user-avatar");
+            const headerUserBalance = document.getElementById("header-user-balance");
+            const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
+            const nav = document.getElementById("persistent-bottom-nav");
+
+            if (isSignedIn) {
+                const data = getUserProfileData(user);
+                if (headerSigninBtn) headerSigninBtn.style.display = "none";
+                if (headerWalletPill) headerWalletPill.style.display = "flex";
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
+                if (nav) nav.classList.remove("hide-add-money");
+
+                if (headerUserAvatar && data && data.photoURL) {
+                    headerUserAvatar.innerHTML = `<img src="${data.photoURL}" alt="Profile">`;
+                }
+                if (headerUserBalance) {
+                    headerUserBalance.textContent = Number((data && data.balance) || 0);
+                }
+            } else {
+                if (headerSigninBtn) headerSigninBtn.style.display = "inline-flex";
+                if (headerWalletPill) headerWalletPill.style.display = "none";
+                if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
+                if (nav) nav.classList.add("hide-add-money");
+            }
+
+            if (window.updateNavIndicator) {
+                requestAnimationFrame(() => window.updateNavIndicator(true));
+            }
+        });
+    </script>
+
+    <script>
+        const translations = {
+            en: {
+                title: "Game Vault - Terms of Service",
+                balance_label: "Balance",
+                back: "Back",
+                terms_title: "Terms of Service",
+                last_update: "Last update : 15 November, 2026",
+                modal_lang_title: "Language",
+                nav_home: "Home",
+                nav_orders: "Orders",
+                nav_add_money: "Add Money",
+                nav_support: "Support",
+                nav_profile: "Profile",
+
+                t1_heading: "1. Introduction",
+                t1_p1: "Welcome to Game Vault Bangladesh . These Terms of Service (\"Terms\") govern your use of our website, mobile experience,  and all related services (together, the \"Services\"). By creating an account, funding a wallet, placing an order, you agree to these Terms and our Privacy Policy. If you do not agree, Don't  use the Services.",
+                t1_p2: "You must be at least 13 years old to use the Services. If you are between 13 and 18, you confirm that a parent or legal guardian has reviewed and agreed to these Terms on your behalf.",
+
+                t2_heading: "2. Services Provided",
+                t2_p1: "Game Vault Bangladesh  provides the following services, subject to availability and the product settings shown on the site:",
+                t2_li1: "Diamond Top-up (Bangladesh) : In-game diamonds for Free Fire accounts on the BD server.",
+                t2_li2: "Indonesia Top-up : Diamonds, Weekly/Monthly Membership and Booyah Pass for the Indonesia server.",
+                t2_li3: "Weekly Lite : Budget diamond package delivered through the Weekly Lite system.",
+                t2_li4: "Level-up Pass : Provider-defined level-up packs delivered to a Free Fire account.",
+                t2_li5: "Like Packages : Likes delivered to a Free Fire player profile.",
+                t2_li6: "Auto Likes : Daily automated like-delivery subscriptions.",
+                t2_li7: "Guild Glory : Bot packs that play for your guild and earn guild glory (each pack grants 8 hours of bot play time).",
+                t2_li8: "Account Tools : Player verification, account information, player search, account statistics.",
+                t2_li9: "Promotions and Other Products : Flash sales, coin store items, personalized offers and special/product orders.",
+                t2_red: "We may add, modify, suspend, or discontinue any Service or package at any time. Prices, availability and delivery methods may change without prior notice.",
+
+                t3_heading: "3. User Accounts and Registration",
+                t3_p1: "To access most Services you must create an account. By registering, you agree to:",
+                t3_li1: "Provide accurate, current and complete information during registration and keep it up to date.",
+                t3_li2: "Keep your password  and other account credentials confidential.",
+                t3_li3: "Notify us immediately of any unauthorized use of your account .",
+                t3_li4: "Accept responsibility for all activity that occurs under your account.",
+                t3_li5: "Not share, sell or transfer your account  to another person.",
+                t3_li6: "Not create multiple accounts to abuse promotions, evade limits or commit fraud.",
+                t3_li7: "Use only the login methods you control, such as  Google.",
+                t3_red: "You are responsible for any activity performed with your credentials until you notify us that they have been compromised.",
+
+                t4_heading: "4. Wallet, Payments and Refunds",
+                t4_p1: "Purchases are paid from your wallet balance. Wallet top-ups are processed by third-party payment providers: bKash, Nagad and Rocket through our manually payment gateway. By making a payment, you agree to:",
+                t4_li1: "Pay all charges incurred under your account.",
+                t4_li2: "Provide valid and accurate payment information.",
+                t4_li3: "Authorize us and our payment providers to process the selected payment.",
+                t4_li4: "Accept that prices, fees and exchange rates may change without prior notice.",
+                t4_refund: "For refunds of failed, undelivered or duplicate orders, see our <a href=\"javascript:void(0)\" onclick=\"return false;\" class=\"refund-policy-link\">Refund Policy</a>.",
+                t4_red: "Chargebacks, payment disputes or fraudulent payment methods may result in suspension of your account and forfeiture of any remaining balance, where permitted by law.",
+
+                t5_heading: "5. Delivery Policy",
+                t5_p1: "We aim to deliver every order promptly. Typical delivery times are:",
+                t5_li1: "Diamonds, Indonesia Top-up and Level-up Pass : Usually 1-5 minutes after payment confirmation, but provider delays can occur.",
+                t5_li2: "Likes : Delivered immediately after purchase, subject to provider availability.",
+                t5_li3: "Auto Likes : Delivered automatically each day during the active subscription period.",
+                t5_li4: "Guild Glory: Activated after admin confirmation, usually within a few hours.",
+                t5_li5: "Redeem Codes: Generated and provided instantly when available.",
+                t5_li6: "Special and Product Orders: Processed within 24 hours with admin confirmation.",
+                t5_p2: "A pending order is not a failed order. If delivery cannot be confirmed automatically, the order is queued for manual processing. We are not responsible for:",
+                t5_li7: "In-game bugs, errors or server issues.",
+                t5_li8: "Actions taken by Garena or Free Fire administrators.",
+                t5_li9: "Incorrect information supplied by you, such as a wrong Player ID, UID or Guild ID.",
+                t5_li10: "Technical issues beyond our reasonable control.",
+                t5_li11: "Force majeure events or provider outages.",
+                t5_red: "If a Service is not delivered as described, contact support with the Order ID so we can investigate and complete it.",
+
+                t6_heading: "6. Responsibilities and Conduct",
+                t6_p1: "As a user, you agree to:",
+                t6_li1: "Provide accurate and truthful information at all times.",
+                t6_li2: "Double-check Player IDs, UIDs, Guild IDs and regions before placing an order.",
+                t6_li3: "Make sure your guild has enough space and appropriate join settings before purchasing Guild Glory.",
+                t6_li4: "Use the Services in compliance with all applicable laws and platform rules.",
+                t6_li5: "Respect the intellectual property rights of others.",
+                t6_li6: "Not interfere with, overload or disrupt our Services, servers or networks.",
+                t6_li7: "Not use the Services for any unlawful, fraudulent or deceptive purpose.",
+                t6_li8: "Not attempt to gain unauthorized access to our systems, accounts or data.",
+
+                t7_heading: "7. Prohibited Activities",
+                t7_p1: "The following activities are strictly prohibited and may result in suspension or termination:",
+                t7_li1: "Fraud: Fraudulent payments, stolen payment methods, identity theft or false disputes.",
+                t7_li2: "Abuse: Exploiting bugs, promotions or limits, or abusing staff or other users.",
+                t7_li3: "Harassment: Harassing, threatening or abusing our staff or other users.",
+                t7_li4: "Reverse Engineering: Attempting to reverse engineer, decompile or copy our platform",
+                t7_li5: "Malicious Content: Uploading viruses, malware or harmful code.",
+                t7_li6: "Multiple Accounts: Creating multiple accounts for abuse, evasion or fraud.",
+                t7_li7: "Illegal Activities: Using the Services for any illegal purpose",
+                t7_li8: "Data Harvesting: Scraping or harvesting user data without permission.",
+
+                footer_desc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
+                footer_copy: "© 2025- 2026 Game Vault Bangladesh, All trademarks belong to their respective owners",
+                footer_made_by: "Made By <a href=\"https://t.me/zunayed_islam00\" target=\"_blank\" rel=\"noopener noreferrer\">Game Vault</a>"
+            },
+            bn: {
+                title: "সেবার শর্তাবলী",
+                balance_label: "ব্যালেন্স",
+                back: "পেছনে",
+                terms_title: "Terms of Service",
+                last_update: "Last update : 15 November, 2026",
+                modal_lang_title: "ভাষা",
+                nav_home: "হোম",
+                nav_orders: "অর্ডার",
+                nav_add_money: "অ্যাড মানি",
+                nav_support: "সাপোর্ট",
+                nav_profile: "প্রোফাইল",
+
+                t1_heading: "১. ভূমিকা",
+                t1_p1: "বাংলাদেশ গেম ভল্টে আপনাকে স্বাগতম। এই সেবার শর্তাবলী (\"শর্তাবলী\") আমাদের ওয়েবসাইট, মোবাইল অভিজ্ঞতা এবং এর সাথে সম্পর্কিত সব সেবার (একত্রে, \"সেবাসমূহ\") ব্যবহার নিয়ন্ত্রণ করে। অ্যাকাউন্ট তৈরি করা, ওয়ালেটে টাকা যোগ করা বা অর্ডার করার মাধ্যমে আপনি এই শর্তাবলী এবং আমাদের গোপনীয়তা নীতির সাথে একমত হচ্ছেন। আপনি যদি একমত না হন, তবে সেবাসমূহ ব্যবহার করবেন না।",
+                t1_p2: "সেবাসমূহ ব্যবহার করতে হলে আপনার বয়স কমপক্ষে ১৩ বছর হতে হবে। আপনার বয়স ১৩ থেকে ১৮ বছরের মধ্যে হলে, আপনি নিশ্চিত করছেন যে আপনার পিতা-মাতা বা আইনগত অভিভাবক আপনার পক্ষ থেকে এই শর্তাবলী পড়ে একমত হয়েছেন।",
+
+                t2_heading: "২. প্রদত্ত সেবাসমূহ",
+                t2_p1: "বাংলাদেশ গেম ভল্ট প্রাপ্যতা এবং সাইটে দেখানো প্রোডাক্ট সেটিংস অনুযায়ী নিচের সেবাসমূহ প্রদান করে:",
+                t2_li1: "ডায়মন্ড টপ-আপ (বাংলাদেশ): বিডি সার্ভারের ফ্রি ফায়ার অ্যাকাউন্টের জন্য ইন-গেম ডায়মন্ড।",
+                t2_li2: "ইন্দোনেশিয়া টপ-আপ: ইন্দোনেশিয়া সার্ভারের জন্য ডায়মন্ড, উইকলি/মান্থলি মেম্বারশিপ এবং বুইয়াহ পাস।",
+                t2_li3: "উইকলি লাইট: উইকলি লাইট সিস্টেমের মাধ্যমে সরবরাহকৃত সাশ্রয়ী ডায়মন্ড প্যাকেজ।",
+                t2_li4: "লেভেল-আপ পাস: ফ্রি ফায়ার অ্যাকাউন্টে প্রোভাইডার নির্ধারিত লেভেল-আপ প্যাক সরবরাহ।",
+                t2_li5: "লাইক প্যাকেজ: ফ্রি ফায়ার প্লেয়ার প্রোফাইলে লাইক সরবরাহ।",
+                t2_li6: "অটো লাইক: সক্রিয় সাবস্ক্রিপশন চলাকালীন প্রতিদিন স্বয়ংক্রিয়ভাবে লাইক সরবরাহ।",
+                t2_li7: "গিল্ড গ্লোরি: বট প্যাক যা আপনার গিল্ডের হয়ে খেলে গিল্ড গ্লোরি অর্জন করে (প্রতিটি প্যাক ৮ ঘণ্টা বট খেলার সময় দেয়)।",
+                t2_li8: "অ্যাকাউন্ট টুলস: প্লেয়ার ভেরিফিকেশন, অ্যাকাউন্ট তথ্য, প্লেয়ার সার্চ, অ্যাকাউন্ট পরিসংখ্যান।",
+                t2_li9: "প্রমোশন ও অন্যান্য প্রোডাক্ট: ফ্ল্যাশ সেল, কয়েন স্টোর আইটেম, পার্সোনালাইজড অফার এবং বিশেষ/প্রোডাক্ট অর্ডার।",
+                t2_red: "আমরা যেকোনো সময় যেকোনো সেবা বা প্যাকেজ যোগ, পরিবর্তন, স্থগিত বা বন্ধ করতে পারি। পূর্ব ঘোষণা ছাড়াই মূল্য, প্রাপ্যতা এবং ডেলিভারি পদ্ধতি পরিবর্তিত হতে পারে।",
+
+                t3_heading: "৩. ব্যবহারকারীর অ্যাকাউন্ট ও নিবন্ধন",
+                t3_p1: "বেশিরভাগ সেবা ব্যবহার করতে হলে আপনাকে একটি অ্যাকাউন্ট তৈরি করতে হবে। নিবন্ধন করার মাধ্যমে আপনি নিচের বিষয়গুলোতে একমত হচ্ছেন:",
+                t3_li1: "নিবন্ধনের সময় সঠিক, হালনাগাদ ও সম্পূর্ণ তথ্য প্রদান করা এবং তা আপডেট রাখা।",
+                t3_li2: "আপনার পাসওয়ার্ড এবং অন্যান্য অ্যাকাউন্ট তথ্য গোপন রাখা।",
+                t3_li3: "আপনার অ্যাকাউন্টের কোনো অননুমোদিত ব্যবহার হলে সাথে সাথে আমাদের জানানো।",
+                t3_li4: "আপনার অ্যাকাউন্টের অধীনে সংঘটিত সব কার্যকলাপের দায়ভার গ্রহণ করা।",
+                t3_li5: "অন্য কারো কাছে আপনার অ্যাকাউন্ট শেয়ার, বিক্রি বা হস্তান্তর না করা।",
+                t3_li6: "প্রমোশনের অপব্যবহার, সীমা এড়ানো বা প্রতারণার উদ্দেশ্যে একাধিক অ্যাকাউন্ট তৈরি না করা।",
+                t3_li7: "শুধুমাত্র আপনার নিয়ন্ত্রণাধীন লগইন পদ্ধতি ব্যবহার করা, যেমন গুগল।",
+                t3_red: "আপনার তথ্য ফাঁস বা বেহাত হওয়ার বিষয়টি আমাদের না জানানো পর্যন্ত ওই তথ্য দিয়ে করা যেকোনো কার্যকলাপের জন্য আপনি দায়ী থাকবেন।",
+
+                t4_heading: "৪. ওয়ালেট, পেমেন্ট ও রিফান্ড",
+                t4_p1: "অর্ডারগুলো আপনার ওয়ালেট ব্যালেন্স থেকে পরিশোধ করা হয়। ওয়ালেটে টাকা যোগ করার কাজটি তৃতীয় পক্ষের পেমেন্ট প্রোভাইডার—বিকাশ, নগদ এবং রকেটের মাধ্যমে আমাদের ম্যানুয়াল পেমেন্ট গেটওয়ের সাহায্যে সম্পন্ন হয়। পেমেন্ট করার মাধ্যমে আপনি নিচের বিষয়গুলোতে একমত হচ্ছেন:",
+                t4_li1: "আপনার অ্যাকাউন্টের অধীনে হওয়া সব চার্জ পরিশোধ করা।",
+                t4_li2: "বৈধ ও সঠিক পেমেন্ট তথ্য প্রদান করা।",
+                t4_li3: "নির্বাচিত পেমেন্ট প্রক্রিয়া করার জন্য আমাদের এবং আমাদের পেমেন্ট প্রোভাইডারদের অনুমোদন দেওয়া।",
+                t4_li4: "পূর্ব ঘোষণা ছাড়াই মূল্য, ফি এবং এক্সচেঞ্জ রেট পরিবর্তিত হতে পারে তা মেনে নেওয়া।",
+                t4_refund: "ব্যর্থ, ডেলিভারি না হওয়া বা ডুপ্লিকেট অর্ডারের রিফান্ডের জন্য আমাদের <a href=\"javascript:void(0)\" onclick=\"return false;\" class=\"refund-policy-link\">Refund Policy</a> দেখুন।",
+                t4_red: "চার্জব্যাক, পেমেন্ট বিরোধ বা প্রতারণামূলক পেমেন্ট পদ্ধতি ব্যবহার করলে আইন অনুযায়ী আপনার অ্যাকাউন্ট স্থগিত এবং অবশিষ্ট ব্যালেন্স বাজেয়াপ্ত হতে পারে।",
+
+                t5_heading: "৫. ডেলিভারি নীতি",
+                t5_p1: "আমরা প্রতিটি অর্ডার দ্রুত ডেলিভারি দেওয়ার চেষ্টা করি। সাধারণ ডেলিভারি সময় নিচে দেওয়া হলো:",
+                t5_li1: "ডায়মন্ড, ইন্দোনেশিয়া টপ-আপ এবং লেভেল-আপ পাস: পেমেন্ট কনফার্মেশনের পর সাধারণত ১-৫ মিনিট, তবে প্রোভাইডারের কারণে দেরি হতে পারে।",
+                t5_li2: "লাইক: প্রোভাইডারের প্রাপ্যতা সাপেক্ষে কেনার সাথে সাথেই ডেলিভারি দেওয়া হয়।",
+                t5_li3: "অটো লাইক: সক্রিয় সাবস্ক্রিপশন চলাকালীন প্রতিদিন স্বয়ংক্রিয়ভাবে ডেলিভারি দেওয়া হয়।",
+                t5_li4: "গিল্ড গ্লোরি: অ্যাডমিন কনফার্মেশনের পর সাধারণত কয়েক ঘণ্টার মধ্যে সক্রিয় হয়।",
+                t5_li5: "রিডিম কোড: উপলব্ধ থাকলে তাৎক্ষণিকভাবে তৈরি ও প্রদান করা হয়।",
+                t5_li6: "বিশেষ ও প্রোডাক্ট অর্ডার: অ্যাডমিন কনফার্মেশনের মাধ্যমে ২৪ ঘণ্টার মধ্যে প্রসেস করা হয়।",
+                t5_p2: "পেন্ডিং অর্ডার মানেই ব্যর্থ অর্ডার নয়। স্বয়ংক্রিয়ভাবে ডেলিভারি নিশ্চিত করা না গেলে অর্ডারটি ম্যানুয়াল প্রসেসিংয়ের সারিতে রাখা হয়। নিচের বিষয়গুলোর জন্য আমরা দায়ী নই:",
+                t5_li7: "ইন-গেম বাগ, ত্রুটি বা সার্ভার সমস্যা।",
+                t5_li8: "গ্যারেনা বা ফ্রি ফায়ার অ্যাডমিনিস্ট্রেটরদের নেওয়া পদক্ষেপ।",
+                t5_li9: "আপনার দেওয়া ভুল তথ্য, যেমন ভুল প্লেয়ার আইডি, ইউআইডি বা গিল্ড আইডি।",
+                t5_li10: "আমাদের যুক্তিসঙ্গত নিয়ন্ত্রণের বাইরের কারিগরি সমস্যা।",
+                t5_li11: "অপ্রতিরোধ্য ঘটনা বা প্রোভাইডারের সার্ভার বিভ্রাট।",
+                t5_red: "বর্ণনা অনুযায়ী কোনো সেবা ডেলিভারি না হলে অর্ডার আইডি দিয়ে সাপোর্টে যোগাযোগ করুন, যেন আমরা তদন্ত করে তা সম্পন্ন করতে পারি।",
+
+                t6_heading: "৬. দায়িত্ব ও আচরণবিধি",
+                t6_p1: "একজন ব্যবহারকারী হিসেবে আপনি নিচের বিষয়গুলোতে একমত হচ্ছেন:",
+                t6_li1: "সব সময় সঠিক ও সত্য তথ্য প্রদান করা।",
+                t6_li2: "অর্ডার করার আগে প্লেয়ার আইডি, ইউআইডি, গিল্ড আইডি এবং রিজিয়ন ভালোভাবে যাচাই করা।",
+                t6_li3: "গিল্ড গ্লোরি কেনার আগে আপনার গিল্ডে পর্যাপ্ত জায়গা ও উপযুক্ত জয়েন সেটিংস আছে কি না তা নিশ্চিত করা।",
+                t6_li4: "প্রযোজ্য সব আইন ও প্ল্যাটফর্মের নিয়ম মেনে সেবাসমূহ ব্যবহার করা।",
+                t6_li5: "অন্যের মেধাস্বত্ব অধিকারকে সম্মান করা।",
+                t6_li6: "আমাদের সেবাসমূহ, সার্ভার বা নেটওয়ার্কে হস্তক্ষেপ, অতিরিক্ত চাপ সৃষ্টি বা ব্যাঘাত না ঘটানো।",
+                t6_li7: "বেআইনি, প্রতারণামূলক বা বিভ্রান্তিকর উদ্দেশ্যে সেবাসমূহ ব্যবহার না করা।",
+                t6_li8: "আমাদের সিস্টেম, অ্যাকাউন্ট বা ডেটায় অননুমোদিত প্রবেশের চেষ্টা না করা।",
+
+                t7_heading: "৭. নিষিদ্ধ কার্যকলাপ",
+                t7_p1: "নিচের কার্যকলাপগুলো কঠোরভাবে নিষিদ্ধ এবং এর ফলে অ্যাকাউন্ট স্থগিত বা বাতিল হতে পারে:",
+                t7_li1: "প্রতারণা: প্রতারণামূলক পেমেন্ট, চুরি করা পেমেন্ট পদ্ধতি, পরিচয় জালিয়াতি বা মিথ্যা বিরোধ।",
+                t7_li2: "অপব্যবহার: বাগ, প্রমোশন বা সীমার সুযোগ নেওয়া, অথবা স্টাফ বা অন্য ব্যবহারকারীদের সাথে দুর্ব্যবহার করা।",
+                t7_li3: "হয়রানি: আমাদের স্টাফ বা অন্য ব্যবহারকারীদের হয়রানি, হুমকি বা গালিগালাজ করা।",
+                t7_li4: "রিভার্স ইঞ্জিনিয়ারিং: আমাদের প্ল্যাটফর্ম রিভার্স ইঞ্জিনিয়ার, ডিকম্পাইল বা কপি করার চেষ্টা করা।",
+                t7_li5: "ক্ষতিকর কনটেন্ট: ভাইরাস, ম্যালওয়্যার বা ক্ষতিকর কোড আপলোড করা।",
+                t7_li6: "একাধিক অ্যাকাউন্ট: অপব্যবহার, সীমা এড়ানো বা প্রতারণার জন্য একাধিক অ্যাকাউন্ট তৈরি করা।",
+                t7_li7: "বেআইনি কার্যকলাপ: যেকোনো বেআইনি উদ্দেশ্যে সেবাসমূহ ব্যবহার করা।",
+                t7_li8: "ডেটা সংগ্রহ: অনুমতি ছাড়া ব্যবহারকারীর ডেটা স্ক্র্যাপ বা সংগ্রহ করা।",
+
+                footer_desc: "বাংলাদেশের সবচেয়ে সাশ্রয়ী ও দ্রুততম গেম টপ-আপ সেবা। তাৎক্ষণিক গেম টপ-আপ, লাইক এবং গিল্ড গ্লোরি – ২০২৫ সাল থেকে বিশ্বজুড়ে গেমারদের বিশ্বস্ত।",
+                footer_copy: "© ২০২৫-২০২৬ বাংলাদেশ গেম ভল্ট, সব ট্রেডমার্ক তাদের নিজ নিজ মালিকের অধীন",
+                footer_made_by: "Made By <a href=\"https://t.me/zunayed_islam00\" target=\"_blank\" rel=\"noopener noreferrer\">Game Vault</a>"
+            }
+        };
+
+        function applyTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            const icon = document.getElementById('theme-icon');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (icon) {
+                    icon.className = 'fa-solid fa-sun';
+                    icon.style.color = '#eab308';
+                }
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                if (icon) {
+                    icon.className = 'fa-solid fa-moon';
+                    icon.style.color = '';
+                }
+            }
+        }
+
+        function toggleTheme() {
+            const current = localStorage.getItem('theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', next);
+            applyTheme();
+        }
+
+        function openModal() {
+            document.getElementById('langModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('langModal').style.display = 'none';
+        }
+
+        function selectLang(lang) {
+            localStorage.setItem('language', lang);
+            applyLanguage(lang);
+            closeModal();
+        }
+
+        function applyLanguage(lang) {
+            const currentLang = lang || localStorage.getItem('language') || 'en';
+            const t = translations[currentLang] || translations.en;
+
+            document.documentElement.lang = currentLang;
+            document.getElementById('page-title').innerText = t.title;
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.innerText = t[key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                const key = el.getAttribute('data-i18n-html');
+                if (t[key]) {
+                    el.innerHTML = t[key];
+                }
+            });
+
+            if (currentLang === 'bn') {
+                document.getElementById('lang-bn-option').classList.add('selected');
+                document.getElementById('check-bn').style.display = 'block';
+                document.getElementById('lang-en-option').classList.remove('selected');
+                document.getElementById('check-en').style.display = 'none';
+            } else {
+                document.getElementById('lang-en-option').classList.add('selected');
+                document.getElementById('check-en').style.display = 'block';
+                document.getElementById('lang-bn-option').classList.remove('selected');
+                document.getElementById('check-bn').style.display = 'none';
+            }
+
+            requestAnimationFrame(() => updateNavIndicator(true));
+        }
+
+        function handleBackNav(event) {
+            if (event) event.preventDefault();
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function setActiveNavItem(targetUrl) {
+            const nav = document.getElementById('persistent-bottom-nav');
+            if (!nav) return;
+            nav.querySelectorAll('.nav-item').forEach(item => {
+                const isMatch = item.getAttribute('data-nav-target') === targetUrl;
+                item.classList.toggle('active', isMatch);
+            });
+            updateNavIndicator(false);
+        }
+
+        function updateNavIndicator(instant = false) {
+            const nav = document.getElementById('persistent-bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const activeItem = nav.querySelector('.nav-item.active');
+            if (!activeItem) {
+                indicator.style.width = '0px';
+                return;
+            }
+
+            if (instant) {
+                indicator.style.transition = 'none';
+            }
+
+            const navRect = nav.getBoundingClientRect();
+            const itemRect = activeItem.getBoundingClientRect();
+            indicator.style.width = `${itemRect.width}px`;
+            indicator.style.transform = `translate3d(${itemRect.left - navRect.left - 6}px, 0, 0)`;
+
+            if (instant) {
+                indicator.getBoundingClientRect();
+                indicator.style.transition = '';
+            }
+        }
+        window.updateNavIndicator = updateNavIndicator;
+
+        function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
+            if (event) event.preventDefault();
+
+            const rawPath = window.location.pathname.split('/').pop() || 'terms.html';
+            const currentFile = rawPath.endsWith('.html') ? rawPath : `${rawPath}.html`;
+            if (currentFile === targetUrl) {
+                setActiveNavItem(targetUrl);
+                return;
+            }
+
+            if (requiresAuth) {
+                const isSignedIn = Boolean(document.getElementById('header-wallet-pill')?.style.display === 'flex');
+                localStorage.removeItem("redirectUrl");
+                if (!isSignedIn) {
+                    localStorage.setItem("redirectUrl", targetUrl);
+                    sessionStorage.setItem('prevNavTarget', currentFile);
+                    setActiveNavItem('login.html');
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 560);
+                    return;
+                }
+            }
+
+            sessionStorage.setItem('prevNavTarget', currentFile);
+            setActiveNavItem(targetUrl);
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 560);
+        }
+        window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
+
+        applyTheme();
+        applyLanguage();
+
+        window.addEventListener('load', () => updateNavIndicator(true), { once: true });
+        window.addEventListener('resize', () => updateNavIndicator(true));
+    </script>
+</body>
+</html>
