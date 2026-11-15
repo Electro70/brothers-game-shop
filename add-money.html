@@ -1080,7 +1080,7 @@
             const nav = document.getElementById("persistent-bottom-nav");
 
             if (user && user.email) {
-                const data = getUserProfileData(user);
+                const data = getUserProfileData ? getUserProfileData(user) : null;
                 const localBal = localStorage.getItem(`gv_wallet_balance_${user.email}`);
                 const balVal = localBal !== null ? Number(localBal) : Number(data?.balance || 0);
 
@@ -1510,7 +1510,8 @@
 
                     saveDepositHistory(updated);
 
-                    if (creditedDelta > 0 && itemEmail = document.getElementById("account-no").value.trim()) {
+                    const itemEmail = document.getElementById("account-no").value.trim();
+                    if (creditedDelta > 0 && itemEmail) {
                         const balKey = `gv_wallet_balance_${itemEmail}`;
                         const currentBal = Number(localStorage.getItem(balKey) || 0);
                         const nextBal = currentBal + creditedDelta;
@@ -1663,44 +1664,49 @@
         }
 
         function initSmoothNav() {
-            const nav = document.getElementById('persistent-bottom-nav');
-            const indicator = document.getElementById('nav-indicator');
-            if (!nav || !indicator) return;
+            try {
+                const nav = document.getElementById('persistent-bottom-nav');
+                const indicator = document.getElementById('nav-indicator');
+                if (nav && indicator) {
+                    const prevTarget = sessionStorage.getItem('prevNavTarget');
+                    sessionStorage.removeItem('prevNavTarget');
 
-            const prevTarget = sessionStorage.getItem('prevNavTarget');
-            sessionStorage.removeItem('prevNavTarget');
-
-            if (prevTarget) {
-                const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
-                if (prevItem) {
-                    indicator.style.transition = 'none';
-                    const navRect = nav.getBoundingClientRect();
-                    const prevRect = prevItem.getBoundingClientRect();
-                    indicator.style.width = `${prevRect.width}px`;
-                    indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
-                    indicator.getBoundingClientRect();
-                    indicator.style.transition = '';
+                    if (prevTarget) {
+                        const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
+                        if (prevItem) {
+                            indicator.style.transition = 'none';
+                            const navRect = nav.getBoundingClientRect();
+                            const prevRect = prevItem.getBoundingClientRect();
+                            indicator.style.width = `${prevRect.width}px`;
+                            indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
+                            indicator.getBoundingClientRect();
+                            indicator.style.transition = '';
+                        }
+                        requestAnimationFrame(() => updateNavIndicator(false));
+                    } else {
+                        updateNavIndicator(true);
+                    }
                 }
-                requestAnimationFrame(() => updateNavIndicator(false));
-            } else {
-                updateNavIndicator(true);
+            } finally {
+                document.documentElement.classList.add('page-ready');
             }
-
-            document.documentElement.classList.add('page-ready');
         }
 
-        applyTheme();
-        applyLanguage();
-        applyAdminConfigs();
+        try {
+            applyTheme();
+            applyLanguage();
+            applyAdminConfigs();
+        } finally {
+            document.documentElement.classList.add('page-ready');
+        }
 
         if (document.readyState === 'complete') {
             initSmoothNav();
         } else {
             window.addEventListener('load', initSmoothNav, { once: true });
             setTimeout(() => {
-                if (!document.documentElement.classList.contains('page-ready')) {
-                    initSmoothNav();
-                }
+                document.documentElement.classList.add('page-ready');
+                initSmoothNav();
             }, 300);
         }
 
