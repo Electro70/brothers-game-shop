@@ -829,12 +829,8 @@
             if (event) event.preventDefault();
             localStorage.removeItem('redirectUrl');
             sessionStorage.setItem('prevNavTarget', 'support.html');
-            setActiveNavItem('profile.html');
             const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
-            const target = (user && user.email) ? 'profile.html' : 'login.html';
-            setTimeout(() => {
-                window.location.href = target;
-            }, 260);
+            window.location.href = (user && user.email) ? 'profile.html' : 'login.html';
         }
         window.handleSupportProfileNav = handleSupportProfileNav;
 
@@ -854,18 +850,12 @@
             if (requiresAuth && !isSignedIn) {
                 localStorage.setItem("redirectUrl", targetUrl);
                 sessionStorage.setItem('prevNavTarget', 'support.html');
-                setActiveNavItem('profile.html');
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 260);
+                window.location.href = "login.html";
                 return;
             }
 
-            setActiveNavItem(targetUrl);
             sessionStorage.setItem('prevNavTarget', currentFile);
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 260);
+            window.location.href = targetUrl;
         }
         window.navigateWithoutBarRefresh = navigateWithoutBarRefresh;
 
