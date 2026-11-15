@@ -1752,6 +1752,8 @@
 
       const orderId = "GV" + Date.now().toString().slice(-8);
       const pkgName = `${pkg.diamonds} Diamonds`;
+      const newBal = currentBal - total;
+      const customerEmail = window.__gvCurrentUser?.email || "Guest";
 
       payWalletBtn.disabled = true;
       payWalletBtn.textContent = t.sendingOrder;
@@ -1767,13 +1769,14 @@
             nickname: verifiedPlayerData.nickname,
             region: verifiedPlayerData.region,
             level: verifiedPlayerData.level,
+            customerEmail,
+            service: "Diamonds",
             pkgName,
             quantity: packageQuantity,
             unitPrice: pkg.price,
             total,
-            method: "Wallet Balance",
-            customerEmail: window.__gvCurrentUser?.email || "Guest",
-            customerName: window.__gvCurrentUser?.name || "Guest"
+            oddBal: newBal,
+            method: "Wallet Balance"
           })
         });
 
@@ -1782,19 +1785,21 @@
           throw new Error(data?.error || t.orderFailed);
         }
 
-        const newBal = currentBal - total;
         setCurrentWalletBalance(newBal);
 
         const orderRecord = {
           id: orderId,
+          orderNo: data.orderNo ?? null,
           uid: verifiedPlayerData.uid,
           nickname: verifiedPlayerData.nickname,
+          service: "Diamonds",
           package: pkgName,
           quantity: packageQuantity,
           unitPrice: pkg.price,
           total,
+          oddBal: newBal,
           method: "Wallet Balance",
-          customerEmail: window.__gvCurrentUser?.email || "Guest",
+          customerEmail,
           status: "Sent to Moderator",
           createdAt: new Date().toISOString()
         };
@@ -1805,9 +1810,10 @@
           localStorage.setItem(ORDERS_KEY, JSON.stringify(prevOrders));
         } catch {}
 
+        const orderNoLine = data.orderNo ? `Order No: #${data.orderNo}<br/>` : "";
         orderReceipt.innerHTML = `
           <strong>Order Sent (#${orderId})</strong><br/>
-          Player: ${verifiedPlayerData.nickname} (${verifiedPlayerData.uid})<br/>
+          ${orderNoLine}Player: ${verifiedPlayerData.nickname} (${verifiedPlayerData.uid})<br/>
           Package: ${pkgName} × ${packageQuantity} = ${total} ৳<br/>
           Remaining Balance: ${newBal} ৳
         `;
