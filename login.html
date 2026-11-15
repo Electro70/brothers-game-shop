@@ -1125,7 +1125,7 @@
             <i class="fa-solid fa-headset"></i>
             <span id="nav-support">Support</span>
         </a>
-        <a href="profile.html" data-nav-target="profile.html" onclick="navigateWithoutBarRefresh(event, 'profile.html', true)" class="nav-item active">
+        <a href="login.html" data-nav-target="profile.html" onclick="handleProfileNav(event)" class="nav-item active" id="nav-profile-link">
             <i class="fa-solid fa-user"></i>
             <span id="nav-profile">Profile</span>
         </a>
@@ -1159,7 +1159,7 @@
         function completeLoginRedirect() {
             const redirectUrl = localStorage.getItem('redirectUrl');
             localStorage.removeItem('redirectUrl');
-            if (redirectUrl) {
+            if (redirectUrl && redirectUrl !== 'login.html' && redirectUrl !== 'support.html') {
                 window.location.href = redirectUrl;
             } else {
                 window.location.href = "index.html";
@@ -1175,12 +1175,14 @@
             const balanceAvatar = document.querySelector(".balance-avatar");
             const headerAddMoneyPlus = document.getElementById("header-add-money-plus");
             const nav = document.getElementById("persistent-bottom-nav");
+            const navProfileLink = document.getElementById("nav-profile-link");
 
             if (isSignedIn) {
                 const data = getUserProfileData(user);
                 if (headerBalancePill) headerBalancePill.style.display = "flex";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
                 if (nav) nav.classList.remove("hide-add-money");
+                if (navProfileLink) navProfileLink.setAttribute("href", "profile.html");
                 if (headerBalance && data && data.balance !== undefined) {
                     headerBalance.textContent = Number(data.balance).toFixed(1);
                 }
@@ -1192,6 +1194,7 @@
                 if (headerBalancePill) headerBalancePill.style.display = "none";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
                 if (nav) nav.classList.add("hide-add-money");
+                if (navProfileLink) navProfileLink.setAttribute("href", "login.html");
             }
 
             if (lastSignedInState !== isSignedIn) {
@@ -1319,6 +1322,14 @@
         }
         window.updateNavIndicator = updateNavIndicator;
 
+        function handleProfileNav(event) {
+            if (event) event.preventDefault();
+            localStorage.removeItem('redirectUrl');
+            const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
+            window.location.href = (user && user.email) ? 'profile.html' : 'login.html';
+        }
+        window.handleProfileNav = handleProfileNav;
+
         async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
@@ -1333,12 +1344,11 @@
                 localStorage.removeItem("redirectUrl");
                 if (!user || !user.email) {
                     localStorage.setItem("redirectUrl", targetUrl);
-                    setActiveNavItem('profile.html');
+                    window.location.href = "login.html";
                     return;
                 }
             }
 
-            // index.html এ গেলে সরাসরি পেজ লোড হবে (fetch swap করলে ছবি বড় হয়ে যায়)
             if (targetUrl === 'index.html' || window.location.protocol === 'file:') {
                 setActiveNavItem(targetUrl);
                 setTimeout(() => {
