@@ -1325,15 +1325,23 @@
         function handleProfileNav(event) {
             if (event) event.preventDefault();
             localStorage.removeItem('redirectUrl');
+            const rawPath = window.location.pathname.split('/').pop() || 'login.html';
+            const currentFile = rawPath.endsWith('.html') ? rawPath : `${rawPath}.html`;
+            sessionStorage.setItem('prevNavTarget', currentFile);
+            setActiveNavItem('profile.html');
             const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
-            window.location.href = (user && user.email) ? 'profile.html' : 'login.html';
+            const target = (user && user.email) ? 'profile.html' : 'login.html';
+            setTimeout(() => {
+                window.location.href = target;
+            }, 260);
         }
         window.handleProfileNav = handleProfileNav;
 
         async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
-            const currentFile = window.location.pathname.split('/').pop() || 'login.html';
+            const rawPath = window.location.pathname.split('/').pop() || 'login.html';
+            const currentFile = rawPath.endsWith('.html') ? rawPath : `${rawPath}.html`;
             if (currentFile === targetUrl) {
                 setActiveNavItem(targetUrl);
                 return;
@@ -1344,12 +1352,17 @@
                 localStorage.removeItem("redirectUrl");
                 if (!user || !user.email) {
                     localStorage.setItem("redirectUrl", targetUrl);
-                    window.location.href = "login.html";
+                    sessionStorage.setItem('prevNavTarget', currentFile);
+                    setActiveNavItem('profile.html');
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 260);
                     return;
                 }
             }
 
             if (targetUrl === 'index.html' || window.location.protocol === 'file:') {
+                sessionStorage.setItem('prevNavTarget', currentFile);
                 setActiveNavItem(targetUrl);
                 setTimeout(() => {
                     window.location.href = targetUrl;
@@ -1516,12 +1529,39 @@
             closeModal();
         }
 
+        function initSmoothNav() {
+            const nav = document.getElementById('persistent-bottom-nav');
+            const indicator = document.getElementById('nav-indicator');
+            if (!nav || !indicator) return;
+
+            const prevTarget = sessionStorage.getItem('prevNavTarget');
+            sessionStorage.removeItem('prevNavTarget');
+
+            if (prevTarget) {
+                const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
+                if (prevItem) {
+                    indicator.style.transition = 'none';
+                    const navRect = nav.getBoundingClientRect();
+                    const prevRect = prevItem.getBoundingClientRect();
+                    indicator.style.width = `${prevRect.width}px`;
+                    indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
+                    indicator.getBoundingClientRect();
+                    indicator.style.transition = '';
+                }
+                requestAnimationFrame(() => updateNavIndicator(false));
+            } else {
+                updateNavIndicator(true);
+            }
+        }
+
         applyTheme();
         applyLanguage();
 
-        window.addEventListener('load', () => {
-            updateNavIndicator(true);
-        });
+        if (document.readyState === 'complete') {
+            initSmoothNav();
+        } else {
+            window.addEventListener('load', initSmoothNav, { once: true });
+        }
 
         window.addEventListener('resize', () => updateNavIndicator(true));
     </script>
