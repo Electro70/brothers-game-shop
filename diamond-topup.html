@@ -23,6 +23,10 @@
       --chip-purple-text: #7e22ce;
       --chip-green-bg: #dcfce7;
       --chip-green-text: #15803d;
+      --save-gradient: linear-gradient(90deg, #ff5e2b 0%, #ff3d57 100%);
+      --bonus-bg: #fef9c3;
+      --bonus-border: #fde047;
+      --bonus-text: #a16207;
       --danger: #dc2626;
       --shadow: 0 2px 10px rgba(15, 45, 28, 0.04);
     }
@@ -45,6 +49,9 @@
       --chip-purple-text: #c084fc;
       --chip-green-bg: rgba(21, 128, 61, 0.24);
       --chip-green-text: #4ade80;
+      --bonus-bg: rgba(234, 179, 8, 0.14);
+      --bonus-border: rgba(250, 204, 21, 0.35);
+      --bonus-text: #facc15;
       --danger: #f87171;
       --shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
     }
@@ -60,6 +67,7 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      padding-bottom: 40px;
       transition: background 0.2s ease, color 0.2s ease;
     }
 
@@ -296,12 +304,16 @@
       border-color: var(--green);
     }
 
-    /* Step 1 Header */
+    /* Step Header */
     .step-row {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 12px;
+    }
+
+    .step-row.spaced {
+      margin-top: 24px;
     }
 
     .step-badge {
@@ -631,6 +643,239 @@
       color: var(--chip-green-text);
     }
 
+    /* Step 2: Diamond Packages */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .pkg-card {
+      position: relative;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 8px 14px;
+      text-align: center;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 118px;
+      box-shadow: var(--shadow);
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+    }
+
+    .pkg-card:hover {
+      border-color: var(--green);
+    }
+
+    .pkg-card.selected {
+      background: var(--verified-bg);
+      border: 2px solid var(--green);
+    }
+
+    .save-ribbon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--save-gradient);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px 4px 8px;
+      border-bottom-right-radius: 11px;
+      line-height: 1.1;
+      letter-spacing: 0.1px;
+    }
+
+    .selected-corner {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 24px;
+      height: 22px;
+      background: var(--green);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      place-items: center;
+      border-bottom-left-radius: 11px;
+    }
+
+    .pkg-card.selected .selected-corner {
+      display: grid;
+    }
+
+    .pkg-amount-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .diamond-svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .pkg-amount {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .pkg-unit {
+      margin-top: 3px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .pkg-price-row {
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .pkg-price {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .pkg-old-price {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .pkg-bonus {
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--bonus-bg);
+      border: 1px solid var(--bonus-border);
+      color: var(--bonus-text);
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Step 3: Payment Method */
+    .payment-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .payment-subtext {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .method-option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      background: var(--surface-soft);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 12px;
+      cursor: pointer;
+      color: var(--text);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .method-option:hover {
+      border-color: var(--green);
+    }
+
+    .method-option.selected {
+      background: var(--verified-bg);
+      border: 2px solid var(--green);
+    }
+
+    .method-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--green-soft);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .method-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .method-meta {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .method-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .method-desc {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .method-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: transparent;
+      flex-shrink: 0;
+    }
+
+    .method-option.selected .method-check {
+      background: var(--green);
+      border-color: var(--green);
+      color: #ffffff;
+    }
+
     @media (max-width: 480px) {
       .brand-text {
         font-size: 15px;
@@ -640,6 +885,27 @@
       }
       .verify-btn {
         padding: 0 16px;
+      }
+      .packages-grid {
+        gap: 8px;
+      }
+      .pkg-amount {
+        font-size: 15px;
+      }
+      .pkg-bonus {
+        font-size: 9px;
+        padding: 2px 6px;
+      }
+      .method-option {
+        padding: 11px 9px;
+        gap: 8px;
+      }
+      .method-icon {
+        width: 32px;
+        height: 32px;
+      }
+      .method-name {
+        font-size: 12px;
       }
     }
   </style>
@@ -709,7 +975,7 @@
       <span id="backText">Back</span>
     </button>
 
-    <!-- Step 1 Title -->
+    <!-- Step 1: Player Verification -->
     <div class="step-row">
       <div class="step-badge">1</div>
       <h2 class="step-title" id="stepTitle">Player Verification</h2>
@@ -779,11 +1045,92 @@
         <span class="meta-pill pill-likes" id="likesPill">👍 0</span>
       </div>
     </section>
+
+    <!-- Step 2: Diamond Packages -->
+    <div class="step-row spaced">
+      <div class="step-badge">2</div>
+      <h2 class="step-title" id="step2Title">Diamond Packages</h2>
+    </div>
+
+    <section class="packages-grid" id="packagesGrid"></section>
+
+    <!-- Step 3: Payment Method -->
+    <div class="step-row spaced">
+      <div class="step-badge">3</div>
+      <h2 class="step-title" id="step3Title">Payment Method</h2>
+    </div>
+
+    <section class="payment-card">
+      <div class="payment-subtext">
+        <span>⚡</span>
+        <span id="paymentSubtext">Orders are delivered automatically right after payment.</span>
+      </div>
+
+      <div class="payment-methods-grid" id="paymentMethodsGrid">
+        <button type="button" class="method-option selected" data-method="wallet">
+          <div class="method-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
+              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+            </svg>
+          </div>
+          <div class="method-meta">
+            <div class="method-name" id="walletMethodName">Wallet Balance</div>
+            <div class="method-desc" id="walletMethodDesc">৳ 0</div>
+          </div>
+          <div class="method-check">✓</div>
+        </button>
+
+        <button type="button" class="method-option" data-method="manual">
+          <div class="method-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="5" width="20" height="14" rx="2"/>
+              <path d="M2 10h20"/>
+            </svg>
+          </div>
+          <div class="method-meta">
+            <div class="method-name" id="manualMethodName">Direct Payment (Manual)</div>
+            <div class="method-desc" id="manualMethodDesc">bKash / Nagad / Rocket</div>
+          </div>
+          <div class="method-check">✓</div>
+        </button>
+      </div>
+    </section>
   </main>
 
   <script>
     const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
     const RECENT_KEY = "gv_recent_uids";
+    const PACKAGES_KEY = "gv_diamond_packages";
+
+    // Default packages matching screenshot (can be overridden by Admin Panel via localStorage/API later)
+    const DEFAULT_PACKAGES = [
+      { id: "pkg_25", diamonds: 25, price: 20, oldPrice: null, save: null, bonus: null },
+      { id: "pkg_50", diamonds: 50, price: 35, oldPrice: null, save: null, bonus: null },
+      { id: "pkg_100", diamonds: 100, price: 70, oldPrice: null, save: null, bonus: null },
+      { id: "pkg_115", diamonds: 115, price: 77, oldPrice: null, save: null, bonus: null },
+      { id: "pkg_240", diamonds: 240, price: 153, oldPrice: null, save: null, bonus: null },
+      { id: "pkg_355", diamonds: 355, price: 230, oldPrice: 233, save: 3, bonus: null },
+      { id: "pkg_480", diamonds: 480, price: 306, oldPrice: 315, save: 9, bonus: null },
+      { id: "pkg_505", diamonds: 505, price: 326, oldPrice: 332, save: 6, bonus: null },
+      { id: "pkg_610", diamonds: 610, price: 383, oldPrice: 390, save: 7, bonus: null },
+      { id: "pkg_1015", diamonds: 1015, price: 647, oldPrice: 660, save: 13, bonus: null },
+      { id: "pkg_1090", diamonds: 1090, price: 686, oldPrice: 695, save: 9, bonus: null },
+      { id: "pkg_1240", diamonds: 1240, price: 765, oldPrice: 790, save: 25, bonus: null },
+      { id: "pkg_1510", diamonds: 1510, price: 955, oldPrice: 970, save: 15, bonus: null },
+      { id: "pkg_2070", diamonds: 2070, price: 1300, oldPrice: 1315, save: 15, bonus: null },
+      { id: "pkg_2530", diamonds: 2530, price: 1530, oldPrice: 1550, save: 20, bonus: "Free 220 Likes" },
+      { id: "pkg_5060", diamonds: 5060, price: 3060, oldPrice: 3180, save: 120, bonus: "Free 220 Likes" },
+      { id: "pkg_10120", diamonds: 10120, price: 6120, oldPrice: 6360, save: 240, bonus: "Free 220 Likes" }
+    ];
+
+    function getDiamondPackages() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(PACKAGES_KEY) || "null");
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch {}
+      return DEFAULT_PACKAGES;
+    }
 
     const translations = {
       en: {
@@ -800,7 +1147,15 @@
         netError: "Connection error. Please try again.",
         change: "Change",
         noRecent: "No recent UIDs",
-        levelPrefix: "Lv"
+        levelPrefix: "Lv",
+        step2Title: "Diamond Packages",
+        diamondsUnit: "Diamonds",
+        savePrefix: "Save",
+        step3Title: "Payment Method",
+        paymentSubtext: "Orders are delivered automatically right after payment.",
+        walletName: "Wallet Balance",
+        manualName: "Direct Payment (Manual)",
+        manualDesc: "bKash / Nagad / Rocket"
       },
       bn: {
         balance: "ব্যালেন্স",
@@ -816,11 +1171,21 @@
         netError: "কানেকশন সমস্যা। আবার চেষ্টা করো।",
         change: "পরিবর্তন",
         noRecent: "কোনো রিসেন্ট UID নেই",
-        levelPrefix: "লেভেল"
+        levelPrefix: "লেভেল",
+        step2Title: "ডায়মন্ড প্যাকেজ",
+        diamondsUnit: "ডায়মন্ড",
+        savePrefix: "সেভ",
+        step3Title: "পেমেন্ট মেথড",
+        paymentSubtext: "পেমেন্টের পরপরই অর্ডার স্বয়ংক্রিয়ভাবে ডেলিভারি হয়।",
+        walletName: "ওয়ালেট ব্যালেন্স",
+        manualName: "ডিরেক্ট পেমেন্ট (ম্যানুয়াল)",
+        manualDesc: "বিকাশ / নগদ / রকেট"
       }
     };
 
     let currentLang = "en";
+    let selectedPackageId = "pkg_610";
+    let selectedPaymentMethod = "wallet";
 
     const langBtn = document.getElementById("langBtn");
     const langMenu = document.getElementById("langMenu");
@@ -848,6 +1213,55 @@
     const regionPill = document.getElementById("regionPill");
     const likesPill = document.getElementById("likesPill");
 
+    const packagesGrid = document.getElementById("packagesGrid");
+    const paymentMethodsGrid = document.getElementById("paymentMethodsGrid");
+
+    function renderPackages() {
+      const packages = getDiamondPackages();
+      const t = translations[currentLang];
+
+      packagesGrid.innerHTML = packages
+        .map((pkg) => {
+          const isSelected = pkg.id === selectedPackageId;
+          return `
+            <button type="button" class="pkg-card ${isSelected ? "selected" : ""}" data-pkg-id="${pkg.id}">
+              ${pkg.save ? `<span class="save-ribbon">✦ ${t.savePrefix} ৳${pkg.save}</span>` : ""}
+              <span class="selected-corner">✓</span>
+              <div class="pkg-amount-row">
+                <svg class="diamond-svg" viewBox="0 0 24 24" fill="none">
+                  <path d="M6 3h12l4 6-10 12L2 9l4-6z" fill="#38bdf8"/>
+                  <path d="M6 3l6 6 6-6M2 9h20M12 9v12" stroke="#e0f2fe" stroke-width="1.3" stroke-linejoin="round"/>
+                </svg>
+                <span class="pkg-amount">${pkg.diamonds}</span>
+              </div>
+              <div class="pkg-unit">${t.diamondsUnit}</div>
+              <div class="pkg-price-row">
+                <span class="pkg-price">৳ ${pkg.price}</span>
+                ${pkg.oldPrice ? `<span class="pkg-old-price">৳${pkg.oldPrice}</span>` : ""}
+              </div>
+              ${pkg.bonus ? `<div class="pkg-bonus">🎁 ${pkg.bonus}</div>` : ""}
+            </button>
+          `;
+        })
+        .join("");
+    }
+
+    packagesGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".pkg-card");
+      if (!card) return;
+      selectedPackageId = card.dataset.pkgId;
+      renderPackages();
+    });
+
+    paymentMethodsGrid.addEventListener("click", (e) => {
+      const opt = e.target.closest(".method-option");
+      if (!opt) return;
+      selectedPaymentMethod = opt.dataset.method;
+      document.querySelectorAll(".method-option").forEach((el) => {
+        el.classList.toggle("selected", el.dataset.method === selectedPaymentMethod);
+      });
+    });
+
     function applyLanguage(lang) {
       currentLang = lang;
       document.documentElement.lang = lang;
@@ -865,7 +1279,16 @@
       subtextMsg.textContent = t.subtext;
       document.getElementById("playerIdPrefix").textContent = t.playerId + ":";
       changeBtn.textContent = t.change;
+
+      document.getElementById("step2Title").textContent = t.step2Title;
+      document.getElementById("step3Title").textContent = t.step3Title;
+      document.getElementById("paymentSubtext").textContent = t.paymentSubtext;
+      document.getElementById("walletMethodName").textContent = t.walletName;
+      document.getElementById("manualMethodName").textContent = t.manualName;
+      document.getElementById("manualMethodDesc").textContent = t.manualDesc;
+
       renderRecentDropdown();
+      renderPackages();
     }
 
     langBtn.addEventListener("click", (e) => {
@@ -1035,6 +1458,7 @@
     });
 
     renderRecentDropdown();
+    renderPackages();
   </script>
 </body>
 </html>
