@@ -655,7 +655,7 @@
             <i class="fa-solid fa-headset" style="font-size: 18px;"></i>
             <span data-i18n="nav_support">Support</span>
         </a>
-        <a href="login.html" data-nav-target="profile.html" onclick="handleSupportProfileNav(event)" class="nav-item" id="nav-profile-link">
+        <a href="login.html" data-nav-target="profile.html" class="nav-item" id="nav-profile-link">
             <i class="fa-solid fa-user" style="font-size: 18px;"></i>
             <span data-i18n="nav_profile">Profile</span>
         </a>
@@ -708,6 +708,7 @@
                     balanceAvatar.innerHTML = `<img src="${photo}" alt="Avatar">`;
                 }
             } else {
+                localStorage.removeItem("redirectUrl");
                 if (headerSigninBtn) headerSigninBtn.style.display = "flex";
                 if (headerBalancePill) headerBalancePill.style.display = "none";
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "none";
@@ -726,7 +727,7 @@
                 return true;
             } else {
                 localStorage.setItem("redirectUrl", targetUrl);
-                window.location.replace("login.html");
+                window.location.href = "login.html";
                 return false;
             }
         };
@@ -824,19 +825,6 @@
         }
         window.updateNavIndicator = updateNavIndicator;
 
-        function handleSupportProfileNav(event) {
-            if (event) event.preventDefault();
-            const user = window.getCurrentAuthUser ? window.getCurrentAuthUser() : null;
-            const isSignedIn = Boolean(user && user.email);
-
-            localStorage.removeItem("redirectUrl");
-            setActiveNavItem('profile.html');
-            sessionStorage.setItem('prevNavTarget', 'support.html');
-
-            window.location.href = isSignedIn ? "profile.html" : "login.html";
-        }
-        window.handleSupportProfileNav = handleSupportProfileNav;
-
         async function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
@@ -852,8 +840,6 @@
 
             if (requiresAuth && !isSignedIn) {
                 localStorage.setItem("redirectUrl", targetUrl);
-                setActiveNavItem('profile.html');
-                sessionStorage.setItem('prevNavTarget', currentFile);
                 window.location.href = "login.html";
                 return;
             }
