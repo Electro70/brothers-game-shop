@@ -1200,8 +1200,7 @@
         function navigateWithoutBarRefresh(event, targetUrl, requiresAuth) {
             if (event) event.preventDefault();
 
-            const rawPath = window.location.pathname.split('/').pop() || 'index.html';
-            const currentFile = rawPath.endsWith('.html') ? rawPath : `${rawPath}.html`;
+            const currentFile = window.location.pathname.split('/').pop() || 'index.html';
             if (currentFile === targetUrl) {
                 setActiveNavItem(targetUrl);
                 return;
@@ -1212,8 +1211,7 @@
                 localStorage.removeItem("redirectUrl");
                 if (!isSignedIn) {
                     localStorage.setItem("redirectUrl", targetUrl);
-                    sessionStorage.setItem('prevNavTarget', currentFile);
-                    setActiveNavItem('login.html');
+                    setActiveNavItem('profile.html');
                     setTimeout(() => {
                         window.location.href = "login.html";
                     }, 560);
@@ -1221,7 +1219,6 @@
                 }
             }
 
-            sessionStorage.setItem('prevNavTarget', currentFile);
             setActiveNavItem(targetUrl);
             setTimeout(() => {
                 window.location.href = targetUrl;
@@ -1378,42 +1375,20 @@
         }
 
         function initSmoothNav() {
-            const nav = document.getElementById('persistent-bottom-nav');
-            const indicator = document.getElementById('nav-indicator');
-            if (!nav || !indicator) return;
-
-            const prevTarget = sessionStorage.getItem('prevNavTarget');
             sessionStorage.removeItem('prevNavTarget');
-
-            if (prevTarget) {
-                const prevItem = nav.querySelector(`[data-nav-target="${prevTarget}"]`);
-                if (prevItem) {
-                    indicator.style.transition = 'none';
-                    const navRect = nav.getBoundingClientRect();
-                    const prevRect = prevItem.getBoundingClientRect();
-                    indicator.style.width = `${prevRect.width}px`;
-                    indicator.style.transform = `translate3d(${prevRect.left - navRect.left - 6}px, 0, 0)`;
-                    indicator.getBoundingClientRect();
-                    indicator.style.transition = '';
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => updateNavIndicator(false));
-                    });
-                    return;
-                }
-            }
-
             updateNavIndicator(true);
         }
 
         setInterval(updateSaleStatus, 1000);
         updateSaleStatus();
 
-        if (document.readyState === 'complete') {
-            initSmoothNav();
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            requestAnimationFrame(initSmoothNav);
         } else {
-            window.addEventListener('load', initSmoothNav, { once: true });
+            window.addEventListener('DOMContentLoaded', () => requestAnimationFrame(initSmoothNav), { once: true });
         }
 
+        window.addEventListener('load', () => updateNavIndicator(true), { once: true });
         window.addEventListener('resize', () => updateNavIndicator(true));
     </script>
 </body>
