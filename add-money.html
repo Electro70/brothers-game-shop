@@ -63,8 +63,10 @@
         }
 
         .logo-container img {
-            height: 30px;
+            height: 32px;
+            max-width: 150px;
             object-fit: contain;
+            border-radius: 6px;
         }
 
         .header-right {
@@ -419,8 +421,9 @@
             margin-bottom: 20px;
         }
 
-        .social-action-btn {
+        .confirm-submit-btn {
             width: 100%;
+            background: #05a86b;
             color: #ffffff;
             border: none;
             padding: 14px 16px;
@@ -432,29 +435,243 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            box-shadow: 0 4px 14px rgba(5, 168, 107, 0.28);
             transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
         }
 
-        .social-action-btn:active {
+        .confirm-submit-btn:hover {
+            background: #048c59;
+        }
+
+        .confirm-submit-btn:active {
             transform: scale(0.98);
         }
 
-        .whatsapp-btn {
-            background: #25D366;
-            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+        .confirm-submit-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
         }
 
-        .whatsapp-btn:hover {
-            background: #1ebe5d;
+        .history-open-btn {
+            width: 100%;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1.5px solid var(--border-color);
+            padding: 13px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
         }
 
-        .telegram-btn {
-            background: #229ED9;
-            box-shadow: 0 4px 14px rgba(34, 158, 217, 0.3);
+        .history-open-btn:hover {
+            border-color: #05a86b;
         }
 
-        .telegram-btn:hover {
-            background: #1c88bd;
+        .history-open-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Pending Summary Popup */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1200;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .popup-overlay.open {
+            display: flex;
+        }
+
+        .pending-popup-card {
+            background: var(--header-bg);
+            color: var(--text-color);
+            width: 100%;
+            max-width: 410px;
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+        }
+
+        .popup-top-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            background: rgba(234, 179, 8, 0.16);
+            color: #ca8a04;
+            margin-bottom: 10px;
+        }
+
+        .popup-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .popup-sub {
+            font-size: 12.5px;
+            color: #64748b;
+            margin-bottom: 14px;
+            line-height: 1.45;
+        }
+
+        .popup-summary-box {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .popup-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .popup-row span:first-child {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .popup-row span:last-child {
+            font-weight: 800;
+            text-align: right;
+            word-break: break-all;
+        }
+
+        .popup-footer-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .popup-history-btn {
+            width: 100%;
+            background: #05a86b;
+            color: #ffffff;
+            border: none;
+            padding: 13px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .popup-close-btn {
+            width: 100%;
+            background: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 11px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Transaction History Modal */
+        .history-modal-card {
+            background: var(--header-bg);
+            color: var(--text-color);
+            width: 100%;
+            max-width: 440px;
+            max-height: 82vh;
+            border-radius: 18px;
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+        }
+
+        .history-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-list {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 2px;
+        }
+
+        .history-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 12.5px;
+        }
+
+        .history-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .status-tag {
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status-pending {
+            background: rgba(234, 179, 8, 0.16);
+            color: #ca8a04;
+        }
+
+        .status-confirmed {
+            background: rgba(5, 168, 107, 0.16);
+            color: #05a86b;
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.16);
+            color: #ef4444;
+        }
+
+        .history-bot-msg {
+            margin-top: 8px;
+            padding: 8px 10px;
+            border-radius: 9px;
+            background: var(--card-bg);
+            border: 1px dashed var(--border-color);
+            font-size: 12px;
+            line-height: 1.45;
         }
 
         .site-footer {
@@ -467,9 +684,11 @@
         }
 
         .footer-logo img {
-            height: 28px;
+            height: 30px;
+            max-width: 150px;
             object-fit: contain;
             margin-bottom: 8px;
+            border-radius: 6px;
         }
 
         .made-by {
@@ -605,8 +824,8 @@
     <header>
         <div class="logo-container">
             <a href="index.html">
-                <img id="header-site-logo" src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fallback-logo').style.display='block';};">
-                <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:var(--accent-color);">GAME VAULT</span>
+                <img id="header-site-logo" src="1000115723.png" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fallback-logo').style.display='block';};">
+                <span id="fallback-logo" style="display:none; font-weight:800; font-size:18px; color:#16a34a;">GAME VAULT</span>
             </a>
         </div>
         <div class="header-right">
@@ -744,21 +963,21 @@
         </div>
 
         <div class="action-buttons">
-            <button type="button" class="social-action-btn whatsapp-btn" onclick="sendToInbox('whatsapp')">
-                <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i>
-                <span class="t-continue-btn">Continue to Add Money</span>
+            <button type="button" class="confirm-submit-btn" id="confirmDepositBtn" onclick="submitDepositRequest()">
+                <i class="fa-solid fa-circle-check"></i>
+                <span id="t-confirm-btn">Confirm</span>
             </button>
 
-            <button type="button" class="social-action-btn telegram-btn" onclick="sendToInbox('telegram')">
-                <i class="fa-brands fa-telegram" style="font-size: 20px;"></i>
-                <span class="t-continue-btn">Continue to Add Money</span>
+            <button type="button" class="history-open-btn" onclick="openHistoryModal()">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span id="t-history-btn">Transaction History</span>
             </button>
         </div>
 
         <div class="site-footer">
             <div class="footer-logo">
-                <img id="footer-site-logo" src="logo.jpg" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('footer-fallback').style.display='block';};">
-                <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:var(--accent-color);">GAME VAULT</span>
+                <img id="footer-site-logo" src="1000115723.png" alt="Game Vault" onerror="this.onerror=null; this.src='logo.png'; this.onerror=function(){this.style.display='none'; document.getElementById('footer-fallback').style.display='block';};">
+                <span id="footer-fallback" style="display:none; font-weight:800; font-size:16px; color:#16a34a;">GAME VAULT</span>
             </div>
             <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;" id="t-footer-desc">Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.</p>
             <p style="font-size: 10px; color: #64748b; margin-top: 5px;">© 2025- 2026 Game Vault Bangladesh, All trademarks belong to their respective owners</p>
@@ -766,6 +985,43 @@
             <div class="made-by">
                 Made by <a href="https://t.me/zunayed_islam00" target="_blank">Game Vault</a>
             </div>
+        </div>
+    </div>
+
+    <!-- Pending Summary Popup -->
+    <div class="popup-overlay" id="pendingPopupOverlay" onclick="if(event.target===this) closePendingPopup()">
+        <div class="pending-popup-card">
+            <div class="popup-top-badge">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <span>Pending</span>
+            </div>
+            <h3 class="popup-title" id="popupTitleText">Add Money Request Submitted</h3>
+            <p class="popup-sub" id="popupSubText">আপনার রিকোয়েস্ট টেলিগ্রাম বটে পাঠানো হয়েছে। ট্রানজেকশন যাচাই শেষে ওয়ালেটে টাকা যোগ হবে।</p>
+
+            <div class="popup-summary-box" id="popupSummaryBox"></div>
+
+            <div class="popup-footer-actions">
+                <button type="button" class="popup-history-btn" onclick="openHistoryFromPopup()">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>Transaction History</span>
+                </button>
+                <button type="button" class="popup-close-btn" onclick="closePendingPopup()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction History Modal -->
+    <div class="popup-overlay" id="historyModalOverlay" onclick="if(event.target===this) closeHistoryModal()">
+        <div class="history-modal-card">
+            <div class="history-head">
+                <h3 style="font-size:16px; font-weight:800;">Transaction History</h3>
+                <button type="button" onclick="closeHistoryModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-color);">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="history-list" id="historyListBox"></div>
         </div>
     </div>
 
@@ -825,13 +1081,16 @@
 
             if (user && user.email) {
                 const data = getUserProfileData(user);
+                const localBal = localStorage.getItem(`gv_wallet_balance_${user.email}`);
+                const balVal = localBal !== null ? Number(localBal) : Number(data?.balance || 0);
+
                 if (headerAddMoneyPlus) headerAddMoneyPlus.style.display = "flex";
                 if (nav) nav.classList.remove("hide-add-money");
                 if (accountInput) {
                     accountInput.value = user.email;
                 }
-                if (headerBalance && data && data.balance !== undefined) {
-                    headerBalance.textContent = Number(data.balance).toFixed(1);
+                if (headerBalance) {
+                    headerBalance.textContent = balVal.toFixed(1);
                 }
                 if (balanceAvatar && data && data.photoURL) {
                     balanceAvatar.innerHTML = `<img src="${data.photoURL}" alt="Profile">`;
@@ -861,8 +1120,11 @@
     </script>
 
     <script>
-        let WHATSAPP_NUMBER = "8801572921586";
-        let TELEGRAM_USERNAME = "zunayed_islam00";
+        const WORKER_URL = "https://game-vault-ff-api.theummah234.workers.dev";
+        const DEPOSIT_ENDPOINT = `${WORKER_URL}/add-money`;
+        const DEPOSIT_STATUS_ENDPOINT = `${WORKER_URL}/add-money-status`;
+        const DEPOSIT_HISTORY_KEY = "gv_add_money_history";
+
         let MIN_AMOUNT = 20;
         let MAX_AMOUNT = 10000;
         let selectedPaymentMethod = "BKash";
@@ -884,7 +1146,8 @@
                 receiverLabel: (method) => `${method === "BKash" ? "বিকাশ" : "নগদ"} সেন্ড মানি নাম্বার`,
                 trxLabel: "ট্রানজেকশন আইডি",
                 accountLabel: "আমার অ্যাকাউন্ট",
-                continueBtn: "Continue to Add Money",
+                confirmBtn: "Confirm",
+                historyBtn: "Transaction History",
                 copyBtn: "Copy",
                 footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
                 navHome: "হোম",
@@ -909,7 +1172,8 @@
                 receiverLabel: (method) => `${method} Send Money Number`,
                 trxLabel: "Transaction ID",
                 accountLabel: "My Account",
-                continueBtn: "Continue to Add Money",
+                confirmBtn: "Confirm",
+                historyBtn: "Transaction History",
                 copyBtn: "Copy",
                 footerDesc: "Game Vault is a cheapest & fastest game top-up service in Bangladesh. Instant game top-ups, likes and guild glory – trusted by gamers worldwide since 2025.",
                 navHome: "Home",
@@ -920,6 +1184,19 @@
                 modalHeading: "Language"
             }
         };
+
+        function getDepositHistory() {
+            try {
+                const list = JSON.parse(localStorage.getItem(DEPOSIT_HISTORY_KEY) || "[]");
+                return Array.isArray(list) ? list : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveDepositHistory(list) {
+            localStorage.setItem(DEPOSIT_HISTORY_KEY, JSON.stringify(list));
+        }
 
         function setActiveNavItem(targetUrl) {
             const nav = document.getElementById('persistent-bottom-nav');
@@ -1036,12 +1313,6 @@
             if (savedPayments.maxAmount) {
                 MAX_AMOUNT = Number(savedPayments.maxAmount) || 10000;
             }
-            if (savedPayments.whatsappNumber) {
-                WHATSAPP_NUMBER = savedPayments.whatsappNumber;
-            }
-            if (savedPayments.telegramUsername) {
-                TELEGRAM_USERNAME = savedPayments.telegramUsername.replace(/^@/, "");
-            }
             if (savedPayments.warningNote) {
                 translations.bn.warning = savedPayments.warningNote;
                 translations.en.warning = savedPayments.warningNote;
@@ -1083,10 +1354,9 @@
             document.getElementById("receiver-label-text").textContent = t.receiverLabel(selectedPaymentMethod);
             document.getElementById("t-trx-label").textContent = t.trxLabel;
             document.getElementById("t-account-label").textContent = t.accountLabel;
+            document.getElementById("t-confirm-btn").textContent = t.confirmBtn;
+            document.getElementById("t-history-btn").textContent = t.historyBtn;
             document.getElementById("copy-btn-text").textContent = t.copyBtn;
-            document.querySelectorAll(".t-continue-btn").forEach(el => {
-                el.textContent = t.continueBtn;
-            });
             document.getElementById("t-footer-desc").textContent = t.footerDesc;
             document.getElementById("nav-home").textContent = t.navHome;
             document.getElementById("nav-orders").textContent = t.navOrders;
@@ -1181,12 +1451,137 @@
             return true;
         }
 
-        function sendToInbox(platform) {
+        function openPendingPopup(record) {
+            const box = document.getElementById("popupSummaryBox");
+            box.innerHTML = `
+                <div class="popup-row"><span>Request ID</span><span>#${record.requestId}</span></div>
+                <div class="popup-row"><span>Amount</span><span>${record.amount} ৳</span></div>
+                <div class="popup-row"><span>Method</span><span>${record.method} (${record.receiverNumber})</span></div>
+                <div class="popup-row"><span>Sender Number</span><span>${record.senderNumber}</span></div>
+                <div class="popup-row"><span>Transaction ID</span><span>${record.trxId}</span></div>
+                <div class="popup-row"><span>Account</span><span>${record.customerEmail}</span></div>
+                <div class="popup-row"><span>Status</span><span style="color:#ca8a04;">Pending</span></div>
+            `;
+            document.getElementById("pendingPopupOverlay").classList.add("open");
+        }
+
+        function closePendingPopup() {
+            document.getElementById("pendingPopupOverlay").classList.remove("open");
+        }
+
+        function openHistoryFromPopup() {
+            closePendingPopup();
+            openHistoryModal();
+        }
+
+        async function refreshDepositStatuses() {
+            const list = getDepositHistory();
+            if (!list.length) return list;
+
+            try {
+                const res = await fetch(DEPOSIT_STATUS_ENDPOINT, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        requestIds: list.map(item => item.requestId),
+                        customerEmail: document.getElementById("account-no").value.trim()
+                    })
+                });
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && Array.isArray(data.items)) {
+                    const map = new Map(data.items.map(i => [i.requestId, i]));
+                    let creditedDelta = 0;
+
+                    const updated = list.map(item => {
+                        const remote = map.get(item.requestId);
+                        if (!remote) return item;
+
+                        if (remote.status === "CONFIRMED" && item.status !== "CONFIRMED") {
+                            creditedDelta += Number(remote.creditedAmount || item.amount || 0);
+                        }
+
+                        return {
+                            ...item,
+                            status: remote.status || item.status,
+                            creditedAmount: remote.creditedAmount ?? item.creditedAmount,
+                            botMessage: remote.botMessage || item.botMessage
+                        };
+                    });
+
+                    saveDepositHistory(updated);
+
+                    if (creditedDelta > 0 && itemEmail = document.getElementById("account-no").value.trim()) {
+                        const balKey = `gv_wallet_balance_${itemEmail}`;
+                        const currentBal = Number(localStorage.getItem(balKey) || 0);
+                        const nextBal = currentBal + creditedDelta;
+                        localStorage.setItem(balKey, String(nextBal));
+                        const headerBal = document.getElementById("user-balance");
+                        if (headerBal) headerBal.textContent = nextBal.toFixed(1);
+                    }
+
+                    return updated;
+                }
+            } catch {}
+
+            return list;
+        }
+
+        async function openHistoryModal() {
+            const overlay = document.getElementById("historyModalOverlay");
+            const box = document.getElementById("historyListBox");
+            overlay.classList.add("open");
+            box.innerHTML = `<div style="padding:12px; color:#64748b; font-size:13px;">Loading history...</div>`;
+
+            const list = await refreshDepositStatuses();
+            if (!list.length) {
+                box.innerHTML = `<div style="padding:14px; color:#64748b; font-size:13px; text-align:center;">No transactions yet.</div>`;
+                return;
+            }
+
+            box.innerHTML = list.map(item => {
+                const st = (item.status || "PENDING").toUpperCase();
+                let badgeClass = "status-pending";
+                let statusLabel = "Pending";
+                let amountLine = `Requested: <strong>${item.amount} ৳</strong>`;
+
+                if (st === "CONFIRMED") {
+                    badgeClass = "status-confirmed";
+                    statusLabel = "Confirmed";
+                    amountLine = `Credited: <strong style="color:#05a86b;">+${item.creditedAmount || item.amount} ৳</strong>`;
+                } else if (st === "CANCELLED") {
+                    badgeClass = "status-cancelled";
+                    statusLabel = "Cancelled";
+                    amountLine = `Amount: <strong>${item.amount} ৳</strong> (Cancelled)`;
+                }
+
+                const botMsg = item.botMessage
+                    ? `<div class="history-bot-msg"><strong>Bot:</strong> ${item.botMessage}</div>`
+                    : `<div class="history-bot-msg"><strong>Bot:</strong> আপনার রিকোয়েস্টটি পেন্ডিং রয়েছে। অ্যাডমিন চেক করার পর আপডেট দেখাবে।</div>`;
+
+                return `
+                    <div class="history-item">
+                        <div class="history-item-top">
+                            <strong>#${item.requestId} • ${item.method}</strong>
+                            <span class="status-tag ${badgeClass}">${statusLabel}</span>
+                        </div>
+                        <div>${amountLine}</div>
+                        <div style="color:#64748b; margin-top:3px;">TrxID: <strong>${item.trxId}</strong></div>
+                        ${botMsg}
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function closeHistoryModal() {
+            document.getElementById("historyModalOverlay").classList.remove("open");
+        }
+
+        async function submitDepositRequest() {
             const isAmountValid = validateAmount();
             const amount = document.getElementById("amount-input").value.trim();
             const senderNumber = document.getElementById("sender-number").value.trim();
             const trxId = document.getElementById("trx-id").value.trim();
-            const myAccount = document.getElementById("account-no").value.trim();
+            const customerEmail = document.getElementById("account-no").value.trim();
 
             if (!isAmountValid) {
                 document.getElementById("amount-input").focus();
@@ -1196,26 +1591,61 @@
                 alert("সবগুলো তথ্য সঠিকভাবে পূরণ করুন।");
                 return;
             }
+            if (!customerEmail) {
+                alert("আগে আপনার অ্যাকাউন্টে সাইন ইন করুন।");
+                return;
+            }
 
-            const formattedMessage =
-`💸 Add Money Request (Game Vault BD )
+            const btn = document.getElementById("confirmDepositBtn");
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending...</span>`;
 
+            const requestId = "DEP" + Date.now().toString().slice(-8);
 
-টাকার পরিমাণ   : ${amount}   ৳
-টাকা পাঠানো নাম্বার : ${senderNumber}  
-পেমেন্ট মেথড   : ${selectedPaymentMethod} (${selectedReceiverNumber})  
-ট্রানজেকশন আইডি :   ${trxId}  
-আ্যকাউন্ট জিমেইল  :  ${myAccount}  
+            try {
+                const res = await fetch(DEPOSIT_ENDPOINT, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        requestId,
+                        amount: Number(amount),
+                        senderNumber,
+                        method: selectedPaymentMethod,
+                        receiverNumber: selectedReceiverNumber,
+                        trxId,
+                        customerEmail
+                    })
+                });
 
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data?.ok) {
+                    throw new Error(data?.error || "Request failed");
+                }
 
-Thank you for choose Game Vault BD `;
+                const record = {
+                    requestId: data.requestId || requestId,
+                    amount: Number(amount),
+                    senderNumber,
+                    method: selectedPaymentMethod,
+                    receiverNumber: selectedReceiverNumber,
+                    trxId,
+                    customerEmail,
+                    status: "PENDING",
+                    botMessage: "",
+                    createdAt: new Date().toISOString()
+                };
 
-            const encoded = encodeURIComponent(formattedMessage);
+                const prev = getDepositHistory();
+                prev.unshift(record);
+                saveDepositHistory(prev);
 
-            if (platform === "whatsapp") {
-                window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
-            } else {
-                window.location.href = `https://t.me/${TELEGRAM_USERNAME}?text=${encoded}`;
+                openPendingPopup(record);
+            } catch (err) {
+                alert(err.message || "রিকোয়েস্ট পাঠানো যায়নি। আবার চেষ্টা করো।");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
             }
         }
 
